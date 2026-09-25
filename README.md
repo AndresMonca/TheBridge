@@ -1,0 +1,89 @@
+# TheBridge - Milestone 1
+
+**DSAW · Universidad de La Sabana**
+
+## Project Name
+
+TheBridge is a frontend prototype that connects students who own physical books with students who want to access them.
+
+## Problem Statement
+
+University students often have books they no longer use while other students need those books for classes, personal reading, or academic activities. These exchanges usually happen through chats, social media groups, or individual messages. Information becomes difficult to discover, availability is unclear, and it is not easy to distinguish whether a book is being exchanged, loaned, rented, or sold.
+
+TheBridge centralizes this discovery and request flow for small academic communities. The initial experience focuses on finding a book, reviewing its sharing conditions, and expressing interest in a simulated frontend prototype.
+
+## Target Users
+
+The first users are university students and members of small academic communities who are physically close enough to coordinate delivery in person. Milestone 1 is not intended for public marketplaces, logistics management, payments, or large communities.
+
+## Why a Web Application
+
+TheBridge should be a web application because:
+
+1. **Structured discovery:** book publications can show their title, owner, condition, and sharing modality in one consistent place.
+2. **Clear interaction:** users can distinguish Exchange, Loan, Rental, and Sale offers without searching through unrelated chat messages.
+3. **Accessible delivery:** students can use the prototype from a computer or phone browser without installing a native application.
+4. **Focused academic scope:** a static frontend prototype can demonstrate the core experience before future backend and persistence decisions are made.
+
+## Proposed Solution
+
+TheBridge presents a searchable marketplace of simulated physical book publications. A user can review available books, register a book they own, choose how to share it, and send or review simulated requests. The prototype uses local data and frontend state only.
+
+## Core Flow
+
+**Find a book -> Add your book -> Choose how to share -> Publish -> Receive requests -> Connect with another student**
+
+The connection and delivery are represented as an in-person interaction for the initial scope.
+
+## User Stories
+
+- **US-01:** As a student, I want to explore publications to find books that interest me.
+- **US-02:** As a user, I want to search and filter publications to quickly find books under the modality I need.
+- **US-03:** As an owner, I want to register a book I own so I can offer it on the platform.
+- **US-04:** As an owner, I want to create a publication and choose whether I want to exchange, loan, rent, or sell my book.
+- **US-05:** As a student, I want to send a request about a publication to express my interest.
+- **US-06:** As an owner, I want to review received requests and accept or reject them.
+
+## Static Prototype
+
+The prototype will be published from `index.html` through GitHub Pages. The planned screens are:
+
+- Marketplace and project information
+- My Books
+- Add Book
+- Create Listing
+- Listing Details
+- Requests
+- About and team information
+
+The final Pages URL is pending repository configuration:
+
+`https://<organization-or-user>.github.io/<repository-name>/`
+
+## Figma Wireframes
+
+The Figma Make reference is available in [figma-link.txt](figma-link.txt). Before submission, the team must confirm that the shared file includes the main screens and supporting UI states such as empty, loading, error, validation, and success states.
+
+## Team Roles and Collaboration
+
+Team members and roles will be added after repository access is configured. The team will use a simple GitHub Flow:
+
+1. Create a short-lived feature branch from `main`.
+2. Make small, meaningful commits.
+3. Open a pull request with verification notes.
+4. Receive a review from another team member.
+5. Merge only after the changes are coherent with the shared product context.
+
+The team must produce real functional contributions from multiple GitHub accounts. Empty or cosmetic commits do not satisfy the collaboration requirement.
+
+## AI Use
+
+AI may help structure requirements, propose implementation details, and review frontend changes. The team remains responsible for narrowing the scope, validating the result, and recording adopted and manually changed suggestions. The detailed record is in [AI-LOG.md](AI-LOG.md).
+
+## Local Preview
+
+Open `index.html` directly in a browser or serve the repository with a local static server. GitHub Pages configuration and the final public URL are pending.
+
+## Milestone 1 Scope
+
+Milestone 1 is limited to a responsive frontend prototype using HTML, Tailwind CSS, and vanilla JavaScript. It does not include a backend, database, real authentication, payments, chat, notifications, persistence, transactions, administration, or geolocation.
