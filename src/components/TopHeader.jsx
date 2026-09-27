@@ -20,7 +20,7 @@ function TopHeader({
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <div
-            className="hidden items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 sm:flex"
+            className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2 py-2 text-[10px] font-bold text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 sm:gap-2 sm:px-3 sm:text-xs"
             aria-live="polite"
           >
             <span
