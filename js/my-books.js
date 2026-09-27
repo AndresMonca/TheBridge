@@ -107,12 +107,12 @@
     String(value ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
   const loadAllBooks = () => {
-    let stored = [];
+    let stored;
     try {
       stored = JSON.parse(localStorage.getItem("thebridge:my-books") || "[]");
       if (!Array.isArray(stored)) stored = [];
     } catch {
-      stored = [];
+      return [...MOCK_BASE_BOOKS];
     }
     return [...MOCK_BASE_BOOKS, ...stored];
   };
