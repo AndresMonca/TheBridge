@@ -1,9 +1,6 @@
 (() => {
-  // El catálogo de búsqueda reutiliza window.TheBridgeData como base bibliográfica
-  // Permite que el usuario encuentre títulos conocidos y registre su copia física
   const CATALOG = Array.isArray(window.TheBridgeData) ? window.TheBridgeData : [];
 
-  // Libros adicionales al catálogo mock para ampliar las opciones de búsqueda
   const EXTRA_BOOKS = [
     {
       id: "extra-01",
@@ -75,7 +72,6 @@
     searchInput: document.querySelector("#book-search"),
     searchHint: document.querySelector("#search-hint"),
     searchError: document.querySelector("#search-validation-error"),
-    // Estados de la fase de búsqueda
     stateIdle: document.querySelector("#state-idle"),
     stateLoading: document.querySelector("#state-loading"),
     stateResults: document.querySelector("#state-results"),
@@ -86,27 +82,22 @@
     noResultsText: document.querySelector("#no-results-text"),
     clearSearchBtn: document.querySelector("#clear-search-btn"),
     retrySearchBtn: document.querySelector("#retry-search-btn"),
-    // Fases del flujo
     searchPhase: document.querySelector("#search-phase"),
     confirmPhase: document.querySelector("#confirm-phase"),
     successPhase: document.querySelector("#success-phase"),
-    // Fase de confirmación
     selectedPreview: document.querySelector("#selected-book-preview"),
     confirmForm: document.querySelector("#confirm-form"),
     conditionError: document.querySelector("#condition-error"),
     bookNotes: document.querySelector("#book-notes"),
     notesCount: document.querySelector("#notes-count"),
     backToSearch: document.querySelector("#back-to-search"),
-    // Fase de éxito
     successBookName: document.querySelector("#success-book-name"),
     addAnotherBtn: document.querySelector("#add-another-btn"),
-    // Región aria-live para anunciar el éxito al screen reader
     successLiveRegion: document.querySelector("#success-live-region")
   };
 
-  // Estado interno del flujo de añadir libro
   const state = {
-    phase: "idle",         // idle | loading | results | no-results | error | confirm | success
+    phase: "idle",
     lastQuery: "",
     searchResults: [],
     selectedBook: null,
@@ -121,13 +112,11 @@
 
   const getGenreColor = (genre) => genreColors[genre] || genreColors.Default;
 
-  // Oculta todos los paneles de estado de la fase de búsqueda
   const hideAllSearchStates = () => {
     [elements.stateIdle, elements.stateLoading, elements.stateResults, elements.stateNoResults, elements.stateError]
       .forEach((el) => el?.classList.add("hidden"));
   };
 
-  // Muestra solo el panel de estado indicado
   const showSearchState = (stateName) => {
     hideAllSearchStates();
     const panelMap = {
@@ -141,7 +130,6 @@
     state.phase = stateName;
   };
 
-  // Filtra el catálogo por título, autor o ISBN (normalizado y sin acentos)
   const searchCatalog = (query) => {
     const term = normalize(query);
     if (!term) return [];
@@ -151,7 +139,6 @@
     });
   };
 
-  // Genera el markup de la portada con fallback de color
   const coverShell = (book) => {
     const color = getGenreColor(book.genre || "Default");
     const src = book.cover || "";
@@ -161,7 +148,6 @@
     </div>`;
   };
 
-  // Genera la tarjeta de un resultado de búsqueda seleccionable
   const createResultCard = (book, index) =>
     `<article class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900">
       <div class="relative aspect-[2/3] overflow-hidden">${coverShell(book)}</div>
@@ -175,37 +161,30 @@
       </div>
     </article>`;
 
-  // Renderiza los resultados de búsqueda y conecta los listeners de selección
   const renderResults = (results) => {
     elements.resultsLabel.textContent = `${results.length} ${results.length === 1 ? "book" : "books"} found for "${state.lastQuery}"`;
     elements.resultsGrid.innerHTML = results.map((book, i) => createResultCard(book, i)).join("");
 
-    // Fallback para portadas que no cargan - muestra el fondo de color
     elements.resultsGrid.querySelectorAll("img[data-result-cover]").forEach((img) => {
       img.addEventListener("error", () => {
         img.classList.add("hidden");
         img.closest("[data-cover-fallback]")?.classList.remove("hidden");
-        // Busca el fallback hermano cuando la estructura es diferente
         const shell = img.parentElement;
         shell?.querySelector("[data-cover-fallback]")?.classList.remove("hidden");
       }, { once: true });
     });
 
-    // Conecta el evento de selección a cada tarjeta de resultado
     elements.resultsGrid.querySelectorAll("[data-select-index]").forEach((btn) => {
       btn.addEventListener("click", () => handleBookSelect(Number(btn.dataset.selectIndex)));
     });
   };
 
-  // Simula la búsqueda con un delay para representar una petición real
-  // Nota: buscar el término "error" activa el estado de error simulado (útil para demostración)
   const performSearch = (query) => {
     clearTimeout(state.searchTimer);
     state.lastQuery = query;
     showSearchState("loading");
 
     state.searchTimer = setTimeout(() => {
-      // Estado de error simulado: se activa con el término "error"
       if (normalize(query) === "error") {
         showSearchState("error");
         return;
@@ -221,10 +200,9 @@
         showSearchState("results");
         renderResults(results);
       }
-    }, 850); // Simula el tiempo de respuesta de una búsqueda real
+    }, 850);
   };
 
-  // Transiciona a la fase de confirmación con el libro seleccionado
   const handleBookSelect = (index) => {
     const book = state.searchResults[index];
     if (!book) return;
@@ -232,7 +210,6 @@
     state.selectedBook = book;
     state.phase = "confirm";
 
-    // Renderiza la vista previa del libro seleccionado
     const color = getGenreColor(book.genre || "Default");
     elements.selectedPreview.innerHTML = `
       <div class="h-20 w-14 shrink-0 overflow-hidden rounded-xl" style="background:${color}">
@@ -246,19 +223,15 @@
       </div>
     `;
 
-    // Muestra fase de confirmación y oculta la de búsqueda
     elements.searchPhase.classList.add("hidden");
     elements.confirmPhase.classList.remove("hidden");
     elements.successPhase.classList.add("hidden");
 
-    // Limpia el estado de validación de la fase anterior
     resetConditionError();
 
-    // Mueve el foco al botón de volver para orientar al usuario
     elements.backToSearch?.focus();
   };
 
-  // Limpia el mensaje de error y los aria-invalid de los radio buttons de condición
   const resetConditionError = () => {
     elements.conditionError.classList.add("hidden");
     document.querySelectorAll("input[name='condition']").forEach((radio) => {
@@ -266,7 +239,6 @@
     });
   };
 
-  // Valida que se haya seleccionado una condición y guarda el libro en localStorage
   const handleConfirmSubmit = (event) => {
     event.preventDefault();
 
@@ -274,7 +246,6 @@
     const selected = [...conditionRadios].find((r) => r.checked);
 
     if (!selected) {
-      // Marca todos los radios como inválidos y muestra el error
       conditionRadios.forEach((r) => r.setAttribute("aria-invalid", "true"));
       elements.conditionError.classList.remove("hidden");
       elements.conditionError.focus();
@@ -283,7 +254,6 @@
 
     resetConditionError();
 
-    // Construye el objeto del libro con los datos del formulario
     const newBook = {
       id: `added-${Date.now()}`,
       title: state.selectedBook.title,
@@ -296,29 +266,23 @@
       addedAt: new Date().toISOString().split("T")[0]
     };
 
-    // Guarda en localStorage para que My Books pueda leerlo
     try {
       const existing = JSON.parse(localStorage.getItem("thebridge:my-books") || "[]");
       existing.push(newBook);
       localStorage.setItem("thebridge:my-books", JSON.stringify(existing));
     } catch {
-      // Si localStorage no está disponible, el flujo visual continúa de todas formas
     }
 
-    // Anuncia el éxito al screen reader a través de la región aria-live
     elements.successLiveRegion.textContent = `"${newBook.title}" has been added to your library successfully.`;
 
-    // Muestra la fase de éxito
     state.phase = "success";
     elements.confirmPhase.classList.add("hidden");
     elements.successPhase.classList.remove("hidden");
     elements.successBookName.textContent = `"${newBook.title}" by ${newBook.author} is now in your library as Available.`;
 
-    // Notifica a My Books que debe refrescarse si está montado en la misma sesión
     window.dispatchEvent(new CustomEvent("thebridge:book-added", { detail: newBook }));
   };
 
-  // Restablece el flujo completo al estado inicial para añadir otro libro
   const resetToIdle = () => {
     state.phase = "idle";
     state.selectedBook = null;
@@ -329,12 +293,10 @@
     elements.confirmPhase.classList.add("hidden");
     elements.successPhase.classList.add("hidden");
 
-    // Limpia el formulario de confirmación
     elements.confirmForm.reset();
     elements.notesCount.textContent = "0";
     resetConditionError();
 
-    // Vuelve al estado idle y limpia el input de búsqueda
     elements.searchInput.value = "";
     elements.searchInput.setAttribute("aria-invalid", "false");
     elements.searchError.classList.add("hidden");
@@ -342,9 +304,6 @@
     elements.searchInput.focus();
   };
 
-  // ── Listeners ──────────────────────────────────────────────────────────
-
-  // Envío del formulario de búsqueda con validación mínima
   elements.form?.addEventListener("submit", (event) => {
     event.preventDefault();
     const query = elements.searchInput.value.trim();
@@ -357,34 +316,28 @@
       return;
     }
 
-    // Limpia el error previo si la consulta es válida
     elements.searchInput.setAttribute("aria-invalid", "false");
     elements.searchError.classList.add("hidden");
     performSearch(query);
   });
 
-  // Limpia el error al escribir en el campo de búsqueda
   elements.searchInput?.addEventListener("input", () => {
     elements.searchInput.setAttribute("aria-invalid", "false");
     elements.searchError.classList.add("hidden");
   });
 
-  // Botón para limpiar la búsqueda y volver al estado inicial
   elements.clearSearchBtn?.addEventListener("click", resetToIdle);
 
-  // Botón de reintentar búsqueda en el estado de error - vuelve al idle
   elements.retrySearchBtn?.addEventListener("click", () => {
     showSearchState("idle");
     elements.searchInput.focus();
   });
 
-  // Volver a la búsqueda desde la fase de confirmación
   elements.backToSearch?.addEventListener("click", () => {
     state.phase = "results";
     elements.searchPhase.classList.remove("hidden");
     elements.confirmPhase.classList.add("hidden");
 
-    // Restaura los resultados previos si existían
     if (state.searchResults.length > 0) {
       showSearchState("results");
       renderResults(state.searchResults);
@@ -393,24 +346,19 @@
     }
   });
 
-  // Envío del formulario de confirmación con validación de condición
   elements.confirmForm?.addEventListener("submit", handleConfirmSubmit);
 
-  // Añadir otro libro: reinicia el flujo completo
   elements.addAnotherBtn?.addEventListener("click", resetToIdle);
 
-  // Contador de caracteres en el campo de notas
   elements.bookNotes?.addEventListener("input", () => {
     elements.notesCount.textContent = String(elements.bookNotes.value.length);
   });
 
-  // Limpia el aria-invalid de los radios cuando el usuario selecciona uno
   document.querySelectorAll("input[name='condition']").forEach((radio) => {
     radio.addEventListener("change", () => {
       resetConditionError();
     });
   });
 
-  // Estado inicial de la página
   showSearchState("idle");
 })();

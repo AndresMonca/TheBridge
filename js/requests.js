@@ -1,8 +1,4 @@
 (() => {
-  // Datos simulados de solicitudes. No hay backend: el estado vive solo en memoria
-  // mientras la pestaña permanece abierta. listingId enlaza con el contrato
-  // compartido de js/data.js para reutilizar portada, título, autor y modalidad
-  // sin duplicar esa información aquí.
   const mockRequests = [
     { id: "req-01", direction: "received", listingId: "book-03", counterpart: "Isabella C.", status: "Pending", note: "Could I borrow this for the semester? I can pick it up on campus.", updatedAt: "2026-09-24" },
     { id: "req-02", direction: "received", listingId: "book-13", counterpart: "Samuel R.", status: "Pending", note: "I have The Silmarillion to trade if you are interested.", updatedAt: "2026-09-23" },
@@ -14,8 +10,6 @@
     { id: "req-08", direction: "sent", listingId: "book-16", counterpart: "Gabriela N.", status: "Pending", note: "Offered The Road in exchange for this copy.", updatedAt: "2026-09-25" }
   ];
 
-  // Copia mutable en memoria: create-listing/listing (Integrante 3) no persiste
-  // solicitudes reales todavía, así que esta pantalla solo demuestra el flujo.
   const requestsState = mockRequests.map((request) => ({ ...request }));
 
   const listingsById = new Map((window.TheBridgeData || []).map((listing) => [listing.id, listing]));
@@ -46,8 +40,6 @@
     String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
 
   const statusMessageFor = (request) => {
-    // El mensaje explica la implicación del nuevo estado, no solo lo repite,
-    // porque el criterio de aceptación pide una explicación entendible sin depender del color.
     if (request.status === "Accepted") {
       return request.direction === "received"
         ? `You accepted the request from ${request.counterpart}. Coordinate delivery with them in person; TheBridge does not send messages for you.`
@@ -129,8 +121,6 @@
     panels.sent.classList.toggle("hidden", direction !== "sent");
   };
 
-  // Navegación por teclado del tablist siguiendo el patrón WAI-ARIA (roving tabindex):
-  // flechas izquierda/derecha alternan entre pestañas, Home/End saltan a los extremos.
   tablist.addEventListener("keydown", (event) => {
     const currentIndex = tabs.findIndex((tab) => tab.getAttribute("aria-selected") === "true");
     let nextIndex = null;
@@ -153,8 +143,6 @@
     const request = requestsState.find((item) => item.id === button.dataset.requestId);
     if (!request) return;
 
-    // Cambiamos el estado localmente y volvemos a pintar solo el panel afectado
-    // para que el mensaje de explicación quede sincronizado con el nuevo estado.
     request.status = button.dataset.action === "accept" ? "Accepted" : "Rejected";
     renderPanel(request.direction);
     liveRegion.textContent = statusMessageFor(request);

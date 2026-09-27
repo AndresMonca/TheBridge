@@ -1,9 +1,6 @@
 (() => {
   const FALLBACK_ID = "book-01";
 
-  // Capa de compatibilidad: js/my-books.js define sus libros base de forma privada y no se puede importar ni
-  // modificar. Se replican aquí los libros semilla con estado Available que se pueden ofrecer en un intercambio.
-  // Si cambian en my-books.js, hay que actualizarlos también aquí.
   const SEED_PERSONAL_BOOKS = [
     {
       id: "mybook-01",
@@ -25,7 +22,6 @@
     }
   ];
 
-  // Mismos colores de género que el resto de páginas para el fondo de las portadas que no cargan
   const genreColors = {
     "Science Fiction": "#2563EB",
     Dystopian: "#334155",
@@ -41,7 +37,6 @@
     Default: "#64748B"
   };
 
-  // Un solo CTA principal por modalidad; el texto exacto lo fija el requisito
   const modalityInfo = {
     Exchange: { icon: "🔄", cta: "Request Exchange", title: "Request an exchange" },
     Loan: { icon: "🤝", cta: "Request Loan", title: "Confirm your loan request" },
@@ -50,7 +45,6 @@
   };
 
   const CTA_CLASS = "h-12 w-full rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 text-sm font-black text-white shadow-lg shadow-indigo-500/15 transition hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-500/25 sm:w-auto sm:min-w-[220px]";
-  // Estado "enviado": el texto y la marca ✓ comunican el estado, no solo el color
   const CTA_SENT_CLASS = "h-12 w-full cursor-default rounded-2xl border border-emerald-200 bg-emerald-50 px-6 text-sm font-black text-emerald-800 focus:outline-none focus:ring-4 focus:ring-blue-500/25 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-300 sm:w-auto sm:min-w-[220px]";
 
   const formatPrice = (value) =>
@@ -70,11 +64,6 @@
 
   const state = { listing: null, requestSent: false, offerable: [] };
 
-  // ── Datos ──────────────────────────────────────────────────────────────────
-
-  // Combina libros semilla y de localStorage y deja solo los Available. Un libro guardado con el mismo id
-  // que uno semilla lo sobrescribe (así un cambio de estado guardado lo excluye). localStorage puede estar
-  // vacío, corrupto o bloqueado: cualquier fallo cae a solo los semilla.
   const loadAvailablePersonalBooks = () => {
     let stored = [];
     try {
@@ -90,7 +79,6 @@
     return [...byId.values()].filter((book) => book.status === "Available" && typeof book.title === "string");
   };
 
-  // Resuelve ?id=. Si falta o no existe se carga book-01 y se devuelve el motivo para avisar en la interfaz.
   const resolveListing = (listings) => {
     const requestedId = new URLSearchParams(window.location.search).get("id");
     const match = requestedId ? listings.find((item) => item.id === requestedId) : null;
@@ -105,7 +93,6 @@
     };
   };
 
-  // Filas de la oferta según la modalidad; se reutilizan en la página y en el modal
   const offerRows = (listing) => {
     const duration = listing.duration || "To be agreed";
     const price = typeof listing.price === "number" ? formatPrice(listing.price) : "To be agreed";
@@ -121,9 +108,6 @@
     return [{ label: "Sale price", value: price }];
   };
 
-  // ── Página ─────────────────────────────────────────────────────────────────
-
-  // Si una portada no carga se muestra el color del género en su lugar
   const wireCoverFallback = (img, fallback) => {
     img.addEventListener("error", () => {
       img.classList.add("hidden");
@@ -139,7 +123,6 @@
     const info = modalityInfo[listing.modality];
     $("#listing-modality").textContent = `${info.icon} ${listing.modality}`;
     $("#listing-condition").textContent = `📚 ${listing.condition}`;
-    // El estado se escribe con texto e icono, no solo con color
     $("#listing-status").textContent = listing.status === "Available" ? "✅ Available" : `⏳ ${listing.status}`;
 
     const cover = $("#listing-cover");
@@ -164,7 +147,6 @@
     $("#listing-owner").textContent = listing.owner;
     $("#listing-university").textContent = listing.university;
 
-    // Los metadatos son opcionales: solo se muestran los que existen
     const meta = [["Genre", listing.genre], ["Year", listing.year], ["Publisher", listing.publisher], ["Language", listing.language], ["ISBN", listing.isbn]]
       .filter(([, value]) => value);
     $("#listing-meta").innerHTML = meta
@@ -178,7 +160,6 @@
     const { cta } = elements;
     if (state.requestSent) {
       cta.textContent = "✓ Request sent";
-      // aria-disabled (no disabled) para que el botón siga recibiendo el foco al cerrar el modal
       cta.setAttribute("aria-disabled", "true");
       cta.className = CTA_SENT_CLASS;
     } else {
@@ -187,8 +168,6 @@
       cta.className = CTA_CLASS;
     }
   };
-
-  // ── Modal ──────────────────────────────────────────────────────────────────
 
   const summaryRows = (rows) =>
     `<dl class="divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 dark:divide-slate-800 dark:border-slate-800 dark:bg-slate-950">${rows
@@ -215,7 +194,6 @@
   const cancelButton = `<button type="button" data-action="close" class="h-12 rounded-2xl border border-slate-200 bg-white px-6 text-sm font-extrabold text-slate-700 transition hover:border-indigo-300 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">Cancel</button>`;
   const sendButtonClass = "h-12 rounded-2xl bg-slate-950 px-6 text-sm font-black text-white transition hover:bg-indigo-600 focus:outline-none focus:ring-4 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-slate-950 dark:hover:bg-indigo-50";
 
-  // Vista del formulario de solicitud. Exchange pide elegir un libro propio; el resto solo confirma.
   const renderRequestView = () => {
     const { listing, offerable } = state;
     elements.modalTitle.textContent = modalityInfo[listing.modality].title;
@@ -233,7 +211,6 @@
           </fieldset>`;
         sendAttrs = "";
       } else {
-        // Sin libros propios disponibles no se puede ofrecer nada: se explica y se ofrece añadir uno
         intro = `<p class="text-sm leading-6 text-slate-600 dark:text-slate-300">To request <strong class="font-extrabold text-slate-950 dark:text-white">${escapeHtml(listing.title)}</strong>, you must select one of your available books to offer in exchange.</p>
           <div class="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/60 dark:bg-amber-950/30">
             <p class="text-sm font-extrabold text-amber-900 dark:text-amber-200">⚠ You have no available books to offer</p>
@@ -257,7 +234,6 @@
     });
   };
 
-  // Vista de éxito: sustituye al formulario. No se guarda ni se envía nada.
   const renderSuccessView = (offered) => {
     const { listing } = state;
     elements.modalTitle.textContent = "Request sent successfully";
@@ -271,13 +247,10 @@
       </div>
       <div class="mt-4">${summaryRows(rows)}</div>
       <div class="mt-6 flex justify-end"><button type="button" data-action="close" data-initial-focus class="${sendButtonClass}">Done</button></div>`;
-    // Anuncia el éxito desde dentro del diálogo (el resto de la página está inert)
     elements.modalLive.textContent = "";
     setTimeout(() => { elements.modalLive.textContent = "Request sent successfully."; }, 50);
   };
 
-  // Marca el resto de la página como inert mientras el modal está abierto: el teclado y los lectores de
-  // pantalla quedan dentro del diálogo sin necesidad de una trampa de foco manual.
   const setBackgroundInert = (inert) => {
     document.querySelectorAll("body > :not(#request-modal):not(script)").forEach((el) => { el.inert = inert; });
   };
@@ -297,8 +270,6 @@
     if (elements.modal.classList.contains("hidden")) return;
     elements.modal.classList.add("hidden");
     document.documentElement.classList.remove("overflow-hidden");
-    // El foco solo puede volver al CTA cuando la página deja de estar inert. Se enfoca el CTA directamente
-    // (único disparador del modal) porque Safari no enfoca un botón al hacer clic, y activeElement sería body.
     setBackgroundInert(false);
     elements.cta.focus();
   };
@@ -306,7 +277,6 @@
   const sendRequest = (form) => {
     let offered = null;
     if (state.listing.modality === "Exchange") {
-      // Sin libros propios disponibles no hay nada que enviar (el botón ya está deshabilitado)
       if (!state.offerable.length) return;
       offered = state.offerable.find((book) => book.id === new FormData(form).get("offeredBook"));
       if (!offered) {
@@ -328,7 +298,6 @@
   });
 
   elements.modal.addEventListener("click", (event) => {
-    // Clic en el fondo oscuro (fuera del diálogo) o en un control con data-action="close"
     if (event.target.id === "request-backdrop" || event.target.id === "request-modal" || event.target.closest("[data-action='close']")) closeModal();
   });
 
@@ -337,7 +306,6 @@
     sendRequest(event.target);
   });
 
-  // Elegir un libro corrige el error de "Select a book to offer."
   elements.modal.addEventListener("change", (event) => {
     if (event.target.name === "offeredBook") $("#offer-error")?.classList.add("hidden");
   });
@@ -348,8 +316,6 @@
       closeModal();
     }
   });
-
-  // ── Inicio ─────────────────────────────────────────────────────────────────
 
   const listings = Array.isArray(window.TheBridgeData) ? window.TheBridgeData : [];
   if (!listings.length) {

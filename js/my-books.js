@@ -1,5 +1,4 @@
 (() => {
-  // Libros base del usuario simulado - cubren los tres estados requeridos: Available, Published y Loaned
   const MOCK_BASE_BOOKS = [
     {
       id: "mybook-01",
@@ -49,7 +48,6 @@
     }
   ];
 
-  // Mapeo de colores por género para el fondo del cover cuando la imagen falla
   const genreColors = {
     "Science Fiction": "#2563EB",
     Dystopian: "#334155",
@@ -65,7 +63,6 @@
     Default: "#64748B"
   };
 
-  // Configuración visual de badges para cada estado
   const statusConfig = {
     Available: {
       badge: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300",
@@ -81,7 +78,6 @@
     }
   };
 
-  // Estilos del texto de modalidad para el estado Published
   const modalityTextStyles = {
     Exchange: "text-violet-600 dark:text-violet-300",
     Loan: "text-emerald-600 dark:text-emerald-300",
@@ -110,7 +106,6 @@
   const escapeHtml = (value) =>
     String(value ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-  // Lee libros añadidos manualmente desde localStorage y los combina con los base
   const loadAllBooks = () => {
     let stored = [];
     try {
@@ -119,11 +114,9 @@
     } catch {
       stored = [];
     }
-    // Los libros del localStorage se añaden al final para preservar el orden natural
     return [...MOCK_BASE_BOOKS, ...stored];
   };
 
-  // Construye el shell de portada con fallback de color si la imagen no carga
   const coverShell = (book) => {
     const color = getGenreColor(book.genre);
     const src = book.cover || "";
@@ -133,10 +126,8 @@
     </div>`;
   };
 
-  // Genera el pie de cada tarjeta según el estado del libro
   const cardFooter = (book) => {
     if (book.status === "Available") {
-      // Libros disponibles pueden publicarse como listing - se pasa el id para pre-cargar el libro
       return `<a href="create-listing.html?book=${encodeURIComponent(book.id)}" class="flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-950 px-4 py-2.5 text-sm font-extrabold text-white transition hover:bg-indigo-600 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:bg-white dark:text-slate-950 dark:hover:bg-indigo-50">Create Listing <span aria-hidden="true">→</span></a>`;
     }
     if (book.status === "Published") {
@@ -155,7 +146,6 @@
     return "";
   };
 
-  // Markup completo de una tarjeta de libro con portada, estado y acciones
   const createCardMarkup = (book) => {
     const statusCfg = statusConfig[book.status] || statusConfig.Available;
     return `<article class="group overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900 dark:hover:border-indigo-900/70">
@@ -178,7 +168,6 @@
     </article>`;
   };
 
-  // Actualiza los contadores en cada tab según los libros actuales
   const updateTabCounts = (allBooks) => {
     const counts = allBooks.reduce((acc, book) => {
       acc[book.status] = (acc[book.status] || 0) + 1;
@@ -190,7 +179,6 @@
     elements.countLoaned.textContent = String(counts.Loaned || 0);
   };
 
-  // Reaplica los estilos de los tabs según cuál está activo
   const updateTabStyles = () => {
     elements.tabs.forEach((tab) => {
       const isActive = tab.dataset.tab === state.filter;
@@ -203,18 +191,15 @@
     });
   };
 
-  // Muestra el estado vacío con el mensaje adecuado según el contexto
   const showEmptyState = (filter, hasAnyBooks) => {
     elements.empty.classList.remove("hidden");
     elements.grid.innerHTML = "";
 
     if (!hasAnyBooks) {
-      // La biblioteca está completamente vacía - se invita a añadir el primer libro
       elements.emptyHeading.textContent = "No books in your library yet";
       elements.emptyDescription.textContent = "Start by adding the books you own. Once added, you can create a listing to share them with the community.";
       elements.emptyCta.classList.remove("hidden");
     } else {
-      // Hay libros pero ninguno coincide con el filtro activo
       const messages = {
         Available: ["No available books", "Books you have already listed or loaned out will not appear here."],
         Published: ["Nothing published yet", "When you create a listing from an available book, it will appear here."],
@@ -246,7 +231,6 @@
     const label = state.filter === "All" ? "" : `${state.filter.toLowerCase()} `;
     elements.liveRegion.textContent = `${filtered.length} ${label}${filtered.length === 1 ? "book" : "books"} shown.`;
 
-    // Fallback de portadas que no cargan: muestra el fondo de color en su lugar
     elements.grid.querySelectorAll("img[data-book-cover-id]").forEach((img) => {
       img.addEventListener("error", () => {
         img.classList.add("hidden");
@@ -255,7 +239,6 @@
     });
   };
 
-  // Listener para cambiar el filtro al hacer clic en un tab
   elements.tabs.forEach((tab) => {
     tab.addEventListener("click", () => {
       state.filter = tab.dataset.tab;
@@ -264,7 +247,6 @@
     });
   });
 
-  // Refresca la vista cuando add-book.js dispara el evento de libro añadido
   window.addEventListener("thebridge:book-added", renderBooks);
 
   renderBooks();

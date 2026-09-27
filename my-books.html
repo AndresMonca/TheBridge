@@ -77,7 +77,6 @@
         </a>
       </section>
 
-      <!-- Panel de filtros por estado con contadores dinámicos -->
       <div class="mt-6 rounded-[1.75rem] border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div class="flex flex-wrap gap-2" role="tablist" aria-label="Filter books by status">
           <button type="button" role="tab" data-tab="All" aria-selected="true" id="tab-all" class="rounded-xl bg-slate-950 px-4 py-2 text-sm font-extrabold text-white focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:bg-white dark:text-slate-950">📚 All <span id="count-all" class="ml-1 rounded-full bg-white/20 px-1.5 py-0.5 text-xs dark:bg-slate-950/20">0</span></button>
@@ -87,13 +86,10 @@
         </div>
       </div>
 
-      <!-- Región aria-live para anuncios de accesibilidad al cambiar filtro -->
       <div id="my-books-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
-      <!-- Grid de tarjetas: renderizado por my-books.js -->
       <div id="my-books-grid" class="mt-5 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5" aria-live="polite"></div>
 
-      <!-- Estado vacío: visible cuando no hay libros en el filtro activo -->
       <div id="my-books-empty" class="mt-5 hidden rounded-[2rem] border border-dashed border-slate-300 bg-white px-6 py-14 text-center dark:border-slate-700 dark:bg-slate-900">
         <div class="mx-auto grid h-16 w-16 place-items-center rounded-3xl bg-slate-100 text-3xl dark:bg-slate-800">📚</div>
         <h2 id="empty-heading" class="mt-5 text-xl font-black">No books here yet</h2>

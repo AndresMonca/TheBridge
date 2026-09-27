@@ -1,7 +1,4 @@
 (() => {
-  // Capa de compatibilidad: js/my-books.js define sus libros base de forma privada (IIFE) y no se puede
-  // importar ni modificar. Se replican aquí solo los libros semilla con estado Available que enlazan a esta página.
-  // Si cambian en my-books.js, hay que actualizarlos también aquí.
   const SEED_BOOKS = [
     {
       id: "mybook-01",
@@ -23,7 +20,6 @@
     }
   ];
 
-  // Mismos colores de género que My Books para el fondo de la portada cuando la imagen falla
   const genreColors = {
     "Science Fiction": "#2563EB",
     Dystopian: "#334155",
@@ -39,7 +35,6 @@
     Default: "#64748B"
   };
 
-  // Mensaje que se anuncia en la región aria-live al elegir cada modalidad
   const modalityMessages = {
     Exchange: "Exchange selected. Add the book you would like in return — this is optional.",
     Loan: "Loan selected. Choose how long the borrower can keep the book.",
@@ -48,11 +43,8 @@
   };
   const idleMessage = "Select an option to see the details it needs.";
 
-  // Reglas por modalidad: cada campo devuelve un mensaje de error, o "" si es válido.
-  // Exchange no tiene reglas porque el libro deseado es opcional.
   const requirePrice = (value) => {
     const price = Number(value);
-    // Number("") es 0, así que un campo vacío también cae aquí; Infinity se descarta con isFinite
     return value.trim() !== "" && Number.isFinite(price) && price > 0 ? "" : "Enter a price greater than 0.";
   };
   const requireDuration = (value) => (value ? "" : "Select a duration.");
@@ -78,16 +70,12 @@
   const liveEl = document.querySelector("#form-live");
   const successPanel = document.querySelector("#success-panel");
 
-  // Estado local de la página. La siguiente tarea (validación y envío) lee de aquí.
-  // Los valores de cada campo se conservan al cambiar de modalidad para no perder lo que el usuario escribió.
   const state = {
     book: null,
     modality: null,
     values: { desiredBook: "", loanDuration: "", rentalPrice: "", rentalDuration: "", salePrice: "" }
   };
 
-  // Combina los libros semilla con los de localStorage y deja solo los Available.
-  // localStorage puede estar vacío, corrupto o bloqueado, así que cualquier fallo cae a solo los semilla.
   const loadAvailableBooks = () => {
     let stored = [];
     try {
@@ -101,8 +89,6 @@
     );
   };
 
-  // Resuelve el libro pedido en ?book=. Si falta o no está disponible se usa el primero disponible
-  // y se devuelve la razón para mostrar un aviso claro en la interfaz.
   const resolveBook = () => {
     const available = loadAvailableBooks();
     const requestedId = new URLSearchParams(window.location.search).get("book");
@@ -136,7 +122,6 @@
     if (book.cover) {
       cover.src = book.cover;
       cover.alt = `Cover of ${book.title} by ${book.author || "unknown author"}`;
-      // Si la portada no carga se muestra el color del género en su lugar
       cover.addEventListener("error", () => {
         cover.classList.add("hidden");
         fallback.classList.remove("hidden");
@@ -147,8 +132,6 @@
     }
   };
 
-  // Muestra solo el panel de la modalidad activa. Los campos ocultos se deshabilitan para que no reciban
-  // foco ni se envíen con el formulario.
   const renderModality = () => {
     const active = state.modality || "none";
     panels.forEach((panel) => {
@@ -159,7 +142,6 @@
     messageEl.textContent = modalityMessages[state.modality] || idleMessage;
   };
 
-  // Sincroniza el estado desde el DOM: el navegador puede restaurar valores del formulario al recargar
   const syncStateFromForm = () => {
     state.modality = form.querySelector("input[name='modality']:checked")?.value || null;
     Object.keys(state.values).forEach((name) => {
@@ -168,20 +150,16 @@
     });
   };
 
-  // Vacía y vuelve a llenar la región aria-live: si el texto es idéntico al anterior
-  // (mismo error en dos envíos seguidos) el lector de pantalla no lo repetiría.
   const announce = (message) => {
     liveEl.textContent = "";
     setTimeout(() => { liveEl.textContent = message; }, 50);
   };
 
-  // Muestra u oculta el error de un campo y sincroniza aria-invalid con él
   const setFieldError = (name, message) => {
     const errorEl = form.querySelector(`[data-error-for="${name}"]`);
     const field = form.elements[name];
     errorEl.textContent = message;
     errorEl.classList.toggle("hidden", !message);
-    // "modality" es un RadioNodeList: el estado inválido se comunica por el fieldset y el mensaje
     if (field instanceof Element) {
       if (message) field.setAttribute("aria-invalid", "true");
       else field.removeAttribute("aria-invalid");
@@ -192,8 +170,6 @@
     form.querySelectorAll("[data-error-for]").forEach((el) => setFieldError(el.dataset.errorFor, ""));
   };
 
-  // Valida solo los campos de la modalidad activa y devuelve los nombres inválidos.
-  // Los valores escritos nunca se borran: solo cambia el estado de error.
   const validate = () => {
     const invalid = [];
     Object.entries(rules[state.modality]).forEach(([name, rule]) => {
@@ -207,7 +183,6 @@
   form.addEventListener("change", (event) => {
     if (event.target.name === "modality") {
       state.modality = event.target.value;
-      // Al cambiar de modalidad los errores anteriores dejan de aplicar
       clearErrors();
       renderModality();
     }
@@ -217,7 +192,6 @@
     const { name } = event.target;
     if (!(name in state.values)) return;
     state.values[name] = event.target.value;
-    // Revalida en vivo solo los campos ya marcados como inválidos, para no mostrar errores mientras se escribe por primera vez
     if (event.target.getAttribute("aria-invalid") === "true") setFieldError(name, rules[state.modality][name](event.target.value));
   });
 
@@ -234,7 +208,6 @@
     list.append(row);
   };
 
-  // Éxito simulado: solo cambia la interfaz, no se guarda ningún listing
   const showSuccess = () => {
     const details = document.querySelector("#success-details");
     const { modality, values, book } = state;
@@ -249,14 +222,12 @@
     }
     if (modality === "Sale") addRow(details, "Price", formatPrice(values.salePrice));
 
-    // El libro ya no está disponible para crear otro listing
     const status = document.querySelector("#book-status");
     status.textContent = "📢 Published";
     status.className = "rounded-full bg-indigo-100 px-2.5 py-1 text-xs font-extrabold text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300";
 
     form.classList.add("hidden");
     successPanel.classList.remove("hidden");
-    // El foco en el título hace que el lector de pantalla lo lea y deja el teclado dentro del resultado
     document.querySelector("#success-heading").focus();
     announce(`Listing published! ${book.title} is now listed as ${modality}.`);
   };
