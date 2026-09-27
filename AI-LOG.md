@@ -255,7 +255,11 @@ The solution was to archive the legacy HTML screens, move internal navigation to
 - Verified the Requests tabs render received and sent requests.
 - Verified Accept and Reject update pending received requests without reloading the page.
 - Verified the React source no longer contains links to the legacy `.html` pages.
-- Pending final end-to-end, responsive, deployment, and repository review before submission.
+- Verified the deployed GitHub Pages application loads the root route, protected Requests route, and a direct dynamic `/listing/:id` route.
+- Verified the simulated Listing Details request flow for Sale and Exchange.
+- Verified the completed About page includes the six-step flow, six user stories, and team information.
+- Verified production assets are copied into `dist/assets` during the Vite build.
+- Verified responsive layouts at 375px, 768px, 1280px, and 1440px without horizontal overflow or broken navigation.
 
 ### Learning
 

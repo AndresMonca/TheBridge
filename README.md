@@ -1,4 +1,4 @@
-# TheBridge - Milestone 1
+﻿# TheBridge - Milestone 2
 
 **DSAW · Universidad de La Sabana**
 
@@ -44,18 +44,26 @@ The connection and delivery are represented as an in-person interaction for the 
 - **US-05:** As a student, I want to send a request about a publication to express my interest.
 - **US-06:** As an owner, I want to review received requests and accept or reject them.
 
-## Static Prototype
+## React Prototype
 
-The prototype is published from `index.html` through GitHub Pages. Screen status:
+TheBridge is now implemented as a React application using Vite and React Router v6.
 
-- Home and Marketplace: implemented (search, filters, quick view, review cart)
-- My Books, Add Book, Create Listing, Listing Details: in progress
-- Requests: implemented (Received/Sent tabs, Pending/Accepted/Rejected states)
-- About and team information: implemented
+Implemented screens and flows:
 
-The final Pages URL is pending repository configuration:
+- Home and Marketplace
+- My Books
+- Add Book
+- Create Listing
+- Dynamic Listing Details
+- Simulated Send Request flow
+- Requests with Received/Sent tabs and status actions
+- About with project flow, user stories, and team information
+- Login and protected routes
+- 404 fallback
 
-`https://<organization-or-user>.github.io/<repository-name>/`
+The application is deployed with GitHub Pages at:
+
+https://andresmonca.github.io/TheBridge/
 
 ## Figma Wireframes
 
@@ -65,10 +73,10 @@ The Figma Make reference is available in [figma-link.txt](figma-link.txt). Befor
 
 **DSAW · Universidad de La Sabana**
 
-- Edwin Andrés Montaño — Shared UI system, Home & Marketplace
-- Juan Esteban González — Personal library & listing flows
-- Jorge Fontalvo — Personal library & listing flows
-- Daniel Orozco — Requests, About & documentation
+- Edwin AndrÃ©s MontaÃ±o â€” Shared UI system, Home & Marketplace
+- Juan Esteban GonzÃ¡lez â€” Personal library & listing flows
+- Jorge Fontalvo â€” Personal library & listing flows
+- Daniel Orozco â€” Requests, About & documentation
 
 The team uses a simple GitHub Flow:
 
@@ -86,8 +94,8 @@ AI may help structure requirements, propose implementation details, and review f
 
 ## Local Preview
 
-Open `index.html` directly in a browser or serve the repository with a local static server. GitHub Pages configuration and the final public URL are pending.
+Install dependencies with `npm install`, then start the Vite development server with `npm run dev`.
 
-## Milestone 1 Scope
+## Milestone 2 Scope
 
-Milestone 1 is limited to a responsive frontend prototype using HTML, Tailwind CSS, and vanilla JavaScript. It does not include a backend, database, real authentication, payments, chat, notifications, persistence, transactions, administration, or geolocation.
+Milestone 2 is a responsive React frontend prototype using Vite, React Router, Tailwind CSS, local mock data, browser state, and localStorage. It does not include a backend, database, real authentication, payments, chat, notifications, real transactions, administration, delivery logistics, or geolocation.

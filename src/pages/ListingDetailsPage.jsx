@@ -1,7 +1,10 @@
-﻿import { Link } from "react-router-dom";
+﻿import { useState } from "react";
+import { Link } from "react-router-dom";
 import AppShell from "../components/AppShell.jsx";
 import ListingCoverCard from "../components/listing/ListingCoverCard.jsx";
 import ListingMetaGrid from "../components/listing/ListingMetaGrid.jsx";
+import ListingRequestModal from "../components/listing/ListingRequestModal.jsx";
+import { getRequestCtaLabel } from "../services/listingRequest.js";
 
 function formatPrice(price) {
   if (price === null || price === undefined) {
@@ -16,6 +19,9 @@ function formatPrice(price) {
 }
 
 function ListingDetailsPage({ listing }) {
+  const [requestOpen, setRequestOpen] = useState(false);
+  const [requestSent, setRequestSent] = useState(false);
+
   if (!listing) {
     return (
       <AppShell
@@ -76,12 +82,27 @@ function ListingDetailsPage({ listing }) {
 
           <button
             type="button"
-            className="mt-8 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-indigo-500/15 transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-blue-500/20"
+            onClick={() => setRequestOpen(true)}
+            disabled={requestSent}
+            className="mt-8 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-indigo-500/15 transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-blue-500/20 disabled:cursor-default disabled:from-emerald-600 disabled:to-emerald-600 disabled:hover:translate-y-0"
           >
-            Send request
+            {requestSent
+              ? "✓ Request sent"
+              : getRequestCtaLabel(listing.modality)}
           </button>
+
+          <p className="sr-only" aria-live="polite">
+            {requestSent ? "Your simulated request was sent." : ""}
+          </p>
         </section>
       </article>
+
+      <ListingRequestModal
+        listing={listing}
+        open={requestOpen}
+        onClose={() => setRequestOpen(false)}
+        onSent={() => setRequestSent(true)}
+      />
     </AppShell>
   );
 }

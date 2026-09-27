@@ -42,8 +42,56 @@
 ];
 
 export const aboutFlow = [
-  "Find a book",
-  "Add your book",
-  "Choose how to share",
-  "Publish",
+  { icon: "🔎", label: "Find a book" },
+  { icon: "📚", label: "Add your book" },
+  { icon: "🔄", label: "Choose how to share" },
+  { icon: "✍️", label: "Publish" },
+  { icon: "🤝", label: "Receive requests" },
+  { icon: "🎓", label: "Connect with a student" },
+];
+
+export const userStories = [
+  {
+    id: "US-01",
+    text: "As a student, I want to explore publications to find books that interest me.",
+  },
+  {
+    id: "US-02",
+    text: "As a user, I want to search and filter publications to quickly find books under the modality I need.",
+  },
+  {
+    id: "US-03",
+    text: "As an owner, I want to register a book I own so I can offer it on the platform.",
+  },
+  {
+    id: "US-04",
+    text: "As an owner, I want to create a publication and choose whether I want to exchange, loan, rent, or sell my book.",
+  },
+  {
+    id: "US-05",
+    text: "As a student, I want to send a request about a publication to express my interest.",
+  },
+  {
+    id: "US-06",
+    text: "As an owner, I want to review received requests and accept or reject them.",
+  },
+];
+
+export const teamMembers = [
+  {
+    name: "Edwin Andrés Montaño",
+    role: "Shared UI system, Home & Marketplace",
+  },
+  {
+    name: "Juan Esteban González",
+    role: "Personal library & listing flows",
+  },
+  {
+    name: "Jorge Fontalvo",
+    role: "Personal library & listing flows",
+  },
+  {
+    name: "Daniel Orozco",
+    role: "Requests, About & documentation",
+  },
 ];
