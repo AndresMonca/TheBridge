@@ -1,4 +1,4 @@
-# AI-LOG
+﻿# AI-LOG
 
 ## Repository Foundation
 
@@ -179,3 +179,86 @@ This also avoids accidental request loops.
 ### Learning
 
 A dependency array should describe the external changing values an effect depends on, not every variable mentioned around the component. Cleanup is especially important for asynchronous effects because a component may disappear before a network request finishes.
+
+## HW10 - React Router and Application Architecture
+
+### Prompt or task
+
+Migrate the complete TheBridge Milestone 1 frontend into a React application with React Router v6, page-level routing, a dynamic listing route, protected routes, a 404 page, reusable components, separated mock data, and an architecture suitable for deployment on GitHub Pages.
+
+### AI suggestions
+
+- Use `BrowserRouter`, `Routes`, and `Route` as the top-level routing structure.
+- Keep page-level components inside `src/pages/`.
+- Keep reusable interface pieces inside `src/components/`.
+- Move mock data into `src/data/` and application logic into services and hooks instead of placing it inside page components.
+- Use `/listing/:id` with `useParams()` for dynamic listing details.
+- Protect personal routes with a local authentication flag and redirect unauthenticated users to `/login`.
+- Use `useLocation()` in shared navigation so the current route is visually identified.
+- Preserve the existing Milestone 1 flows while replacing legacy HTML navigation with React Router `Link` and `useNavigate`.
+- Refactor components that had grown too large by extracting meaningful responsibilities rather than splitting files only to satisfy a line count.
+- Add a GitHub Pages SPA fallback so direct BrowserRouter URLs can still load the React application.
+
+### Folder structure reflection
+
+Yes, AI was asked to help organize the React folder structure.
+
+The suggested architecture was not followed as a completely new structure. It was modified to preserve the shared Milestone 1 shell and the React work already completed in HW08 and HW09.
+
+The resulting structure separates responsibilities into:
+
+- `src/pages/` for routed screens.
+- `src/components/` for reusable UI.
+- `src/data/` for local mock and configuration data.
+- `src/services/` for storage, validation, API, and domain logic.
+- `src/hooks/` for reusable React state and behavior.
+
+This adaptation avoided rebuilding parts of the project that were already working while still improving separation of concerns.
+
+### Hardest architecture decision
+
+The hardest decision was migrating every Milestone 1 screen to React Router without breaking the existing flows or allowing the legacy root HTML files to interfere with Vite routing.
+
+The original static HTML files used paths such as `marketplace.html`, `my-books.html`, and `create-listing.html`. When React routes such as `/my-books` and `/create-listing` were introduced, those legacy files could conflict with the development server and cause the browser to load the old page instead of the React route.
+
+The solution was to archive the legacy HTML screens, move internal navigation to React Router, and keep the existing data and interaction behavior in React components, services, hooks, and data modules.
+
+### Changes adopted
+
+- Added React Router v6 with `BrowserRouter`, `Routes`, and `Route`.
+- Added routes for Home, Marketplace, My Books, Add Book, Create Listing, Requests, About, Login, and the 404 screen.
+- Added the dynamic `/listing/:id` route using `useParams()`.
+- Added protected routes for personal user flows using a local authentication flag and `Navigate`.
+- Added a dedicated Login page for the protected-route demonstration.
+- Added a wildcard 404 route.
+- Migrated Requests and About from the Milestone 1 static implementation into React.
+- Preserved the Requests Received/Sent tabs and Accept/Reject interaction using React state.
+- Migrated Add Book, My Books, Create Listing, and Listing Details into routed React screens.
+- Moved reusable mock data into `src/data/`.
+- Moved storage, validation, status, and external API behavior into `src/services/`.
+- Added custom hooks for Marketplace and Add Book search behavior.
+- Refactored large Marketplace, My Books, Listing Details, Add Book, and Create Listing components by responsibility.
+- Replaced internal `.html` links and `window.location` navigation with React Router `Link` and `useNavigate`.
+- Added route-aware shared navigation using `useLocation()`.
+- Added a GitHub Pages SPA fallback that creates `dist/404.html` after each production build.
+
+### Tests and verification
+
+- Ran ESLint repeatedly during the migration with zero errors and zero warnings.
+- Ran the Vite production build successfully.
+- Verified the GitHub Pages postbuild step creates both `dist/index.html` and `dist/404.html`.
+- Verified protected navigation redirects an unauthenticated user to `/login`.
+- Verified local prototype login redirects into the protected My Books route.
+- Verified Add Book can add a selected book to the local library.
+- Verified My Books displays locally added books.
+- Verified Create Listing reads the selected book from the query string and validates modality-specific fields.
+- Verified the Requests tabs render received and sent requests.
+- Verified Accept and Reject update pending received requests without reloading the page.
+- Verified the React source no longer contains links to the legacy `.html` pages.
+- Pending final end-to-end, responsive, deployment, and repository review before submission.
+
+### Learning
+
+Routing changes affect more than URLs. Migrating a static multi-page frontend to React required coordinating route ownership, shared navigation, data placement, authentication simulation, browser history, and deployment behavior.
+
+The most useful component refactors were the ones based on responsibility. Moving API behavior into services and hooks and moving repeated interface sections into reusable components made the routed pages easier to understand without fragmenting the project unnecessarily.

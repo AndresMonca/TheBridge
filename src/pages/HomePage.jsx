@@ -1,3 +1,4 @@
+﻿import { Link } from "react-router-dom";
 import AppShell from "../components/AppShell.jsx";
 
 function HomePage() {
@@ -24,19 +25,19 @@ function HomePage() {
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href="marketplace.html"
+              <Link
+                to="/marketplace"
                 className="rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-indigo-500/20 transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-blue-500/20"
               >
                 Explore Marketplace
-              </a>
+              </Link>
 
-              <a
-                href="add-book.html"
+              <Link
+                to="/add-book"
                 className="rounded-2xl border border-slate-200 bg-white px-6 py-3 text-sm font-extrabold text-slate-700 transition hover:-translate-y-0.5 hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 Add your book
-              </a>
+              </Link>
             </div>
           </div>
 
