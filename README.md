@@ -46,15 +46,12 @@ The connection and delivery are represented as an in-person interaction for the 
 
 ## Static Prototype
 
-The prototype will be published from `index.html` through GitHub Pages. The planned screens are:
+The prototype is published from `index.html` through GitHub Pages. Screen status:
 
-- Marketplace and project information
-- My Books
-- Add Book
-- Create Listing
-- Listing Details
-- Requests
-- About and team information
+- Home and Marketplace: implemented (search, filters, quick view, review cart)
+- My Books, Add Book, Create Listing, Listing Details: in progress
+- Requests: implemented (Received/Sent tabs, Pending/Accepted/Rejected states)
+- About and team information: implemented
 
 The final Pages URL is pending repository configuration:
 
@@ -66,7 +63,14 @@ The Figma Make reference is available in [figma-link.txt](figma-link.txt). Befor
 
 ## Team Roles and Collaboration
 
-Team members and roles will be added after repository access is configured. The team will use a simple GitHub Flow:
+**DSAW · Universidad de La Sabana**
+
+- Edwin Andrés Montaño — Shared UI system, Home & Marketplace
+- Juan Esteban González — Personal library & listing flows
+- Jorge Fontalvo — Personal library & listing flows
+- Daniel Orozco — Requests, About & documentation
+
+The team uses a simple GitHub Flow:
 
 1. Create a short-lived feature branch from `main`.
 2. Make small, meaningful commits.
