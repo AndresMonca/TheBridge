@@ -68,3 +68,55 @@ The project owner confirmed the real names of all four team members and asked th
 ### Learning
 
 Confirming the real state of `main` before branching (rather than assuming Milestone 1 was already merged) avoided building the Requests and About screens on top of a placeholder that would have needed to be redone. Keeping user-facing copy directly derived from the README also reduced the risk of the two documents drifting apart.
+
+## HW08 - React Introduction
+
+### Prompt or task
+
+Migrate the HW07 public API experience to React, preserve the loading, success, and error states, split the interface into reusable components, and add persistent favorites using React state and localStorage.
+
+### AI suggestions
+
+- Keep application state and the Open Library request in `App.jsx` so the data flow remains easy to follow during the React introduction.
+- Split the interface by responsibility instead of by visual fragments:
+  - `SearchBar.jsx` handles the controlled search form.
+  - `BookList.jsx` renders the result collection.
+  - `BookCard.jsx` represents one book and its favorite action.
+  - `LoadingState.jsx` represents the loading state.
+  - `ErrorState.jsx` represents failed requests and retry behavior.
+  - `FavoritesSection.jsx` displays and removes saved books.
+- Normalize the Open Library response in `src/services/openLibrary.js` so presentation components do not depend on the full external API response.
+- Persist favorites in `localStorage` and restore them when React initializes.
+- Use an `AbortController` in the fetch effect so an unfinished request can be cancelled when the effect is cleaned up.
+
+### Component split reflection
+
+Yes, AI was asked to help split the application into components. The split was based on each part having one clear responsibility and on whether that part could be reused or tested independently. Search, result rendering, individual book cards, UI states, and favorites therefore became separate named components instead of keeping the full interface inside `App.jsx`.
+
+I agree with this split because it keeps the UI components small while `App.jsx` currently makes the main React state and API flow easy to inspect. For Milestone 2, once routing is introduced, I would move Marketplace-specific state and behavior into a `MarketplacePage` component or a dedicated hook so `App.jsx` can focus mainly on application routing and top-level architecture.
+
+### Changes adopted
+
+- Rebuilt the Open Library search experience in React.
+- Added explicit loading, success, and error rendering.
+- Added reusable SearchBar, BookList, BookCard, LoadingState, ErrorState, and FavoritesSection components.
+- Rendered collections with `.map()` and stable `key` values.
+- Added favorite and unfavorite actions using `useState`.
+- Added persistent favorites through `localStorage`.
+- Added retry behavior after a failed API request.
+- Kept the existing online/offline indicator and made it visible on mobile layouts.
+
+### Tests and verification
+
+- Ran the full ESLint command with zero errors and zero warnings.
+- Ran the Vite production build successfully.
+- Verified Open Library search with multiple queries.
+- Verified loading, success, and forced offline error states.
+- Verified retry after restoring the network connection.
+- Verified adding and removing favorites from both results and the Favorites section.
+- Verified favorites persist after a page reload.
+- Verified the online/offline indicator on desktop, tablet, and mobile layouts.
+
+### Learning
+
+Component boundaries are clearer when they follow responsibilities rather than arbitrary visual sections. Keeping external API normalization separate also makes the React components simpler and reduces coupling to Open Library's response format.

@@ -1,4 +1,4 @@
-﻿import AppShell from "../components/AppShell.jsx";
+import AppShell from "../components/AppShell.jsx";
 
 function HomePage() {
   return (
@@ -42,7 +42,7 @@ function HomePage() {
 
           <div className="relative min-h-[320px] lg:min-h-full">
             <img
-              src="/assets/hero/find-your-bridge.webp"
+              src={`${import.meta.env.BASE_URL}assets/hero/find-your-bridge.webp`}
               alt="Student reading near a bridge at sunset"
               className="absolute inset-0 h-full w-full object-cover"
             />

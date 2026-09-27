@@ -1,4 +1,4 @@
-﻿const navigationItems = [
+const navigationItems = [
   { id: "home", label: "Home", href: "./", icon: "home" },
   { id: "marketplace", label: "Marketplace", href: "marketplace.html", icon: "marketplace" },
   { id: "my-books", label: "My Books", href: "my-books.html", icon: "books" },
@@ -98,7 +98,7 @@ function Sidebar({ activePage = "home", collapsed = false, onToggle }) {
           aria-label="TheBridge home"
         >
           <img
-            src="/assets/brand/thebridge-logo.svg"
+            src={`${import.meta.env.BASE_URL}assets/brand/thebridge-logo.svg`}
             alt="TheBridge logo: two people forming a bridge above an open book"
             className="h-10 w-12 shrink-0 object-contain"
           />
