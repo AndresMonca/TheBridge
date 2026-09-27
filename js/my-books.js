@@ -112,12 +112,12 @@
 
   // Lee libros añadidos manualmente desde localStorage y los combina con los base
   const loadAllBooks = () => {
-    let stored = [];
+    let stored;
     try {
       stored = JSON.parse(localStorage.getItem("thebridge:my-books") || "[]");
       if (!Array.isArray(stored)) stored = [];
     } catch {
-      stored = [];
+      return [...MOCK_BASE_BOOKS];
     }
     // Los libros del localStorage se añaden al final para preservar el orden natural
     return [...MOCK_BASE_BOOKS, ...stored];

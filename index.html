@@ -1,90 +1,69 @@
-<!doctype html><html lang="en" class="scroll-smooth"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="TheBridge connects university students through second-hand books, exchanges, loans, rentals, and sales.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    darkMode: "class",
-    theme: {
-      extend: {
-        fontFamily: { sans: ["Manrope", "ui-sans-serif", "system-ui", "sans-serif"] },
-        colors: { bridge: { blue: "#2563EB", indigo: "#4F46E5", violet: "#7C3AED", navy: "#0F172A" } },
-        boxShadow: { soft: "0 16px 50px rgba(15, 23, 42, 0.10)" }
-      }
-    }
-  };
-</script>
-<script>
-  (() => {
-    try {
-      const savedTheme = localStorage.getItem("thebridge:theme");
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      if (savedTheme === "dark" || (!savedTheme && prefersDark)) document.documentElement.classList.add("dark");
-    } catch {}
-  })();
-</script><title>TheBridge — Home</title></head><body class="min-h-screen overflow-x-hidden bg-slate-50 font-sans text-slate-900 antialiased transition-colors dark:bg-slate-950 dark:text-slate-100"><aside id="desktop-sidebar" class="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-slate-200 bg-white/95 px-3 py-4 backdrop-blur transition-all duration-200 dark:border-slate-800 dark:bg-slate-950/95 lg:flex" aria-label="Primary navigation">
-      <div class="flex h-14 items-center justify-between gap-2 px-2">
-        <a href="index.html" class="flex min-w-0 items-center gap-3 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20" aria-label="TheBridge home">
-          <img src="assets/brand/thebridge-logo.svg" alt="TheBridge logo: two people forming a bridge above an open book" class="h-10 w-12 shrink-0 object-contain">
-          <span data-sidebar-label class="truncate text-lg font-black tracking-tight">TheBridge</span>
-        </a>
-        <button id="sidebar-toggle" type="button" class="grid h-9 w-9 shrink-0 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-950 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:hover:bg-slate-900 dark:hover:text-white" aria-label="Collapse or expand sidebar" aria-expanded="true"><svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3M14 8l-4 4 4 4"/></svg></button>
-      </div>
-      <nav class="mt-6 flex-1 overflow-y-auto" aria-label="TheBridge sections"><ul class="space-y-1.5"><li><a href="index.html" aria-current="page" class="flex items-center gap-3 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-3 py-3 text-sm font-extrabold text-white shadow-lg shadow-indigo-500/15 focus:outline-none focus:ring-4 focus:ring-blue-500/25"><svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m3 11 9-8 9 8v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg><span data-sidebar-label>Home</span></a></li><li><a href="marketplace.html" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"><svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h16M5 7l1-3h12l1 3M5 7v13h14V7M9 11h6M9 15h6"/></svg><span data-sidebar-label>Marketplace</span></a></li><li><a href="my-books.html" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"><svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5Z"/><path d="M4 6.5v13"/></svg><span data-sidebar-label>My Books</span></a></li><li><a href="add-book.html" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"><svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg><span data-sidebar-label>Add Book</span></a></li><li><a href="create-listing.html" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"><svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span data-sidebar-label>Create Listing</span></a></li><li><a href="listing.html" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"><svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span data-sidebar-label>Listing Details</span></a></li><li><a href="requests.html" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"><svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/></svg><span data-sidebar-label>Requests</span></a></li><li><a href="about.html" class="flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"><svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg><span data-sidebar-label>About</span></a></li></ul></nav>
-      <div class="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-xs font-semibold leading-5 text-slate-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400" data-sidebar-label>A focused student book marketplace.</div>
-    </aside><div id="app-shell-main" class="min-w-0 transition-all duration-200 lg:pl-64"><header class="sticky top-0 z-30 border-b border-slate-200/80 bg-slate-50/90 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/90">
-      <div class="mx-auto flex max-w-[1800px] items-center gap-3 px-4 py-3 sm:px-6 lg:px-8">
-        <a href="index.html" class="flex items-center gap-2 lg:hidden" aria-label="TheBridge home"><img src="assets/brand/thebridge-logo.svg" alt="TheBridge logo" class="h-9 w-11 object-contain"><span class="hidden font-black tracking-tight sm:inline">TheBridge</span></a>
-        <div class="hidden min-w-0 lg:block"><p class="text-[11px] font-extrabold uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-400">TheBridge</p><p class="truncate text-sm font-black text-slate-900 dark:text-white">Home</p></div>
-        <div class="ml-auto flex items-center gap-2"><button type="button" data-theme-toggle class="relative flex h-10 w-[74px] items-center rounded-xl border border-slate-200 bg-white px-2 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-900" aria-label="Switch color theme" aria-pressed="false">
-      <svg data-theme-sun class="h-4 w-4 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-      <span class="mx-auto h-5 w-px bg-slate-200 dark:bg-slate-700"></span>
-      <svg data-theme-moon class="h-4 w-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
-      <span data-theme-thumb class="pointer-events-none absolute left-[7px] top-[7px] h-6 w-6 rounded-lg border border-slate-200 bg-white/90 shadow transition-transform duration-200 dark:border-slate-700 dark:bg-slate-800/90"></span>
-    </button><a href="marketplace.html#cart" data-cart-link class="relative grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:border-indigo-300 hover:text-indigo-600 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300" aria-label="Go to review cart"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L20.4 8H7.1"/><circle cx="10" cy="20" r="1.2"/><circle cx="18" cy="20" r="1.2"/></svg><span data-cart-count-badge class="absolute -right-1.5 -top-1.5 hidden min-w-5 rounded-full bg-gradient-to-r from-blue-600 to-violet-600 px-1.5 py-0.5 text-center text-[10px] font-black leading-4 text-white">0</span></a><div data-connection-status class="flex h-10 items-center gap-2 rounded-xl border px-3 text-xs font-extrabold" role="status" aria-live="polite"><span data-connection-dot class="h-2.5 w-2.5 rounded-full"></span><span data-connection-text>Online</span></div><button type="button" class="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-600 text-xs font-black text-white shadow-lg shadow-indigo-500/20 focus:outline-none focus:ring-4 focus:ring-blue-500/20" aria-label="Profile preview">AR</button></div>
-      </div>
-    </header><main class="mx-auto max-w-[1800px] px-4 pb-28 pt-5 sm:px-6 lg:px-8 lg:pb-12">
-  <section class="relative min-h-[430px] overflow-hidden rounded-[2rem] border border-indigo-200/20 bg-slate-950 shadow-soft sm:min-h-[470px]" aria-labelledby="home-heading">
-    <img src="assets/hero/find-your-bridge.webp" alt="A student reading beside a river at sunset with a bridge inspired by TheBridge symbol" class="absolute inset-0 h-full w-full object-cover object-[67%_center] sm:object-center">
-    <div class="absolute inset-0 bg-gradient-to-r from-[#071129] via-[#071129]/92 to-[#071129]/5"></div>
-    <div class="relative z-10 flex min-h-[430px] max-w-3xl flex-col justify-center p-6 text-white sm:min-h-[470px] sm:p-10 lg:p-12">
-      <div class="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-extrabold uppercase tracking-[0.14em] text-blue-100 backdrop-blur">TheBridge Discovery</div>
-      <h1 id="home-heading" class="max-w-2xl text-4xl font-black tracking-[-0.045em] sm:text-5xl lg:text-6xl">Find Your <span class="bg-gradient-to-r from-blue-300 via-indigo-300 to-violet-300 bg-clip-text text-transparent">Bridge</span></h1>
-      <p class="mt-4 max-w-2xl text-base font-medium leading-7 text-slate-200 sm:text-lg">A focused second-hand book experience for students: discover what is available, understand the offer, and move from interest to a clear request.</p>
-      <form id="home-search-form" class="mt-7 max-w-2xl" novalidate>
-        <label for="home-search" class="sr-only">Search books, authors, genres, or ISBN</label>
-        <div class="flex flex-col gap-2 rounded-2xl border border-white/15 bg-white/10 p-2 backdrop-blur sm:flex-row">
-          <div class="relative flex-1"><svg class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="home-search" name="q" type="search" placeholder="Search a book, author, genre, or ISBN…" class="h-12 w-full rounded-xl border border-white/10 bg-slate-950/40 pl-12 pr-4 text-sm font-semibold text-white outline-none placeholder:text-slate-400 focus:border-blue-300 focus:ring-4 focus:ring-blue-300/15"></div>
-          <button type="submit" class="rounded-xl bg-white px-5 py-3 text-sm font-black text-slate-950 transition hover:bg-blue-50 focus:outline-none focus:ring-4 focus:ring-blue-300/25">Explore Marketplace</button>
-        </div>
-        <p id="home-search-error" class="mt-2 hidden text-sm font-bold text-rose-200" role="alert">Enter at least 2 characters.</p>
-      </form>
-      <div id="recent-searches" class="mt-4 flex flex-wrap gap-2" aria-label="Recent searches"></div>
-    </div>
-  </section>
+﻿<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="TheBridge connects university students through second-hand books, exchanges, loans, rentals, and sales."
+    />
 
-  <section class="mt-6 grid gap-4 md:grid-cols-3" aria-label="Quick actions">
-    <a href="marketplace.html" class="group rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-indigo-200 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"><div class="flex items-center justify-between"><span class="grid h-11 w-11 place-items-center rounded-2xl bg-indigo-50 text-2xl dark:bg-indigo-500/10">🔎</span><span class="text-slate-300 transition group-hover:translate-x-1 dark:text-slate-700">→</span></div><h2 class="mt-5 text-lg font-black">Browse the marketplace</h2><p class="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">Search, filter, compare, and inspect listings without leaving the catalog.</p></a>
-    <a href="add-book.html" class="group rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-indigo-200 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"><div class="flex items-center justify-between"><span class="grid h-11 w-11 place-items-center rounded-2xl bg-blue-50 text-2xl dark:bg-blue-500/10">📚</span><span class="text-slate-300 transition group-hover:translate-x-1 dark:text-slate-700">→</span></div><h2 class="mt-5 text-lg font-black">Add a book you own</h2><p class="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">Start from bibliographic data and then add the real condition of your copy.</p></a>
-    <a href="requests.html" class="group rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-indigo-200 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"><div class="flex items-center justify-between"><span class="grid h-11 w-11 place-items-center rounded-2xl bg-violet-50 text-2xl dark:bg-violet-500/10">🤝</span><span class="text-slate-300 transition group-hover:translate-x-1 dark:text-slate-700">→</span></div><h2 class="mt-5 text-lg font-black">Review requests</h2><p class="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">Keep exchanges, loans, rentals, and purchases understandable in one flow.</p></a>
-  </section>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-  <section class="mt-10" aria-labelledby="home-featured-heading"><div class="flex items-end justify-between gap-4"><div><p class="text-xs font-extrabold uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-400">Recently added</p><h2 id="home-featured-heading" class="mt-1 text-2xl font-black tracking-tight sm:text-3xl">A quick look at the community</h2></div><a href="marketplace.html" class="text-sm font-extrabold text-indigo-600 hover:text-violet-600 dark:text-indigo-300">See all books →</a></div><div id="home-featured-grid" class="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-6"></div></section>
+    <script src="https://cdn.tailwindcss.com"></script>
 
-  <section class="mt-10 grid gap-4 lg:grid-cols-[1.2fr_.8fr]" aria-labelledby="home-how-heading">
-    <div class="rounded-[2rem] border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900 sm:p-8"><p class="text-xs font-extrabold uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-400">Simple by design</p><h2 id="home-how-heading" class="mt-2 text-2xl font-black">Nothing extra. Nothing missing.</h2><div class="mt-6 grid gap-4 sm:grid-cols-3"><div><span class="text-2xl">1️⃣</span><h3 class="mt-3 font-black">Find</h3><p class="mt-1 text-sm leading-6 text-slate-500 dark:text-slate-400">Search a title or explore by modality and filters.</p></div><div><span class="text-2xl">2️⃣</span><h3 class="mt-3 font-black">Understand</h3><p class="mt-1 text-sm leading-6 text-slate-500 dark:text-slate-400">See condition, offer terms, and owner context before opening details.</p></div><div><span class="text-2xl">3️⃣</span><h3 class="mt-3 font-black">Connect</h3><p class="mt-1 text-sm leading-6 text-slate-500 dark:text-slate-400">Prepare a simulated request and continue with another student.</p></div></div></div>
-    <div class="rounded-[2rem] bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-600 p-6 text-white shadow-xl shadow-indigo-500/15 sm:p-8"><p class="text-xs font-extrabold uppercase tracking-[0.18em] text-blue-100">Marketplace snapshot</p><dl id="home-stats" class="mt-6 grid grid-cols-2 gap-4"></dl><p class="mt-6 text-sm leading-6 text-indigo-100">The Match concept remains visible as the product direction while Milestone 1 keeps its interaction honest and frontend-only.</p></div>
-  </section>
-</main></div><div id="mobile-more-backdrop" class="fixed inset-0 z-[45] hidden bg-slate-950/40 backdrop-blur-sm lg:hidden" aria-hidden="true"></div>
-    <div id="mobile-more-menu" class="fixed inset-x-3 bottom-20 z-50 hidden rounded-3xl border border-slate-200 bg-white p-3 shadow-2xl dark:border-slate-800 dark:bg-slate-900 lg:hidden">
-      <div class="grid grid-cols-2 gap-2">
-        <a href="create-listing.html" class="rounded-2xl bg-slate-50 p-4 text-sm font-extrabold text-slate-800 dark:bg-slate-950 dark:text-slate-100">✍️ Create Listing</a>
-        <a href="listing.html" class="rounded-2xl bg-slate-50 p-4 text-sm font-extrabold text-slate-800 dark:bg-slate-950 dark:text-slate-100">📄 Listing Details</a>
-        <a href="requests.html" class="rounded-2xl bg-slate-50 p-4 text-sm font-extrabold text-slate-800 dark:bg-slate-950 dark:text-slate-100">💬 Requests</a>
-        <a href="about.html" class="rounded-2xl bg-slate-50 p-4 text-sm font-extrabold text-slate-800 dark:bg-slate-950 dark:text-slate-100">ℹ️ About</a>
-      </div>
-    </div>
-    <nav class="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-2 pb-[max(env(safe-area-inset-bottom),0.4rem)] pt-2 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/95 lg:hidden" aria-label="Mobile navigation"><ul class="mx-auto grid max-w-xl grid-cols-5 gap-1"><li><a href="index.html" class="flex flex-col items-center gap-1 rounded-xl px-1 py-2 text-[10px] font-extrabold text-indigo-600 dark:text-indigo-300 focus:outline-none focus:ring-4 focus:ring-blue-500/20"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m3 11 9-8 9 8v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg><span>Home</span></a></li><li><a href="marketplace.html" class="flex flex-col items-center gap-1 rounded-xl px-1 py-2 text-[10px] font-extrabold text-slate-500 dark:text-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/20"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h16M5 7l1-3h12l1 3M5 7v13h14V7"/></svg><span>Market</span></a></li><li><a href="my-books.html" class="flex flex-col items-center gap-1 rounded-xl px-1 py-2 text-[10px] font-extrabold text-slate-500 dark:text-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/20"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5Z"/><path d="M4 6.5v13"/></svg><span>My Books</span></a></li><li><a href="add-book.html" class="flex flex-col items-center gap-1 rounded-xl px-1 py-2 text-[10px] font-extrabold text-slate-500 dark:text-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/20"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg><span>Add</span></a></li><li><button id="mobile-more-toggle" type="button" aria-expanded="false" class="flex w-full flex-col items-center gap-1 rounded-xl px-1 py-2 text-[10px] font-extrabold text-slate-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:text-slate-400"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="5" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="19" cy="12" r="1" fill="currentColor"/></svg><span>More</span></button></li></ul></nav><script src="js/navigation.js"></script><script src="js/data.js"></script><script src="js/home.js"></script></body></html>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Manrope", "ui-sans-serif", "system-ui", "sans-serif"],
+            },
+            colors: {
+              bridge: {
+                blue: "#2563EB",
+                indigo: "#4F46E5",
+                violet: "#7C3AED",
+                navy: "#0F172A",
+              },
+            },
+            boxShadow: {
+              soft: "0 16px 50px rgba(15, 23, 42, 0.10)",
+            },
+          },
+        },
+      };
+    </script>
+
+    <script>
+      (() => {
+        try {
+          const savedTheme = localStorage.getItem("thebridge:theme");
+          const prefersDark = window.matchMedia(
+            "(prefers-color-scheme: dark)"
+          ).matches;
+
+          if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+            document.documentElement.classList.add("dark");
+          }
+        } catch {}
+      })();
+    </script>
+
+    <title>TheBridge - Home</title>
+  </head>
+
+  <body
+    class="min-h-screen overflow-x-hidden bg-slate-50 font-sans text-slate-900 antialiased transition-colors dark:bg-slate-950 dark:text-slate-100"
+  >
+    <div id="root"></div>
+
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
