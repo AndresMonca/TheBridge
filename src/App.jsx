@@ -1,10 +1,7 @@
+﻿import HomePage from "./pages/HomePage.jsx";
+
 function App() {
-  return (
-    <main>
-      <h1>TheBridge</h1>
-      <p>Milestone 2 React foundation is ready.</p>
-    </main>
-  );
+  return <HomePage />;
 }
 
 export default App;
