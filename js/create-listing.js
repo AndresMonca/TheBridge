@@ -48,9 +48,35 @@
   };
   const idleMessage = "Select an option to see the details it needs.";
 
+  // Reglas por modalidad: cada campo devuelve un mensaje de error, o "" si es válido.
+  // Exchange no tiene reglas porque el libro deseado es opcional.
+  const requirePrice = (value) => {
+    const price = Number(value);
+    // Number("") es 0, así que un campo vacío también cae aquí; Infinity se descarta con isFinite
+    return value.trim() !== "" && Number.isFinite(price) && price > 0 ? "" : "Enter a price greater than 0.";
+  };
+  const requireDuration = (value) => (value ? "" : "Select a duration.");
+  const rules = {
+    Exchange: {},
+    Loan: { loanDuration: requireDuration },
+    Rental: { rentalPrice: requirePrice, rentalDuration: requireDuration },
+    Sale: { salePrice: requirePrice }
+  };
+  const fieldLabels = {
+    loanDuration: "Loan duration",
+    rentalPrice: "Rental price",
+    rentalDuration: "Rental duration",
+    salePrice: "Sale price"
+  };
+
+  const formatPrice = (value) =>
+    new Intl.NumberFormat("en-CO", { style: "currency", currency: "COP", currencyDisplay: "code", maximumFractionDigits: 0 }).format(Number(value));
+
   const form = document.querySelector("#listing-form");
   const panels = form.querySelectorAll("[data-panel]");
   const messageEl = document.querySelector("#modality-message");
+  const liveEl = document.querySelector("#form-live");
+  const successPanel = document.querySelector("#success-panel");
 
   // Estado local de la página. La siguiente tarea (validación y envío) lee de aquí.
   // Los valores de cada campo se conservan al cambiar de modalidad para no perder lo que el usuario escribió.
@@ -142,21 +168,117 @@
     });
   };
 
+  // Vacía y vuelve a llenar la región aria-live: si el texto es idéntico al anterior
+  // (mismo error en dos envíos seguidos) el lector de pantalla no lo repetiría.
+  const announce = (message) => {
+    liveEl.textContent = "";
+    setTimeout(() => { liveEl.textContent = message; }, 50);
+  };
+
+  // Muestra u oculta el error de un campo y sincroniza aria-invalid con él
+  const setFieldError = (name, message) => {
+    const errorEl = form.querySelector(`[data-error-for="${name}"]`);
+    const field = form.elements[name];
+    errorEl.textContent = message;
+    errorEl.classList.toggle("hidden", !message);
+    // "modality" es un RadioNodeList: el estado inválido se comunica por el fieldset y el mensaje
+    if (field instanceof Element) {
+      if (message) field.setAttribute("aria-invalid", "true");
+      else field.removeAttribute("aria-invalid");
+    }
+  };
+
+  const clearErrors = () => {
+    form.querySelectorAll("[data-error-for]").forEach((el) => setFieldError(el.dataset.errorFor, ""));
+  };
+
+  // Valida solo los campos de la modalidad activa y devuelve los nombres inválidos.
+  // Los valores escritos nunca se borran: solo cambia el estado de error.
+  const validate = () => {
+    const invalid = [];
+    Object.entries(rules[state.modality]).forEach(([name, rule]) => {
+      const message = rule(state.values[name]);
+      setFieldError(name, message);
+      if (message) invalid.push(name);
+    });
+    return invalid;
+  };
+
   form.addEventListener("change", (event) => {
     if (event.target.name === "modality") {
       state.modality = event.target.value;
+      // Al cambiar de modalidad los errores anteriores dejan de aplicar
+      clearErrors();
       renderModality();
     }
   });
 
   form.addEventListener("input", (event) => {
-    if (event.target.name in state.values) state.values[event.target.name] = event.target.value;
+    const { name } = event.target;
+    if (!(name in state.values)) return;
+    state.values[name] = event.target.value;
+    // Revalida en vivo solo los campos ya marcados como inválidos, para no mostrar errores mientras se escribe por primera vez
+    if (event.target.getAttribute("aria-invalid") === "true") setFieldError(name, rules[state.modality][name](event.target.value));
   });
 
-  // Tarea 2: aquí irán la validación por modalidad y la confirmación de éxito. Los elementos
-  // [data-error-for] ya existen para mostrar los errores de cada campo.
+  const addRow = (list, label, value) => {
+    const row = document.createElement("div");
+    row.className = "flex flex-col gap-1 px-4 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6";
+    const dt = document.createElement("dt");
+    dt.className = "text-xs font-extrabold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400";
+    dt.textContent = label;
+    const dd = document.createElement("dd");
+    dd.className = "text-sm font-extrabold text-slate-950 sm:text-right dark:text-white";
+    dd.textContent = value;
+    row.append(dt, dd);
+    list.append(row);
+  };
+
+  // Éxito simulado: solo cambia la interfaz, no se guarda ningún listing
+  const showSuccess = () => {
+    const details = document.querySelector("#success-details");
+    const { modality, values, book } = state;
+    details.replaceChildren();
+    addRow(details, "Book", `${book.title} — ${book.author || "Unknown author"}`);
+    addRow(details, "Modality", modality);
+    if (modality === "Exchange") addRow(details, "Desired book", values.desiredBook.trim() || "Open to offers");
+    if (modality === "Loan") addRow(details, "Duration", values.loanDuration);
+    if (modality === "Rental") {
+      addRow(details, "Price", formatPrice(values.rentalPrice));
+      addRow(details, "Duration", values.rentalDuration);
+    }
+    if (modality === "Sale") addRow(details, "Price", formatPrice(values.salePrice));
+
+    // El libro ya no está disponible para crear otro listing
+    const status = document.querySelector("#book-status");
+    status.textContent = "📢 Published";
+    status.className = "rounded-full bg-indigo-100 px-2.5 py-1 text-xs font-extrabold text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300";
+
+    form.classList.add("hidden");
+    successPanel.classList.remove("hidden");
+    // El foco en el título hace que el lector de pantalla lo lea y deja el teclado dentro del resultado
+    document.querySelector("#success-heading").focus();
+    announce(`Listing published! ${book.title} is now listed as ${modality}.`);
+  };
+
   form.addEventListener("submit", (event) => {
     event.preventDefault();
+
+    if (!state.modality) {
+      const message = "Choose how you want to share this book.";
+      setFieldError("modality", message);
+      form.querySelector("input[name='modality']").focus();
+      announce(message);
+      return;
+    }
+
+    const invalid = validate();
+    if (invalid.length) {
+      form.elements[invalid[0]].focus();
+      announce(`Please fix ${invalid.length === 1 ? "1 field" : `${invalid.length} fields`}: ${invalid.map((name) => fieldLabels[name]).join(", ")}.`);
+      return;
+    }
+    showSuccess();
   });
 
   const { book, notice } = resolveBook();
