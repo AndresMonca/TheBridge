@@ -10,3 +10,18 @@
       : null,
   }));
 }
+
+export async function searchOpenLibrary(query, signal) {
+  const url = new URL("https://openlibrary.org/search.json");
+  url.searchParams.set("q", query);
+  url.searchParams.set("limit", "20");
+
+  const response = await fetch(url, { signal });
+
+  if (!response.ok) {
+    throw new Error(`Open Library returned ${response.status}.`);
+  }
+
+  const data = await response.json();
+  return normalizeOpenLibraryBooks(data.docs);
+}

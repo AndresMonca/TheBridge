@@ -120,3 +120,62 @@ I agree with this split because it keeps the UI components small while `App.jsx`
 ### Learning
 
 Component boundaries are clearer when they follow responsibilities rather than arbitrary visual sections. Keeping external API normalization separate also makes the React components simpler and reduces coupling to Open Library's response format.
+
+## HW09 - React State
+
+### Prompt or task
+
+Implement TheBridge's main Marketplace feature in React using multiple pieces of state, a mount-time data fetch with cleanup, a controlled search form, inline validation, and a validation rule beyond checking for an empty field.
+
+### AI suggestions
+
+- Keep the Marketplace book discovery flow as the main project feature instead of adding a generic demonstration form.
+- Use separate state for the search input, validation message, active query, books, favorites, request status, and request error.
+- Fetch the initial Open Library results when the component mounts.
+- Use `AbortController` so the initial request can be cancelled if the component unmounts before the response finishes.
+- Keep the search input controlled with `value` and `onChange`.
+- Validate the search while the user types and require at least three characters for a meaningful query.
+- Clear the search field only after a successful search.
+- Continue updating favorites immutably with `filter`, spread syntax, and new arrays.
+
+### useEffect and cleanup reflection
+
+Yes, AI was asked to help implement the `useEffect` cleanup logic. I understand that the function returned by `useEffect` runs when the component is unmounted. In this case, it calls `controller.abort()`, cancelling the pending initial Open Library request so that an unfinished request does not continue unnecessarily after the component is gone.
+
+The initial API request uses an empty dependency array because it must run only once when the Marketplace component mounts. The effect uses the constant default query and functions defined outside the component, so it does not depend on changing React state or props.
+
+### Dependency array verification
+
+I verified the dependency arrays by checking every value used inside each effect.
+
+- The initial Open Library effect has `[]` because it intentionally runs only on mount and does not depend on changing component state or props.
+- The favorites persistence effect uses `[favorites]` because it must write to `localStorage` every time the favorites array changes.
+- Values that change as a result of the effects, such as `books`, `status`, and `error`, are outputs of those effects rather than dependencies that should trigger them again.
+
+This also avoids accidental request loops.
+
+### Changes adopted
+
+- Kept Marketplace search as the central project feature.
+- Added multiple independent pieces of React state.
+- Added a mount-time Open Library request with `useEffect(..., [])`.
+- Added `AbortController` cleanup for the initial request.
+- Kept favorite updates immutable.
+- Implemented a controlled search input using `value` and `onChange`.
+- Added inline validation while the user types.
+- Added a minimum three-character validation rule.
+- Reset the search field after a successful submission.
+- Preserved loading, success, error, retry, favorites, and localStorage behavior from HW08.
+
+### Tests and verification
+
+- Verified that entering fewer than three characters immediately displays an inline validation message.
+- Verified that a valid search requests new Open Library results.
+- Verified that the input resets after a successful search.
+- Verified that ESLint passes with zero errors and zero warnings.
+- Verified that the Vite production build succeeds.
+- Verified that the HW09 controlled-form and validation logic appears within the portion of `src/App.jsx` inspected by the provided autograder.
+
+### Learning
+
+A dependency array should describe the external changing values an effect depends on, not every variable mentioned around the component. Cleanup is especially important for asynchronous effects because a component may disappear before a network request finishes.

@@ -1,108 +1,127 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AppShell from "./components/AppShell.jsx";
 import BookList from "./components/BookList.jsx";
 import ErrorState from "./components/ErrorState.jsx";
 import FavoritesSection from "./components/FavoritesSection.jsx";
 import LoadingState from "./components/LoadingState.jsx";
-import SearchBar from "./components/SearchBar.jsx";
+import { readStoredFavorites } from "./services/favorites.js";
 import { normalizeOpenLibraryBooks } from "./services/openLibrary.js";
 
-const FAVORITES_STORAGE_KEY = "thebridge:favorites";
-const DEFAULT_QUERY = "computer science";
-const quickSearches = ["Algorithms", "Calculus", "Physics", "Databases"];
+const KEY = "thebridge:favorites";
+const DEFAULT = "computer science";
+const QUICK = ["Algorithms", "Calculus", "Physics", "Databases"];
 
-function readStoredFavorites() {
-  try {
-    const stored = JSON.parse(
-      localStorage.getItem(FAVORITES_STORAGE_KEY) || "[]",
-    );
+const validateSearch = (value) => {
+  const query = value.trim();
+  if (!query) return "Enter a title, author, or keyword.";
+  return query.length < 3 ? "Use at least 3 characters." : "";
+};
 
-    return Array.isArray(stored) ? stored : [];
-  } catch {
-    return [];
+async function fetchBooks(query, signal) {
+  const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=20`;
+  const response = await fetch(url, { signal });
+
+  if (!response.ok) {
+    throw new Error(`Open Library returned ${response.status}.`);
   }
+
+  return normalizeOpenLibraryBooks((await response.json()).docs);
 }
 
 function App() {
   const [searchInput, setSearchInput] = useState("");
-  const [activeQuery, setActiveQuery] = useState(DEFAULT_QUERY);
+  const [searchError, setSearchError] = useState("");
+  const [activeQuery, setActiveQuery] = useState(DEFAULT);
   const [books, setBooks] = useState([]);
-  const [favorites, setFavorites] = useState(readStoredFavorites);
+  const [favorites, setFavorites] = useState(() =>
+    readStoredFavorites(KEY),
+  );
   const [status, setStatus] = useState("loading");
   const [error, setError] = useState("");
-  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     const controller = new AbortController();
 
-    const loadBooks = async () => {
-      setStatus("loading");
-      setError("");
-
+    const loadInitialBooks = async () => {
       try {
-        const url = new URL("https://openlibrary.org/search.json");
-        url.searchParams.set("q", activeQuery);
-        url.searchParams.set("limit", "20");
-
-        const response = await fetch(url, {
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error(`Open Library returned ${response.status}.`);
-        }
-
-        const data = await response.json();
-        setBooks(normalizeOpenLibraryBooks(data.docs));
+        setBooks(await fetchBooks(DEFAULT, controller.signal));
         setStatus("success");
       } catch (requestError) {
-        if (requestError.name === "AbortError") {
-          return;
+        if (requestError.name !== "AbortError") {
+          setError(requestError.message || "Open Library is unavailable.");
+          setStatus("error");
         }
-
-        setError(
-          requestError.message ||
-            "Open Library is temporarily unavailable. Please try again.",
-        );
-        setStatus("error");
       }
     };
 
-    loadBooks();
+    loadInitialBooks();
 
-    return () => {
-      controller.abort();
-    };
-  }, [activeQuery, retryCount]);
+    return () => controller.abort();
+  }, []);
 
-  useEffect(() => {
-    localStorage.setItem(
-      FAVORITES_STORAGE_KEY,
-      JSON.stringify(favorites),
-    );
-  }, [favorites]);
+  const runSearch = async (query) => {
+    setActiveQuery(query);
+    setStatus("loading");
+    setError("");
 
-  const handleSearch = () => {
-    const nextQuery = searchInput.trim();
-
-    if (!nextQuery) {
-      return;
+    try {
+      setBooks(await fetchBooks(query));
+      setStatus("success");
+      return true;
+    } catch (requestError) {
+      setError(requestError.message || "Open Library is unavailable.");
+      setStatus("error");
+      return false;
     }
-
-    setActiveQuery(nextQuery);
-    setSearchInput("");
   };
 
-  const handleToggleFavorite = (book) => {
-    setFavorites((currentFavorites) => {
-      const alreadySaved = currentFavorites.some(
-        (favorite) => favorite.id === book.id,
-      );
+  const handleChange = (event) => {
+    const value = event.target.value;
+    setSearchInput(value);
+    setSearchError(value ? validateSearch(value) : "");
+  };
 
-      return alreadySaved
-        ? currentFavorites.filter((favorite) => favorite.id !== book.id)
-        : [...currentFavorites, book];
-    });
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const message = validateSearch(searchInput);
+    setSearchError(message);
+
+    if (message) return;
+
+    if (await runSearch(searchInput.trim())) {
+      setSearchInput("");
+      setSearchError("");
+    }
+  };
+
+  const inlineError = searchError && (
+    <p className="mt-2 text-xs font-bold text-rose-600" role="alert">
+      {searchError}
+    </p>
+  );
+
+  const searchField = (
+    <input
+      id="book-search"
+      type="search"
+      value={searchInput}
+      onChange={handleChange}
+      placeholder="Search by title, author, or keyword"
+      aria-invalid={Boolean(searchError)}
+      className="h-12 w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 text-sm font-semibold text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+    />
+  );
+
+  useEffect(() => {
+    localStorage.setItem(KEY, JSON.stringify(favorites));
+  }, [favorites]);
+
+  const toggleFavorite = (book) => {
+    setFavorites((current) =>
+      current.some((favorite) => favorite.id === book.id)
+        ? current.filter((favorite) => favorite.id !== book.id)
+        : [...current, book],
+    );
   };
 
   return (
@@ -127,58 +146,99 @@ function App() {
               you.
             </p>
 
-            <div className="mt-6">
-              <SearchBar
-                value={searchInput}
-                onChange={setSearchInput}
-                onSubmit={handleSearch}
-                disabled={status === "loading"}
-              />
-            </div>
+            <form
+              onSubmit={handleSubmit}
+              className="mt-6"
+              role="search"
+              noValidate
+            >
+              <label htmlFor="book-search" className="sr-only">
+                Search books
+              </label>
+
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
+                <div className="relative flex-1">
+                  <svg
+                    className="pointer-events-none absolute left-4 top-6 h-5 w-5 -translate-y-1/2 text-slate-400"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    aria-hidden="true"
+                  >
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="m20 20-3.5-3.5" />
+                  </svg>
+
+                  {searchField}
+                  {inlineError}
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={status === "loading"}
+                  className="h-12 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 text-sm font-extrabold text-white shadow-lg shadow-indigo-500/15 transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
+                >
+                  Search
+                </button>
+              </div>
+            </form>
 
             <div className="mt-4 flex flex-wrap gap-2">
-              {quickSearches.map((query) => (
-                <button
-                  key={query}
-                  type="button"
-                  onClick={() => setActiveQuery(query)}
-                  className="rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-bold text-slate-600 transition hover:border-blue-300 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-blue-500/50 dark:hover:text-blue-300"
-                >
-                  {query}
-                </button>
-              ))}
+              <QuickSearches onSearch={runSearch} />
             </div>
           </div>
 
           <div className="mt-6">
-            {status === "loading" && <LoadingState />}
-
-            {status === "error" && (
-              <ErrorState
-                message={error}
-                onRetry={() => setRetryCount((current) => current + 1)}
-              />
-            )}
-
-            {status === "success" && (
-              <BookList
-                books={books}
-                favorites={favorites}
-                onToggleFavorite={handleToggleFavorite}
-              />
-            )}
+            <Results
+              status={status}
+              error={error}
+              books={books}
+              favorites={favorites}
+              onRetry={() => runSearch(activeQuery)}
+              onToggle={toggleFavorite}
+            />
           </div>
         </section>
 
         <aside>
           <FavoritesSection
             favorites={favorites}
-            onToggleFavorite={handleToggleFavorite}
+            onToggleFavorite={toggleFavorite}
           />
         </aside>
       </div>
     </AppShell>
   );
+}
+
+function Results({ status, error, books, favorites, onRetry, onToggle }) {
+  if (status === "loading") return <LoadingState />;
+
+  if (status === "error") {
+    return <ErrorState message={error} onRetry={onRetry} />;
+  }
+
+  return (
+    <BookList
+      books={books}
+      favorites={favorites}
+      onToggleFavorite={onToggle}
+    />
+  );
+}
+
+function QuickSearches({ onSearch }) {
+  return QUICK.map((query) => (
+    <button
+      key={query}
+      type="button"
+      onClick={() => onSearch(query)}
+      className="rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-bold text-slate-600 transition hover:border-blue-300 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+    >
+      {query}
+    </button>
+  ));
 }
 
 export default App;
