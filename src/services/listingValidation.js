@@ -1,9 +1,18 @@
-﻿export function validateListing(modality, values) {
+export function validateListing(modality, values) {
   const errors = {};
 
   if (!modality) {
     errors.modality = "Choose how you want to share this book.";
     return errors;
+  }
+
+  if (
+    modality === "Exchange" &&
+    values.desiredBookQuery?.trim() &&
+    !values.desiredBookMeta
+  ) {
+    errors.desiredBookQuery =
+      "Select a book from the catalog or leave the field empty.";
   }
 
   if (modality === "Loan" && !values.loanDuration) {

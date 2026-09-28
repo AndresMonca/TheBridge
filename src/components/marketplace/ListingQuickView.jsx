@@ -5,6 +5,7 @@ import {
   getListingOfferRows,
   getRequestCtaLabel,
 } from "../../services/listingRequest.js";
+import { hasActiveSentRequest } from "../../services/requestsStorage.js";
 import {
   badge,
   buttonPrimary,
@@ -58,7 +59,9 @@ function ListingQuickView({ listing, onClose }) {
     };
   }, [open]);
 
-  const requestSent = Boolean(displayed) && sentListingId === displayed.id;
+  const requestSent =
+    Boolean(displayed) &&
+    (sentListingId === displayed.id || hasActiveSentRequest(displayed.id));
 
   return (
     <>

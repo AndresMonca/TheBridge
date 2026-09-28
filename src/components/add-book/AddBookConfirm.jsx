@@ -1,6 +1,7 @@
 import { useState } from "react";
 import BookConditionOptions from "./BookConditionOptions.jsx";
 import BookCopyNotes from "./BookCopyNotes.jsx";
+import BookMetadata from "../catalog/BookMetadata.jsx";
 import {
   createLibraryBook,
   saveMyBook,
@@ -64,6 +65,12 @@ function AddBookConfirm({ book, onBack, onSaved }) {
           </h2>
 
           <p className="mt-1 text-[15px] text-ink-muted">{book.author}</p>
+
+          <BookMetadata
+            book={book}
+            fields={["year", "publisher", "language", "isbn"]}
+            className="mt-5 max-w-md border-y border-line"
+          />
 
           <div className="mt-8">
             <BookConditionOptions

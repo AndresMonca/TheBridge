@@ -1,4 +1,6 @@
-﻿import { baseMyBooks } from "../data/myBooks.js";
+import { baseMyBooks } from "../data/myBooks.js";
+import { loadSeedBooks } from "./librarySeed.js";
+import { loadRequests } from "./requestsStorage.js";
 
 const STORAGE_KEY = "thebridge:my-books";
 
@@ -7,10 +9,10 @@ export function loadMyBooks() {
     const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
 
     return Array.isArray(stored)
-      ? [...baseMyBooks, ...stored]
-      : [...baseMyBooks];
+      ? [...baseMyBooks, ...loadSeedBooks(), ...stored]
+      : [...baseMyBooks, ...loadSeedBooks()];
   } catch {
-    return [...baseMyBooks];
+    return [...baseMyBooks, ...loadSeedBooks()];
   }
 }
 
@@ -41,9 +43,76 @@ export function createLibraryBook(book, condition, notes) {
     author: book.author,
     cover: book.cover || "",
     genre: book.genre || "Default",
+    year: book.year || null,
+    publisher: book.publisher || null,
+    isbn: book.isbn || null,
+    language: book.language || null,
     condition,
     status: "Available",
     notes: notes.trim(),
     addedAt: new Date().toISOString().split("T")[0],
   };
+}
+
+const ACTIVITY_RANK = { Pending: 1, Accepted: 2 };
+
+function describeActivity(book, request) {
+  if (request.direction === "sent") {
+    return {
+      activityStatus:
+        request.status === "Accepted"
+          ? "Reserved for exchange"
+          : "Exchange request pending",
+      activityWith: request.counterpart,
+    };
+  }
+
+  if (request.status === "Pending") {
+    return { activityStatus: "Request pending", activityWith: request.counterpart };
+  }
+
+  if (book.listingModality === "Loan") {
+    return { status: "Loaned", loanedTo: request.counterpart };
+  }
+
+  return {
+    activityStatus:
+      book.listingModality === "Rental" ? "Rental accepted" : "Reserved",
+    activityWith: request.counterpart,
+  };
+}
+
+export function applyRequestActivity(books, requests) {
+  const activeByBook = new Map();
+
+  requests.forEach((request) => {
+    const bookId =
+      request.direction === "received"
+        ? request.myBookId
+        : request.offeredBookId;
+    const rank = ACTIVITY_RANK[request.status];
+
+    if (!bookId || !rank) {
+      return;
+    }
+
+    const current = activeByBook.get(bookId);
+
+    if (!current || rank > ACTIVITY_RANK[current.status]) {
+      activeByBook.set(bookId, request);
+    }
+  });
+
+  return books.map((book) => {
+    const request = activeByBook.get(book.id);
+    return request ? { ...book, ...describeActivity(book, request) } : book;
+  });
+}
+
+export function loadMyBooksWithActivity() {
+  return applyRequestActivity(loadMyBooks(), loadRequests());
+}
+
+export function isBookFree(book) {
+  return book.status === "Available" && !book.activityStatus;
 }

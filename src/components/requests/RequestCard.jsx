@@ -10,14 +10,15 @@ import {
   card,
 } from "../../styles/ui.js";
 
-function RequestCard({ request, onStatusChange }) {
+function RequestCard({ request, myBook, offeredBook, onStatusChange }) {
   const listing = listings.find((item) => item.id === request.listingId);
   const meta = requestStatusMeta[request.status];
 
-  const title = listing?.title || "Listing no longer available";
-  const author = listing?.author || "";
-  const modality = listing?.modality || "";
-  const cover = listing?.cover || "";
+  const source = myBook || listing;
+  const title = source?.title || "Listing no longer available";
+  const author = source?.author || "";
+  const modality = myBook?.listingModality || listing?.modality || "";
+  const cover = source?.cover || "";
   const counterpartLabel =
     request.direction === "received"
       ? `From ${request.counterpart}`
@@ -62,6 +63,19 @@ function RequestCard({ request, onStatusChange }) {
           </p>
 
           <p className="mt-1 text-sm leading-6 text-ink">{request.note}</p>
+
+          {myBook && (
+            <p className="mt-2 text-xs text-ink-muted">
+              Your copy in My Books · {myBook.condition}
+            </p>
+          )}
+
+          {offeredBook && (
+            <p className="mt-2 text-xs text-ink-muted">
+              You offered your copy of{" "}
+              <span className="font-semibold text-ink">{offeredBook.title}</span>
+            </p>
+          )}
 
           {canRespond && (
             <div className="mt-4 flex flex-wrap gap-2">

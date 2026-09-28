@@ -1,25 +1,14 @@
-import { fieldLabel, inputField } from "../../styles/ui.js";
+import DesiredBookPicker from "./DesiredBookPicker.jsx";
 import { DurationSelect, PriceInput } from "./ListingFieldControls.jsx";
 
 function ListingDynamicFields({ modality, values, errors, onChange }) {
   if (modality === "Exchange") {
     return (
-      <div>
-        <label
-          htmlFor="desiredBook"
-          className={fieldLabel}
-        >
-          Desired book
-        </label>
-
-        <input
-          id="desiredBook"
-          value={values.desiredBook}
-          onChange={(event) => onChange("desiredBook", event.target.value)}
-          placeholder="Optional — leave blank if open to offers"
-          className={inputField}
-        />
-      </div>
+      <DesiredBookPicker
+        values={values}
+        error={errors.desiredBookQuery}
+        onChange={onChange}
+      />
     );
   }
 

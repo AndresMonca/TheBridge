@@ -6,6 +6,7 @@ import ListingMetaGrid from "../components/listing/ListingMetaGrid.jsx";
 import ListingRequestModal from "../components/listing/ListingRequestModal.jsx";
 import { getListingOfferLabel } from "../services/listingFilters.js";
 import { getRequestCtaLabel } from "../services/listingRequest.js";
+import { hasActiveSentRequest } from "../services/requestsStorage.js";
 import {
   badge,
   buttonPrimary,
@@ -29,7 +30,9 @@ function formatPrice(price) {
 
 function ListingDetailsPage({ listing }) {
   const [requestOpen, setRequestOpen] = useState(false);
-  const [requestSent, setRequestSent] = useState(false);
+  const [requestSent, setRequestSent] = useState(
+    () => Boolean(listing) && hasActiveSentRequest(listing.id),
+  );
 
   if (!listing) {
     return (

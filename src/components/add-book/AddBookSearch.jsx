@@ -1,9 +1,9 @@
-﻿import AddBookSearchForm from "./AddBookSearchForm.jsx";
+import AddBookSearchForm from "./AddBookSearchForm.jsx";
 import AddBookSearchState from "./AddBookSearchState.jsx";
-import { useAddBookSearch } from "../../hooks/useAddBookSearch.js";
+import { useCatalogSearch } from "../../hooks/useCatalogSearch.js";
 
 function AddBookSearch({ onSelect }) {
-  const search = useAddBookSearch();
+  const search = useCatalogSearch();
 
   return (
     <section>

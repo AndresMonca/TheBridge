@@ -1,4 +1,4 @@
-﻿import {
+import {
   BrowserRouter,
   Navigate,
   Route,
@@ -28,7 +28,7 @@ function ListingRoute() {
   const { id } = useParams();
   const listing = listings.find((item) => item.id === id);
 
-  return <ListingDetailsPage listing={listing} />;
+  return <ListingDetailsPage key={id} listing={listing} />;
 }
 
 function App() {

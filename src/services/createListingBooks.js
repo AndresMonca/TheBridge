@@ -1,23 +1,12 @@
-﻿import { baseMyBooks } from "../data/myBooks.js";
-
-const STORAGE_KEY = "thebridge:my-books";
+import { isBookFree, loadMyBooksWithActivity } from "./myBooksStorage.js";
 
 export function loadAvailableMyBooks() {
-  let stored;
-
-  try {
-    const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    stored = Array.isArray(parsed) ? parsed : [];
-  } catch {
-    stored = [];
-  }
-
-  return [...baseMyBooks, ...stored].filter(
+  return loadMyBooksWithActivity().filter(
     (book) =>
       book &&
       typeof book.id === "string" &&
       typeof book.title === "string" &&
-      book.status === "Available",
+      isBookFree(book),
   );
 }
 

@@ -1,9 +1,13 @@
-﻿import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import {
+  DISCOVERY_QUERIES,
+  pickRandom,
+  shuffleArray,
+} from "../services/discovery.js";
 import { readStoredFavorites } from "../services/favorites.js";
 import { searchOpenLibraryWithCache } from "../services/openLibrary.js";
 
 const FAVORITES_KEY = "thebridge:favorites";
-export const DEFAULT_MARKETPLACE_QUERY = "computer science";
 
 function validateSearch(value) {
   const query = value.trim();
@@ -18,7 +22,8 @@ function validateSearch(value) {
 export function useMarketplace() {
   const [searchInput, setSearchInput] = useState("");
   const [searchError, setSearchError] = useState("");
-  const [activeQuery, setActiveQuery] = useState(DEFAULT_MARKETPLACE_QUERY);
+  const [discoveryQuery] = useState(() => pickRandom(DISCOVERY_QUERIES));
+  const [activeQuery, setActiveQuery] = useState(discoveryQuery);
   const [books, setBooks] = useState([]);
   const [favorites, setFavorites] = useState(() =>
     readStoredFavorites(FAVORITES_KEY),
@@ -35,10 +40,10 @@ export function useMarketplace() {
     const loadInitialBooks = async () => {
       try {
         const result = await searchOpenLibraryWithCache(
-          DEFAULT_MARKETPLACE_QUERY,
+          discoveryQuery,
           controller.signal,
         );
-        setBooks(result.books);
+        setBooks(shuffleArray(result.books));
         setSavedAt(result.savedAt);
         setStatus("success");
       } catch (requestError) {
@@ -52,7 +57,7 @@ export function useMarketplace() {
     loadInitialBooks();
 
     return () => controller.abort();
-  }, []);
+  }, [discoveryQuery]);
 
   useEffect(() => {
     localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));

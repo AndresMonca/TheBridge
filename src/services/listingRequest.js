@@ -1,10 +1,8 @@
-﻿import { loadMyBooks } from "./myBooksStorage.js";
+import { isBookFree, loadMyBooksWithActivity } from "./myBooksStorage.js";
 
 export function loadAvailableExchangeBooks() {
-  return loadMyBooks().filter(
-    (book) =>
-      book.status === "Available" &&
-      typeof book.title === "string",
+  return loadMyBooksWithActivity().filter(
+    (book) => isBookFree(book) && typeof book.title === "string",
   );
 }
 

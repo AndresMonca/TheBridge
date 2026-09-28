@@ -1,4 +1,4 @@
-﻿export const baseMyBooks = [
+export const baseMyBooks = [
   {
     id: "mybook-01",
     title: "The Lord of the Rings",
@@ -44,5 +44,41 @@
     status: "Available",
     notes: "",
     addedAt: "2026-09-15",
+  },
+  {
+    id: "mybook-05",
+    title: "The Hobbit",
+    author: "J.R.R. Tolkien",
+    cover: "https://covers.openlibrary.org/b/isbn/9780547928227-L.jpg?default=false",
+    genre: "Fantasy",
+    condition: "Good condition",
+    status: "Published",
+    listingModality: "Loan",
+    notes: "",
+    addedAt: "2026-09-12",
+  },
+  {
+    id: "mybook-06",
+    title: "Harry Potter and the Sorcerer's Stone",
+    author: "J.K. Rowling",
+    cover: "https://covers.openlibrary.org/b/isbn/9780590353427-L.jpg?default=false",
+    genre: "Fantasy",
+    condition: "Like new",
+    status: "Published",
+    listingModality: "Exchange",
+    notes: "",
+    addedAt: "2026-09-10",
+  },
+  {
+    id: "mybook-07",
+    title: "The Great Gatsby",
+    author: "F. Scott Fitzgerald",
+    cover: "https://covers.openlibrary.org/b/isbn/9780743273565-L.jpg?default=false",
+    genre: "Classic",
+    condition: "Good condition",
+    status: "Published",
+    listingModality: "Rental",
+    notes: "",
+    addedAt: "2026-09-08",
   },
 ];

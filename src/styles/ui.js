@@ -13,6 +13,7 @@ export const buttonPrimarySm = `${buttonBase} h-9 px-4 ${primaryTone}`;
 export const buttonPrimaryLg = `${buttonBase} h-12 px-6 ${primaryTone}`;
 export const buttonSecondary = `${buttonBase} h-11 px-5 ${secondaryTone}`;
 export const buttonSecondarySm = `${buttonBase} h-9 px-4 ${secondaryTone}`;
+export const buttonSecondaryLg = `${buttonBase} h-12 px-6 ${secondaryTone}`;
 export const buttonSuccess = `inline-flex h-11 cursor-default items-center justify-center gap-2 rounded-xl bg-[#3F6B4E] px-5 text-sm font-semibold text-white ${focusRing}`;
 export const buttonGhost = `${buttonBase} h-9 px-3 text-wine-ink hover:bg-wine-soft`;
 

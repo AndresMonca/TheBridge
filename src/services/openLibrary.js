@@ -1,14 +1,42 @@
-﻿export function normalizeOpenLibraryBooks(docs = []) {
-  return docs.slice(0, 20).map((book) => ({
-    id: book.key || `${book.title}-${book.first_publish_year || "unknown"}`,
-    title: book.title || "Untitled",
-    author: book.author_name?.[0] || "Unknown author",
-    year: book.first_publish_year || null,
-    editionCount: book.edition_count || 1,
-    coverUrl: book.cover_i
-      ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
-      : null,
-  }));
+const SEARCH_FIELDS = [
+  "key",
+  "title",
+  "author_name",
+  "first_publish_year",
+  "edition_count",
+  "cover_i",
+  "publisher",
+  "isbn",
+  "language",
+].join(",");
+
+function pickIsbn(isbns = []) {
+  return isbns.find((isbn) => isbn.length === 13) || isbns[0] || null;
+}
+
+function pickLanguage(languages = []) {
+  return languages.includes("eng") ? "eng" : languages[0] || null;
+}
+
+export function normalizeOpenLibraryBooks(docs = []) {
+  return docs.slice(0, 20).map((book) => {
+    const year = book.first_publish_year || null;
+
+    return {
+      id: book.key || `${book.title}-${year || "unknown"}`,
+      title: book.title || "Untitled",
+      author: book.author_name?.[0] || "Unknown author",
+      year,
+      publicationYear: year,
+      publisher: book.publisher?.[0] || null,
+      isbn: pickIsbn(book.isbn),
+      language: pickLanguage(book.language),
+      editionCount: book.edition_count || 1,
+      coverUrl: book.cover_i
+        ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
+        : null,
+    };
+  });
 }
 
 const CACHE_KEY = "thebridge:openlibrary-cache";
@@ -51,6 +79,7 @@ async function searchOpenLibrary(query, signal) {
   const url = new URL("https://openlibrary.org/search.json");
   url.searchParams.set("q", query);
   url.searchParams.set("limit", "20");
+  url.searchParams.set("fields", SEARCH_FIELDS);
 
   const response = await fetch(url, { signal });
 

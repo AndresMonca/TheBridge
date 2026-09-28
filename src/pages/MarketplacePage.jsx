@@ -55,6 +55,15 @@ function MarketplacePage() {
           />
 
           <div className="mt-8">
+            {marketplace.status === "success" && (
+              <p className="mb-4 text-sm text-ink-muted">
+                Showing catalog results for{" "}
+                <span className="font-semibold text-ink">
+                  “{marketplace.activeQuery}”
+                </span>
+              </p>
+            )}
+
             <OpenLibraryResults
               status={marketplace.status}
               error={marketplace.error}

@@ -7,11 +7,17 @@ function toCatalogBook(book) {
     title: book.title,
     author: book.author,
     year: book.year,
+    publicationYear: book.publicationYear,
+    publisher: book.publisher,
+    isbn: book.isbn,
+    language: book.language,
+    editionCount: book.editionCount,
+    coverUrl: book.coverUrl,
     cover: book.coverUrl || "",
   };
 }
 
-export function useAddBookSearch() {
+export function useCatalogSearch() {
   const [query, setQuery] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState("");
   const [status, setStatus] = useState("idle");
@@ -51,8 +57,7 @@ export function useAddBookSearch() {
     setValidationError("");
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const submitSearch = () => {
     const trimmedQuery = query.trim();
 
     if (trimmedQuery.length < 2) {
@@ -62,6 +67,11 @@ export function useAddBookSearch() {
 
     setSubmittedQuery(trimmedQuery);
     setStatus("loading");
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    submitSearch();
   };
 
   const resetSearch = () => {
@@ -84,6 +94,7 @@ export function useAddBookSearch() {
     validationError,
     handleQueryChange,
     handleSubmit,
+    submitSearch,
     resetSearch,
     retrySearch,
   };

@@ -5,6 +5,7 @@ import {
   getListingOfferRows,
   loadAvailableExchangeBooks,
 } from "../../services/listingRequest.js";
+import { addSentRequest } from "../../services/requestsStorage.js";
 import {
   buttonPrimary,
   buttonSecondary,
@@ -33,6 +34,10 @@ function ListingRequestModal({ listing, open, onClose, onSent }) {
       return;
     }
 
+    addSentRequest({
+      listing,
+      offeredBook: availableBooks.find((book) => book.id === selectedBookId),
+    });
     onSent();
     onClose();
   };

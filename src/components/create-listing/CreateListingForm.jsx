@@ -10,6 +10,8 @@ import ListingModalityOptions from "./ListingModalityOptions.jsx";
 
 const initialValues = {
   desiredBook: "",
+  desiredBookMeta: null,
+  desiredBookQuery: "",
   loanDuration: "",
   rentalPrice: "",
   rentalDuration: "",
@@ -23,6 +25,7 @@ function CreateListingForm({ onPublish }) {
 
   const handleModalityChange = (nextModality) => {
     setModality(nextModality);
+    setValues((current) => ({ ...current, desiredBookQuery: "" }));
     setErrors({});
   };
 

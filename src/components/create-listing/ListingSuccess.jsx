@@ -51,7 +51,11 @@ function ListingSuccess({ book, modality, values }) {
         {modality === "Exchange" && (
           <SummaryRow
             label="Desired book"
-            value={values.desiredBook.trim() || "Open to offers"}
+            value={
+              values.desiredBookMeta
+                ? `${values.desiredBook} — ${values.desiredBookMeta.author}`
+                : "Open to offers"
+            }
           />
         )}
 

@@ -1,17 +1,38 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AppShell from "../components/AppShell.jsx";
 import RequestCard from "../components/requests/RequestCard.jsx";
 import RequestsTabs from "../components/requests/RequestsTabs.jsx";
-import { initialRequests } from "../data/requests.js";
+import { loadMyBooks } from "../services/myBooksStorage.js";
 import { getRequestStatusMessage } from "../services/requestStatus.js";
+import {
+  loadRequests,
+  REQUESTS_EVENT,
+  updateRequestStatus,
+} from "../services/requestsStorage.js";
 import { eyebrow, pageLead, pageTitle } from "../styles/ui.js";
 
 function RequestsPage() {
   const [activeTab, setActiveTab] = useState("received");
-  const [requests, setRequests] = useState(() =>
-    initialRequests.map((request) => ({ ...request })),
-  );
+  const [requests, setRequests] = useState(loadRequests);
+  const [myBooks] = useState(loadMyBooks);
   const [announcement, setAnnouncement] = useState("");
+
+  useEffect(() => {
+    const refreshRequests = () => setRequests(loadRequests());
+
+    window.addEventListener(REQUESTS_EVENT, refreshRequests);
+    window.addEventListener("storage", refreshRequests);
+
+    return () => {
+      window.removeEventListener(REQUESTS_EVENT, refreshRequests);
+      window.removeEventListener("storage", refreshRequests);
+    };
+  }, []);
+
+  const myBooksById = useMemo(
+    () => new Map(myBooks.map((book) => [book.id, book])),
+    [myBooks],
+  );
 
   const counts = useMemo(
     () => ({
@@ -27,18 +48,8 @@ function RequestsPage() {
   );
 
   const handleStatusChange = (requestId, status) => {
-    let updatedRequest;
-
-    setRequests((current) =>
-      current.map((request) => {
-        if (request.id !== requestId) {
-          return request;
-        }
-
-        updatedRequest = { ...request, status };
-        return updatedRequest;
-      }),
-    );
+    const updatedRequest = updateRequestStatus(requestId, status);
+    setRequests(loadRequests());
 
     if (updatedRequest) {
       setAnnouncement(getRequestStatusMessage(updatedRequest));
@@ -77,6 +88,8 @@ function RequestsPage() {
             <RequestCard
               key={request.id}
               request={request}
+              myBook={myBooksById.get(request.myBookId)}
+              offeredBook={myBooksById.get(request.offeredBookId)}
               onStatusChange={handleStatusChange}
             />
           ))}

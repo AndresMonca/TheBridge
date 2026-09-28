@@ -25,8 +25,10 @@ function AddBookResultCard({ book, onSelect }) {
 
         <p className="mt-0.5 truncate text-sm text-ink-muted">{book.author}</p>
 
-        {book.year && (
-          <p className="mt-0.5 text-xs text-ink-muted">{book.year}</p>
+        {(book.year || book.publisher) && (
+          <p className="mt-0.5 truncate text-xs text-ink-muted">
+            {[book.year, book.publisher].filter(Boolean).join(" · ")}
+          </p>
         )}
       </div>
 
