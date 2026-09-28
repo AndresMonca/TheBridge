@@ -52,7 +52,7 @@ function ListingStats({ stats }) {
         ))}
       </dl>
 
-      <dl className="mt-5 grid gap-x-6 gap-y-2 border-t border-line pt-4 sm:grid-cols-2">
+      <dl className="mt-5 grid grid-cols-1 gap-x-6 gap-y-2 border-t border-line pt-4 sm:grid-cols-2">
         <div className="flex items-baseline justify-between gap-3">
           <dt className="text-sm text-ink-muted">Average sale price</dt>
           <dd className="text-right text-sm font-semibold text-ink">

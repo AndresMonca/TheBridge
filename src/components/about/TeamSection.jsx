@@ -19,7 +19,7 @@ function TeamSection({ members }) {
         TheBridge contributors
       </h2>
 
-      <div className="mt-6 grid gap-3 sm:grid-cols-2">
+      <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
         {members.map((member) => (
           <article key={member.name} className={`flex items-center gap-4 p-4 ${card}`}>
             <span

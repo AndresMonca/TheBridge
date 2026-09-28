@@ -1,19 +1,51 @@
 import { baseMyBooks } from "../data/myBooks.js";
-import { loadSeedBooks } from "./librarySeed.js";
+import { loadSeedBooks, MY_BOOKS_EVENT } from "./librarySeed.js";
 import { loadRequests } from "./requestsStorage.js";
 
 const STORAGE_KEY = "thebridge:my-books";
+const OVERRIDES_KEY = "thebridge:my-books-overrides";
 
-export function loadMyBooks() {
+function loadAddedBooks() {
   try {
     const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-
-    return Array.isArray(stored)
-      ? [...baseMyBooks, ...loadSeedBooks(), ...stored]
-      : [...baseMyBooks, ...loadSeedBooks()];
+    return Array.isArray(stored) ? stored : [];
   } catch {
-    return [...baseMyBooks, ...loadSeedBooks()];
+    return [];
   }
+}
+
+function loadOverrides() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(OVERRIDES_KEY) || "{}");
+    return stored && typeof stored === "object" && !Array.isArray(stored)
+      ? stored
+      : {};
+  } catch {
+    return {};
+  }
+}
+
+export function loadMyBooks() {
+  const overrides = loadOverrides();
+
+  return [...baseMyBooks, ...loadSeedBooks(), ...loadAddedBooks()].map(
+    (book) => (overrides[book.id] ? { ...book, ...overrides[book.id] } : book),
+  );
+}
+
+export function markBookPublished(bookId, listing) {
+  localStorage.setItem(
+    OVERRIDES_KEY,
+    JSON.stringify({
+      ...loadOverrides(),
+      [bookId]: {
+        status: "Published",
+        listingModality: listing.modality,
+        listingId: listing.id,
+      },
+    }),
+  );
+  window.dispatchEvent(new CustomEvent(MY_BOOKS_EVENT));
 }
 
 export function saveMyBook(book) {

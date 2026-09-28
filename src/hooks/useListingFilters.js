@@ -1,17 +1,33 @@
-import { useMemo, useState } from "react";
-import { listings } from "../data/listings.js";
+import { useEffect, useMemo, useState } from "react";
 import {
   computeListingStats,
   filterListings,
   initialListingFilters,
 } from "../services/listingFilters.js";
+import {
+  LISTINGS_EVENT,
+  loadAllListings,
+} from "../services/listingsStorage.js";
 
 export function useListingFilters() {
   const [filters, setFilters] = useState(initialListingFilters);
+  const [allListings, setAllListings] = useState(loadAllListings);
+
+  useEffect(() => {
+    const refreshListings = () => setAllListings(loadAllListings());
+
+    window.addEventListener(LISTINGS_EVENT, refreshListings);
+    window.addEventListener("storage", refreshListings);
+
+    return () => {
+      window.removeEventListener(LISTINGS_EVENT, refreshListings);
+      window.removeEventListener("storage", refreshListings);
+    };
+  }, []);
 
   const filteredListings = useMemo(
-    () => filterListings(listings, filters),
-    [filters],
+    () => filterListings(allListings, filters),
+    [allListings, filters],
   );
 
   const stats = useMemo(
@@ -32,6 +48,7 @@ export function useListingFilters() {
   };
 
   return {
+    allListings,
     filters,
     filteredListings,
     stats,

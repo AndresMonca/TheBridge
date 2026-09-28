@@ -20,7 +20,9 @@ function SummaryRow({ label, value }) {
   );
 }
 
-function ListingSuccess({ book, modality, values }) {
+function ListingSuccess({ listing }) {
+  const { modality } = listing;
+
   return (
     <section className="rounded-2xl border border-line bg-surface p-6 sm:p-8">
       <div className="flex items-start gap-4">
@@ -31,7 +33,7 @@ function ListingSuccess({ book, modality, values }) {
           ✓
         </span>
 
-        <div>
+        <div className="min-w-0">
           <h2 className="text-2xl font-bold tracking-tight text-ink">
             Listing published!
           </h2>
@@ -44,7 +46,7 @@ function ListingSuccess({ book, modality, values }) {
       <dl className="mt-6 divide-y divide-line border-y border-line">
         <SummaryRow
           label="Book"
-          value={`${book.title} — ${book.author || "Unknown author"}`}
+          value={`${listing.title} — ${listing.author}`}
         />
         <SummaryRow label="Modality" value={modality} />
 
@@ -52,54 +54,43 @@ function ListingSuccess({ book, modality, values }) {
           <SummaryRow
             label="Desired book"
             value={
-              values.desiredBookMeta
-                ? `${values.desiredBook} — ${values.desiredBookMeta.author}`
+              listing.desiredBookMeta
+                ? `${listing.desiredBook} — ${listing.desiredBookMeta.author}`
                 : "Open to offers"
             }
           />
         )}
 
         {modality === "Loan" && (
-          <SummaryRow label="Duration" value={values.loanDuration} />
+          <SummaryRow label="Duration" value={listing.duration} />
         )}
 
         {modality === "Rental" && (
           <>
             <SummaryRow
               label="Price"
-              value={formatListingPrice(values.rentalPrice)}
+              value={formatListingPrice(listing.price)}
             />
-            <SummaryRow
-              label="Duration"
-              value={values.rentalDuration}
-            />
+            <SummaryRow label="Duration" value={listing.duration} />
           </>
         )}
 
         {modality === "Sale" && (
-          <SummaryRow
-            label="Price"
-            value={formatListingPrice(values.salePrice)}
-          />
+          <SummaryRow label="Price" value={formatListingPrice(listing.price)} />
         )}
       </dl>
 
       <p className={`mt-6 text-xs ${notice.info}`}>
-        Prototype only: this listing is simulated and nothing has been saved.
+        Your listing is now available in the marketplace. It is saved in this
+        browser.
       </p>
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
-        <Link
-          to="/my-books"
-          className={buttonSecondary}
-        >
+        <Link to="/my-books" className={buttonSecondary}>
           Back to My Books
         </Link>
 
-        <Link
-          to="/listing/book-01"
-          className={buttonPrimary}
-        >
+        <Link to={`/listing/${listing.id}`} className={buttonPrimary}>
           View Listing →
         </Link>
       </div>

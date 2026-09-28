@@ -63,7 +63,7 @@ function AboutPage() {
           </p>
         </header>
 
-        <div className="grid gap-5 xl:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
           {aboutSections.map((section) => (
             <AboutSection key={section.eyebrow} section={section} />
           ))}

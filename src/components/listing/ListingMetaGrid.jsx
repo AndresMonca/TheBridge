@@ -18,7 +18,7 @@ function ListingMetaItem({ label, value, wide = false }) {
 
 function ListingMetaGrid({ listing, priceLabel }) {
   return (
-    <dl className="mt-8 grid gap-x-10 sm:grid-cols-2">
+    <dl className="mt-8 grid grid-cols-1 gap-x-10 sm:grid-cols-2">
       <ListingMetaItem label="Owner" value={listing.owner} />
       <ListingMetaItem label="Community" value={listing.university} />
       <ListingMetaItem label="Year" value={listing.year} />

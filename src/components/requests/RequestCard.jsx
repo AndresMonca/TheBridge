@@ -1,4 +1,4 @@
-import { listings } from "../../data/listings.js";
+import { findListingById } from "../../services/listingsStorage.js";
 import {
   getRequestStatusMessage,
   requestStatusMeta,
@@ -11,7 +11,7 @@ import {
 } from "../../styles/ui.js";
 
 function RequestCard({ request, myBook, offeredBook, onStatusChange }) {
-  const listing = listings.find((item) => item.id === request.listingId);
+  const listing = findListingById(request.listingId);
   const meta = requestStatusMeta[request.status];
 
   const source = myBook || listing;
@@ -61,46 +61,48 @@ function RequestCard({ request, myBook, offeredBook, onStatusChange }) {
           <p className="mt-2 text-sm font-semibold text-wine-ink">
             {counterpartLabel}
           </p>
-
-          <p className="mt-1 text-sm leading-6 text-ink">{request.note}</p>
-
-          {myBook && (
-            <p className="mt-2 text-xs text-ink-muted">
-              Your copy in My Books · {myBook.condition}
-            </p>
-          )}
-
-          {offeredBook && (
-            <p className="mt-2 text-xs text-ink-muted">
-              You offered your copy of{" "}
-              <span className="font-semibold text-ink">{offeredBook.title}</span>
-            </p>
-          )}
-
-          {canRespond && (
-            <div className="mt-4 flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={() => onStatusChange(request.id, "Accepted")}
-                className={buttonPrimarySm}
-              >
-                Accept
-              </button>
-
-              <button
-                type="button"
-                onClick={() => onStatusChange(request.id, "Rejected")}
-                className={buttonSecondarySm}
-              >
-                Reject
-              </button>
-            </div>
-          )}
-
-          <p className="mt-3 text-xs leading-5 text-ink-muted">
-            {getRequestStatusMessage(request)}
-          </p>
         </div>
+      </div>
+
+      <div className="mt-3 sm:pl-[4.5rem]">
+        <p className="text-sm leading-6 text-ink">{request.note}</p>
+
+        {myBook && (
+          <p className="mt-2 text-xs text-ink-muted">
+            Your copy in My Books · {myBook.condition}
+          </p>
+        )}
+
+        {offeredBook && (
+          <p className="mt-2 text-xs text-ink-muted">
+            You offered your copy of{" "}
+            <span className="font-semibold text-ink">{offeredBook.title}</span>
+          </p>
+        )}
+
+        {canRespond && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => onStatusChange(request.id, "Accepted")}
+              className={buttonPrimarySm}
+            >
+              Accept
+            </button>
+
+            <button
+              type="button"
+              onClick={() => onStatusChange(request.id, "Rejected")}
+              className={buttonSecondarySm}
+            >
+              Reject
+            </button>
+          </div>
+        )}
+
+        <p className="mt-3 text-xs leading-5 text-ink-muted">
+          {getRequestStatusMessage(request)}
+        </p>
       </div>
     </article>
   );

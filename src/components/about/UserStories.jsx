@@ -9,7 +9,7 @@ function UserStories({ stories }) {
         What the prototype should let people do
       </h2>
 
-      <div className="mt-6 grid gap-x-8 lg:grid-cols-2">
+      <div className="mt-6 grid grid-cols-1 gap-x-8 lg:grid-cols-2">
         {stories.map((story) => (
           <article
             key={story.id}

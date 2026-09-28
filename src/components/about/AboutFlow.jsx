@@ -9,7 +9,7 @@ function AboutFlow({ steps }) {
         From discovery to connection
       </h2>
 
-      <ol className="mt-6 grid gap-x-8 sm:grid-cols-2 xl:grid-cols-3">
+      <ol className="mt-6 grid grid-cols-1 gap-x-8 sm:grid-cols-2 xl:grid-cols-3">
         {steps.map((step, index) => (
           <li
             key={step.label}

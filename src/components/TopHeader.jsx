@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { focusRing } from "../styles/ui.js";
 
 function TopHeader({
@@ -10,18 +11,38 @@ function TopHeader({
   return (
     <header className="sticky top-0 z-30 border-b border-line/70 bg-canvas/85 backdrop-blur-xl">
       <div className="mx-auto flex min-h-16 max-w-[1180px] items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-10">
-        <div className="min-w-0">
-          <p className="truncate text-sm font-semibold text-ink">{title}</p>
+        <div className="flex min-w-0 items-center gap-2.5">
+          <Link
+            to="/"
+            aria-label="TheBridge home"
+            className={`shrink-0 rounded-lg lg:hidden ${focusRing}`}
+          >
+            <img
+              src={`${import.meta.env.BASE_URL}assets/brand/thebridge-logo.svg`}
+              alt=""
+              className="h-7 w-9 object-contain dark:hidden"
+            />
+            <img
+              src={`${import.meta.env.BASE_URL}assets/brand/thebridge-logo-dark.svg`}
+              alt=""
+              className="hidden h-7 w-9 object-contain dark:block"
+            />
+          </Link>
 
-          <p className="hidden truncate text-xs text-ink-muted sm:block">
-            {subtitle}
-          </p>
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold text-ink">{title}</p>
+
+            <p className="hidden truncate text-xs text-ink-muted sm:block">
+              {subtitle}
+            </p>
+          </div>
         </div>
 
         <div className="flex shrink-0 items-center gap-1 sm:gap-2">
           <div
             className="flex items-center gap-2 px-2 text-xs font-medium text-ink-muted"
             aria-live="polite"
+            title={isOnline ? "Online" : "Offline"}
           >
             <span
               className={`h-2 w-2 rounded-full ${
@@ -30,7 +51,9 @@ function TopHeader({
               aria-hidden="true"
             />
 
-            <span>{isOnline ? "Online" : "Offline"}</span>
+            <span className="sr-only sm:not-sr-only">
+              {isOnline ? "Online" : "Offline"}
+            </span>
           </div>
 
           <button

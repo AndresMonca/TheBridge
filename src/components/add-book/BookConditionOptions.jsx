@@ -6,7 +6,7 @@ function BookConditionOptions({ value, onChange, hasError }) {
     <fieldset>
       <legend className="text-sm font-semibold text-ink">Condition</legend>
 
-      <div className="mt-3 grid gap-2 sm:grid-cols-3">
+      <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-3">
         {bookConditions.map((condition) => (
           <label
             key={condition}

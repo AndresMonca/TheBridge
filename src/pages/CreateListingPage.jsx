@@ -5,6 +5,7 @@ import CreateListingForm from "../components/create-listing/CreateListingForm.js
 import ListingBookCard from "../components/create-listing/ListingBookCard.jsx";
 import ListingSuccess from "../components/create-listing/ListingSuccess.jsx";
 import { resolveListingBook } from "../services/createListingBooks.js";
+import { publishListing } from "../services/listingsStorage.js";
 import {
   buttonGhost,
   eyebrow,
@@ -18,7 +19,14 @@ function CreateListingPage() {
   const [searchParams] = useSearchParams();
   const [published, setPublished] = useState(null);
   const requestedId = searchParams.get("book");
-  const { book, notice } = resolveListingBook(requestedId);
+  const resolved = resolveListingBook(requestedId);
+  const book = published ? published.book : resolved.book;
+  const notice = published ? null : resolved.notice;
+
+  const handlePublish = ({ modality, values }) => {
+    const listing = publishListing(book, modality, values);
+    setPublished({ listing, book });
+  };
 
   return (
     <AppShell
@@ -55,17 +63,13 @@ function CreateListingPage() {
           </Link>
         </div>
       ) : (
-        <div className="mt-10 grid gap-10 lg:grid-cols-[240px_minmax(0,1fr)] lg:items-start lg:gap-14">
+        <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[240px_minmax(0,1fr)] lg:items-start lg:gap-14">
           <ListingBookCard book={book} />
 
           {published ? (
-            <ListingSuccess
-              book={book}
-              modality={published.modality}
-              values={published.values}
-            />
+            <ListingSuccess listing={published.listing} />
           ) : (
-            <CreateListingForm onPublish={setPublished} />
+            <CreateListingForm onPublish={handlePublish} />
           )}
         </div>
       )}

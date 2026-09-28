@@ -73,7 +73,7 @@ function AddBookSearchState({ search, onSelect }) {
         </button>
       </div>
 
-      <div className="mt-4 grid gap-3 md:grid-cols-2">
+      <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
         {search.results.map((book) => (
           <AddBookResultCard
             key={book.id}

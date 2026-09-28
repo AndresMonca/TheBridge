@@ -62,7 +62,7 @@ function ListingDetailsPage({ listing }) {
       title="Listing details"
       subtitle={`${listing.title} by ${listing.author}`}
     >
-      <article className="grid gap-10 pt-2 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:gap-16 lg:pt-6">
+      <article className="grid grid-cols-1 gap-10 pt-2 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:gap-16 lg:pt-6">
         <ListingCoverCard listing={listing} />
 
         <section className="min-w-0">

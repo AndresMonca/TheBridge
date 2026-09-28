@@ -1,5 +1,5 @@
+import { useMemo } from "react";
 import { listingModalities } from "../../data/createListingData.js";
-import { listings } from "../../data/listings.js";
 import { ALL_OPTION, getUniqueValues } from "../../services/listingFilters.js";
 import {
   buttonGhost,
@@ -11,11 +11,15 @@ import {
 } from "../../styles/ui.js";
 import FilterSelect from "./FilterSelect.jsx";
 
-const GENRES = getUniqueValues(listings, "genre");
-const CONDITIONS = getUniqueValues(listings, "condition");
 const MODALITIES = [ALL_OPTION, ...listingModalities.map(({ id }) => id)];
 
-function ListingFilters({ filters, resultCount, hasActiveFilters, onChange, onReset }) {
+function ListingFilters({ listings, filters, resultCount, hasActiveFilters, onChange, onReset }) {
+  const genres = useMemo(() => getUniqueValues(listings, "genre"), [listings]);
+  const conditions = useMemo(
+    () => getUniqueValues(listings, "condition"),
+    [listings],
+  );
+
   return (
     <div>
       <header className="max-w-2xl">
@@ -73,8 +77,8 @@ function ListingFilters({ filters, resultCount, hasActiveFilters, onChange, onRe
           </fieldset>
 
           <div className="grid grid-cols-2 gap-3 lg:w-[22rem]">
-            <FilterSelect id="genre-filter" label="Genre" value={filters.genre} options={GENRES} onChange={(value) => onChange("genre", value)} />
-            <FilterSelect id="condition-filter" label="Condition" value={filters.condition} options={CONDITIONS} onChange={(value) => onChange("condition", value)} />
+            <FilterSelect id="genre-filter" label="Genre" value={filters.genre} options={genres} onChange={(value) => onChange("genre", value)} />
+            <FilterSelect id="condition-filter" label="Condition" value={filters.condition} options={conditions} onChange={(value) => onChange("condition", value)} />
           </div>
         </div>
       </form>

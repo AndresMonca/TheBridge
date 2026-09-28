@@ -23,6 +23,7 @@ function MarketplacePage() {
     >
       <section>
         <ListingFilters
+          listings={listingFilters.allListings}
           filters={listingFilters.filters}
           resultCount={listingFilters.filteredListings.length}
           hasActiveFilters={listingFilters.hasActiveFilters}
@@ -43,7 +44,7 @@ function MarketplacePage() {
         </div>
       </section>
 
-      <div className="mt-20 grid gap-10 border-t border-line pt-14 xl:grid-cols-[minmax(0,1fr)_300px]">
+      <div className="mt-20 grid grid-cols-1 gap-10 border-t border-line pt-14 xl:grid-cols-[minmax(0,1fr)_300px]">
         <section>
           <MarketplaceSearchPanel
             searchInput={marketplace.searchInput}

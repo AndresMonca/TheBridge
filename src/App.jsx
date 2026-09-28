@@ -15,7 +15,7 @@ import MarketplacePage from "./pages/MarketplacePage.jsx";
 import MyBooksPage from "./pages/MyBooksPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
 import RequestsPage from "./pages/RequestsPage.jsx";
-import { listings } from "./data/listings.js";
+import { findListingById } from "./services/listingsStorage.js";
 
 function ProtectedRoute({ children }) {
   const isAuthenticated =
@@ -26,7 +26,7 @@ function ProtectedRoute({ children }) {
 
 function ListingRoute() {
   const { id } = useParams();
-  const listing = listings.find((item) => item.id === id);
+  const listing = findListingById(id);
 
   return <ListingDetailsPage key={id} listing={listing} />;
 }

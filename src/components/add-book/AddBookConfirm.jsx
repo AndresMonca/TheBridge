@@ -42,7 +42,7 @@ function AddBookConfirm({ book, onBack, onSaved }) {
         ← Back to search
       </button>
 
-      <div className="grid gap-8 sm:grid-cols-[160px_minmax(0,1fr)] sm:gap-10">
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-[160px_minmax(0,1fr)] sm:gap-10">
         <div className={`w-32 shadow-card sm:w-full ${coverFrame}`}>
           {book.cover ? (
             <img
