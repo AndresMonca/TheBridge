@@ -28,7 +28,7 @@ function LoginPage() {
           className="mx-auto hidden h-12 w-14 object-contain dark:block"
         />
 
-        <p className={`mt-6 ${eyebrow}`}>Student access</p>
+        <p className={`mt-6 ${eyebrow}`}>Member access</p>
 
         <h1 className="mt-3 text-3xl font-bold tracking-tight text-ink">
           Welcome to TheBridge
@@ -44,7 +44,7 @@ function LoginPage() {
           onClick={handleLogin}
           className={`mt-8 w-full ${buttonPrimaryLg}`}
         >
-          Continue as student
+          Continue as member
         </button>
       </section>
     </AppShell>

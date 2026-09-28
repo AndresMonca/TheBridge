@@ -47,19 +47,19 @@ function AboutPage() {
     <AppShell
       activePage="about"
       title="About TheBridge"
-      subtitle="Why this prototype exists and how students use it"
+      subtitle="Why TheBridge exists and how people use it"
     >
       <div className="space-y-6">
         <header className="max-w-3xl pb-6 pt-2 lg:pt-6">
           <p className={eyebrow}>TheBridge</p>
 
           <h1 className="mt-4 text-4xl font-bold leading-[1.08] tracking-tight text-ink sm:text-5xl">
-            A simpler way for students to share physical books.
+            A simpler way for people to share physical books.
           </h1>
 
           <p className={`mt-5 max-w-2xl sm:text-lg sm:leading-8 ${pageLead}`}>
-            TheBridge is a frontend prototype designed around discovering,
-            sharing, and requesting books inside a university community.
+            TheBridge is a community book marketplace for people who want to
+            exchange, lend, rent, or sell physical books.
           </p>
         </header>
 

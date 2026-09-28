@@ -34,7 +34,7 @@ function CreateListingPage() {
         <p className={eyebrow}>Share a book</p>
         <h1 className={`mt-3 ${pageTitle}`}>Create Listing</h1>
         <p className={`mt-2 ${pageLead}`}>
-          Choose how you want to share this book with other students.
+          Choose how you want to share this book with your community.
         </p>
       </header>
 

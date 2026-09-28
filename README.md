@@ -1,4 +1,4 @@
-﻿# Pages - Link
+# Pages - Link
 
 https://ninjasilver3692077.github.io/TheBridge/
 
@@ -15,7 +15,9 @@ Jorge Fontalvo
 
 ## Project Name
 
-TheBridge is a frontend prototype that connects students who own physical books with students and people who want to access them.
+TheBridge is a community book marketplace prototype for people who want to exchange, lend, rent, or sell physical books. The project started from a university-campus problem (described below as the Milestone 1 context), but the product is designed for any local community.
+
+Books shared on TheBridge are local sample listings (`src/data/listings.js`), because a bibliographic API cannot provide owner, modality, condition, price, or duration. Book search in the Marketplace catalog and in Add Book uses the public Open Library API.
 
 ## Problem Statement
 

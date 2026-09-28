@@ -49,7 +49,7 @@ function RequestsPage() {
     <AppShell
       activePage="requests"
       title="Requests"
-      subtitle="Manage book requests between students"
+      subtitle="Manage book requests between members"
     >
       <section>
         <p className={eyebrow}>

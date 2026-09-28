@@ -23,7 +23,7 @@ function ListingGrid({ listings, onReset, onSelect }) {
   return (
     <section aria-labelledby="community-listings-title">
       <h2 id="community-listings-title" className="sr-only">
-        Community listings
+        Books shared on TheBridge
       </h2>
 
       <div className="grid grid-cols-1 gap-5 min-[480px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

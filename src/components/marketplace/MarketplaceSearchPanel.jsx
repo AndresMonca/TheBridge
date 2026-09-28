@@ -5,6 +5,7 @@ import {
   fieldError,
   inputField,
   pageLead,
+  textLink,
 } from "../../styles/ui.js";
 
 const QUICK_SEARCHES = ["Algorithms", "Calculus", "Physics", "Databases"];
@@ -19,14 +20,15 @@ function MarketplaceSearchPanel({
 }) {
   return (
     <div>
-      <p className={eyebrow}>Open Library search</p>
+      <p className={eyebrow}>Book catalog</p>
 
       <h2 className="mt-3 text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-        Explore the public catalog
+        Search the book catalog
       </h2>
 
       <p className={`mt-2 max-w-2xl ${pageLead}`}>
-        Search public bibliographic data and save the books that interest you.
+        Look up any published book and save the ones you want to find. These
+        are catalog records, not copies shared by members.
       </p>
 
       <form onSubmit={onSubmit} className="mt-6" role="search" noValidate>
@@ -76,6 +78,18 @@ function MarketplaceSearchPanel({
           </button>
         ))}
       </div>
+
+      <p className="mt-3 text-xs text-ink-muted">
+        Book data powered by{" "}
+        <a
+          href="https://openlibrary.org"
+          target="_blank"
+          rel="noreferrer"
+          className={textLink}
+        >
+          Open Library
+        </a>
+      </p>
     </div>
   );
 }

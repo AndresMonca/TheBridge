@@ -1,4 +1,9 @@
-import { buttonPrimaryLg, fieldError, inputBase } from "../../styles/ui.js";
+import {
+  buttonPrimaryLg,
+  fieldError,
+  inputBase,
+  textLink,
+} from "../../styles/ui.js";
 
 function AddBookSearchForm({
   query,
@@ -9,7 +14,7 @@ function AddBookSearchForm({
   return (
     <form onSubmit={onSubmit}>
       <label htmlFor="book-search" className="mb-3 block text-sm font-semibold text-ink">
-        Search for a book
+        Find a book to add
       </label>
 
       <div className="flex flex-col gap-3 sm:flex-row">
@@ -50,6 +55,18 @@ function AddBookSearchForm({
           {validationError}
         </p>
       )}
+
+      <p className="mt-3 text-xs text-ink-muted">
+        Book data powered by{" "}
+        <a
+          href="https://openlibrary.org"
+          target="_blank"
+          rel="noreferrer"
+          className={textLink}
+        >
+          Open Library
+        </a>
+      </p>
     </form>
   );
 }

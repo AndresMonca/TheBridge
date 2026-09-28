@@ -19,7 +19,7 @@ function MarketplacePage() {
     <AppShell
       activePage="marketplace"
       title="Marketplace"
-      subtitle="Discover books from the university community"
+      subtitle="Books shared by people in your community"
     >
       <section>
         <ListingFilters

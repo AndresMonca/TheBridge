@@ -80,7 +80,7 @@ function Sidebar({ collapsed = false, onToggle }) {
 
       {!collapsed && (
         <p className="border-t border-line px-2 pt-5 text-xs leading-5 text-ink-muted">
-          A focused student book marketplace.
+          A community for books in motion.
         </p>
       )}
     </aside>

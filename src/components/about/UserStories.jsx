@@ -6,7 +6,7 @@ function UserStories({ stories }) {
       <p className={eyebrow}>User stories</p>
 
       <h2 className="mt-3 text-2xl font-bold tracking-tight text-ink">
-        What the prototype should let students do
+        What the prototype should let people do
       </h2>
 
       <div className="mt-6 grid gap-x-8 lg:grid-cols-2">

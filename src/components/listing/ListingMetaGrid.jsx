@@ -20,7 +20,7 @@ function ListingMetaGrid({ listing, priceLabel }) {
   return (
     <dl className="mt-8 grid gap-x-10 sm:grid-cols-2">
       <ListingMetaItem label="Owner" value={listing.owner} />
-      <ListingMetaItem label="University" value={listing.university} />
+      <ListingMetaItem label="Community" value={listing.university} />
       <ListingMetaItem label="Year" value={listing.year} />
       <ListingMetaItem label="Status" value={listing.status} />
       <ListingMetaItem label="Price" value={priceLabel} />

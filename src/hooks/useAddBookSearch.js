@@ -1,8 +1,15 @@
-﻿import { useEffect, useState } from "react";
-import {
-  isSimulatedSearchError,
-  searchAddBookCatalog,
-} from "../services/catalogSearch.js";
+import { useEffect, useState } from "react";
+import { searchOpenLibraryWithCache } from "../services/openLibrary.js";
+
+function toCatalogBook(book) {
+  return {
+    id: book.id,
+    title: book.title,
+    author: book.author,
+    year: book.year,
+    cover: book.coverUrl || "",
+  };
+}
 
 export function useAddBookSearch() {
   const [query, setQuery] = useState("");
@@ -16,18 +23,27 @@ export function useAddBookSearch() {
       return undefined;
     }
 
-    const timer = window.setTimeout(() => {
-      if (isSimulatedSearchError(submittedQuery)) {
-        setStatus("error");
-        return;
+    const controller = new AbortController();
+
+    const loadResults = async () => {
+      try {
+        const { books } = await searchOpenLibraryWithCache(
+          submittedQuery,
+          controller.signal,
+        );
+        const matches = books.map(toCatalogBook);
+        setResults(matches);
+        setStatus(matches.length > 0 ? "results" : "no-results");
+      } catch (requestError) {
+        if (requestError.name !== "AbortError") {
+          setStatus("error");
+        }
       }
+    };
 
-      const matches = searchAddBookCatalog(submittedQuery);
-      setResults(matches);
-      setStatus(matches.length > 0 ? "results" : "no-results");
-    }, 850);
+    loadResults();
 
-    return () => window.clearTimeout(timer);
+    return () => controller.abort();
   }, [status, submittedQuery]);
 
   const handleQueryChange = (event) => {
@@ -57,7 +73,7 @@ export function useAddBookSearch() {
   };
 
   const retrySearch = () => {
-    setStatus("idle");
+    setStatus(submittedQuery ? "loading" : "idle");
   };
 
   return {

@@ -29,7 +29,7 @@ function MyBookStatusAction({ book }) {
       <p className="text-sm text-ink-muted">
         Loaned to{" "}
         <span className="font-semibold text-ink">
-          {book.loanedTo || "Student"}
+          {book.loanedTo || "Member"}
         </span>
       </p>
     );

@@ -180,12 +180,15 @@ function ListingQuickView({ listing, onClose }) {
                   </span>
 
                   <div className="min-w-0">
+                    <p className="text-xs text-ink-muted">Shared by</p>
                     <p className="text-sm font-semibold text-ink">
                       {displayed.owner}
                     </p>
-                    <p className="truncate text-sm text-ink-muted">
-                      {displayed.university}
-                    </p>
+                    {displayed.university && (
+                      <p className="truncate text-xs text-ink-muted">
+                        {displayed.university}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

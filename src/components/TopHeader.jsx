@@ -76,7 +76,7 @@ function TopHeader({
             </span>
 
             <span className="hidden text-sm font-semibold text-ink md:inline">
-              Student
+              Member
             </span>
           </button>
         </div>

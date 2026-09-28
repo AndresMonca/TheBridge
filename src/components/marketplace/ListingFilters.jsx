@@ -19,12 +19,12 @@ function ListingFilters({ filters, resultCount, hasActiveFilters, onChange, onRe
   return (
     <div>
       <header className="max-w-2xl">
-        <p className={eyebrow}>Community listings</p>
+        <p className={eyebrow}>Community books</p>
         <h1 className={`mt-3 ${pageTitle}`}>
           Find your next book through your community.
         </h1>
         <p className={`mt-3 ${pageLead}`}>
-          Exchange, borrow, rent, or buy books shared by other students.
+          Physical copies shared on TheBridge by people in your community — to exchange, borrow, rent, or buy.
         </p>
       </header>
 
