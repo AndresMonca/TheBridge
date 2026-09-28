@@ -1,5 +1,6 @@
-﻿import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AppShell from "../components/AppShell.jsx";
+import { buttonPrimaryLg, eyebrow } from "../styles/ui.js";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -15,12 +16,20 @@ function LoginPage() {
       title="Sign in"
       subtitle="Access your personal TheBridge space"
     >
-      <section className="mx-auto max-w-lg rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <h1 className="text-3xl font-black text-slate-950 dark:text-white">
+      <section className="mx-auto mt-4 max-w-md rounded-3xl border border-line bg-surface p-8 text-center shadow-card sm:mt-12 sm:p-10">
+        <img
+          src={`${import.meta.env.BASE_URL}assets/brand/thebridge-logo.svg`}
+          alt=""
+          className="mx-auto h-12 w-14 object-contain"
+        />
+
+        <p className={`mt-6 ${eyebrow}`}>Student access</p>
+
+        <h1 className="mt-3 text-3xl font-bold tracking-tight text-ink">
           Welcome to TheBridge
         </h1>
 
-        <p className="mt-3 text-sm font-medium leading-6 text-slate-500 dark:text-slate-400">
+        <p className="mt-3 text-[15px] leading-7 text-ink-muted">
           This academic prototype uses a local authentication flag to
           demonstrate protected routes.
         </p>
@@ -28,7 +37,7 @@ function LoginPage() {
         <button
           type="button"
           onClick={handleLogin}
-          className="mt-7 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-indigo-500/15 transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-blue-500/20"
+          className={`mt-8 w-full ${buttonPrimaryLg}`}
         >
           Continue as student
         </button>

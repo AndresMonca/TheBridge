@@ -1,5 +1,6 @@
 import { listings } from "../../data/listings.js";
 import { computeListingStats } from "../../services/listingFilters.js";
+import { sectionTitle } from "../../styles/ui.js";
 
 const stats = computeListingStats(listings);
 
@@ -12,24 +13,16 @@ const SUMMARY_ITEMS = [
 
 function CommunitySummary() {
   return (
-    <section aria-labelledby="community-summary-title" className="mt-8">
-      <h2
-        id="community-summary-title"
-        className="text-xl font-black text-slate-950 dark:text-white"
-      >
+    <section aria-labelledby="community-summary-title" className="mt-16 lg:mt-20">
+      <h2 id="community-summary-title" className={sectionTitle}>
         The community at a glance
       </h2>
 
-      <dl className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <dl className="mt-6 grid grid-cols-2 gap-y-6 border-y border-line py-6 lg:grid-cols-4 lg:divide-x lg:divide-line">
         {SUMMARY_ITEMS.map(({ label, value }) => (
-          <div
-            key={label}
-            className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
-          >
-            <dt className="text-xs font-bold text-slate-500 dark:text-slate-400">
-              {label}
-            </dt>
-            <dd className="mt-1 text-3xl font-black text-slate-950 dark:text-white">
+          <div key={label} className="flex flex-col-reverse gap-1 pr-4 lg:px-6 lg:first:pl-0">
+            <dt className="text-sm text-ink-muted">{label}</dt>
+            <dd className="text-3xl font-bold tracking-tight text-ink sm:text-4xl">
               {value}
             </dd>
           </div>

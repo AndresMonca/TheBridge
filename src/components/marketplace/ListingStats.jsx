@@ -7,65 +7,65 @@ function formatAverage(modalityStats) {
   return average === null ? "No priced listings" : formatListingPrice(average);
 }
 
+function StatItem({ label, children, emphasis = false }) {
+  return (
+    <div className="flex min-w-0 flex-col-reverse gap-1">
+      <dt className="text-xs text-ink-muted">{label}</dt>
+      <dd
+        className={
+          emphasis
+            ? "text-2xl font-bold tracking-tight text-wine-ink"
+            : "text-2xl font-bold tracking-tight text-ink"
+        }
+      >
+        {children}
+      </dd>
+    </div>
+  );
+}
+
 function ListingStats({ stats }) {
   return (
     <section
       aria-labelledby="listing-stats-title"
-      className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6"
+      className="rounded-2xl bg-surface-muted p-5 sm:p-6"
     >
-      <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-indigo-600 dark:text-indigo-400">
-        Live summary
-      </p>
-      <h2
-        id="listing-stats-title"
-        className="mt-1 text-xl font-black text-slate-950 dark:text-white"
-      >
-        Listing stats
-      </h2>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+        <h2 id="listing-stats-title" className="text-base font-semibold text-ink">
+          Listing stats
+        </h2>
+        <p className="text-xs text-ink-muted">
+          Calculated from the listings that match your current search and
+          filters.
+        </p>
+      </div>
 
-      <dl className="mt-5 grid grid-cols-2 gap-3">
-        <div className="col-span-2 rounded-2xl bg-slate-950 p-4 text-white dark:bg-white dark:text-slate-950">
-          <dt className="text-xs font-bold opacity-80">Listings shown</dt>
-          <dd className="mt-1 text-3xl font-black">{stats.total}</dd>
-        </div>
+      <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-5">
+        <StatItem label="Listings shown" emphasis>
+          {stats.total}
+        </StatItem>
 
         {listingModalities.map(({ id, label }) => (
-          <div
-            key={id}
-            className="rounded-2xl border border-slate-200 p-4 dark:border-slate-800"
-          >
-            <dt className="text-xs font-bold text-slate-500 dark:text-slate-400">
-              {label}
-            </dt>
-            <dd className="mt-1 text-2xl font-black text-slate-950 dark:text-white">
-              {stats.byModality[id]?.count ?? 0}
-            </dd>
-          </div>
+          <StatItem key={id} label={label}>
+            {stats.byModality[id]?.count ?? 0}
+          </StatItem>
         ))}
       </dl>
 
-      <dl className="mt-4 divide-y divide-slate-100 rounded-2xl border border-slate-200 dark:divide-slate-800 dark:border-slate-800">
-        <div className="flex items-baseline justify-between gap-3 px-4 py-3">
-          <dt className="text-xs font-bold text-slate-500 dark:text-slate-400">
-            Average sale price
-          </dt>
-          <dd className="text-right text-sm font-extrabold text-slate-950 dark:text-white">
+      <dl className="mt-5 grid gap-x-6 gap-y-2 border-t border-line pt-4 sm:grid-cols-2">
+        <div className="flex items-baseline justify-between gap-3">
+          <dt className="text-sm text-ink-muted">Average sale price</dt>
+          <dd className="text-right text-sm font-semibold text-ink">
             {formatAverage(stats.byModality.Sale)}
           </dd>
         </div>
-        <div className="flex items-baseline justify-between gap-3 px-4 py-3">
-          <dt className="text-xs font-bold text-slate-500 dark:text-slate-400">
-            Average rental price
-          </dt>
-          <dd className="text-right text-sm font-extrabold text-slate-950 dark:text-white">
+        <div className="flex items-baseline justify-between gap-3">
+          <dt className="text-sm text-ink-muted">Average rental price</dt>
+          <dd className="text-right text-sm font-semibold text-ink">
             {formatAverage(stats.byModality.Rental)}
           </dd>
         </div>
       </dl>
-
-      <p className="mt-4 text-xs font-medium leading-5 text-slate-500 dark:text-slate-400">
-        Calculated from the listings that match your current search and filters.
-      </p>
     </section>
   );
 }

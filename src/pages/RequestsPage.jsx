@@ -1,9 +1,10 @@
-﻿import { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import AppShell from "../components/AppShell.jsx";
 import RequestCard from "../components/requests/RequestCard.jsx";
 import RequestsTabs from "../components/requests/RequestsTabs.jsx";
 import { initialRequests } from "../data/requests.js";
 import { getRequestStatusMessage } from "../services/requestStatus.js";
+import { eyebrow, pageLead, pageTitle } from "../styles/ui.js";
 
 function RequestsPage() {
   const [activeTab, setActiveTab] = useState("received");
@@ -51,19 +52,19 @@ function RequestsPage() {
       subtitle="Manage book requests between students"
     >
       <section>
-        <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-blue-600 dark:text-blue-400">
+        <p className={eyebrow}>
           Request center
         </p>
 
-        <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-950 dark:text-white">
+        <h1 className={`mt-3 ${pageTitle}`}>
           Requests
         </h1>
 
-        <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500 dark:text-slate-400">
+        <p className={`mt-2 max-w-xl ${pageLead}`}>
           Review requests you received and track the ones you sent.
         </p>
 
-        <div className="mt-6">
+        <div className="mt-8">
           <RequestsTabs
             activeTab={activeTab}
             counts={counts}
@@ -71,7 +72,7 @@ function RequestsPage() {
           />
         </div>
 
-        <div className="mt-6 space-y-4">
+        <div className="mt-6 space-y-3">
           {visibleRequests.map((request) => (
             <RequestCard
               key={request.id}

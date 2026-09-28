@@ -1,10 +1,17 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { useDialogFocus } from "../../hooks/useDialogFocus.js";
 import ExchangeBookOptions from "./ExchangeBookOptions.jsx";
 import {
   getListingOfferRows,
   loadAvailableExchangeBooks,
 } from "../../services/listingRequest.js";
+import {
+  buttonPrimary,
+  buttonSecondary,
+  eyebrow,
+  focusRing,
+  notice,
+} from "../../styles/ui.js";
 
 function ListingRequestModal({ listing, open, onClose, onSent }) {
   const [selectedBookId, setSelectedBookId] = useState("");
@@ -37,7 +44,7 @@ function ListingRequestModal({ listing, open, onClose, onSent }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 grid place-items-center bg-slate-950/60 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 grid place-items-center bg-[#1B0C12]/55 p-4 backdrop-blur-[2px]"
       role="presentation"
     >
       <section
@@ -47,22 +54,22 @@ function ListingRequestModal({ listing, open, onClose, onSent }) {
         aria-labelledby="request-dialog-title"
         tabIndex={-1}
         onKeyDown={handleKeyDown}
-        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl focus:outline-none dark:border-slate-700 dark:bg-slate-900"
+        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-line bg-surface-raised p-6 shadow-2xl focus:outline-none sm:p-7"
       >
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-indigo-600 dark:text-indigo-400">
+            <p className={eyebrow}>
               Simulated request
             </p>
 
             <h2
               id="request-dialog-title"
-              className="mt-2 text-2xl font-black text-slate-950 dark:text-white"
+              className="mt-2 text-2xl font-bold tracking-tight text-ink"
             >
               Request {listing.modality}
             </h2>
 
-            <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+            <p className="mt-2 text-sm leading-6 text-ink-muted">
               Review the listing before sending your request to {listing.owner}.
             </p>
           </div>
@@ -71,22 +78,22 @@ function ListingRequestModal({ listing, open, onClose, onSent }) {
             type="button"
             onClick={onClose}
             aria-label="Close request dialog"
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-xl text-xl font-bold text-slate-500 transition hover:bg-slate-100 dark:hover:bg-slate-800"
+            className={`-mr-2 -mt-1 grid h-9 w-9 shrink-0 place-items-center rounded-lg text-xl text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink ${focusRing}`}
           >
             ×
           </button>
         </div>
 
-        <dl className="mt-5 divide-y divide-slate-100 rounded-2xl border border-slate-200 dark:divide-slate-800 dark:border-slate-700">
+        <dl className="mt-6 divide-y divide-line border-y border-line">
           {getListingOfferRows(listing).map((row) => (
             <div
               key={row.label}
-              className="flex items-baseline justify-between gap-4 px-4 py-3"
+              className="flex items-baseline justify-between gap-4 py-3"
             >
-              <dt className="text-xs font-extrabold uppercase tracking-wide text-slate-400">
+              <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted">
                 {row.label}
               </dt>
-              <dd className="text-right text-sm font-extrabold text-slate-950 dark:text-white">
+              <dd className="text-right text-sm font-semibold text-ink">
                 {row.value}
               </dd>
             </div>
@@ -103,7 +110,7 @@ function ListingRequestModal({ listing, open, onClose, onSent }) {
             />
           )}
 
-          <p className="mt-5 rounded-2xl bg-indigo-50 px-4 py-3 text-xs font-semibold leading-5 text-indigo-700 dark:bg-indigo-950/30 dark:text-indigo-300">
+          <p className={`mt-6 text-xs ${notice.info}`}>
             Prototype only: this request is simulated. No message, payment, or
             transaction will be sent.
           </p>
@@ -112,7 +119,7 @@ function ListingRequestModal({ listing, open, onClose, onSent }) {
             <button
               type="button"
               onClick={onClose}
-              className="h-11 rounded-2xl border border-slate-200 px-5 text-sm font-extrabold text-slate-700 dark:border-slate-700 dark:text-slate-200"
+              className={buttonSecondary}
             >
               Cancel
             </button>
@@ -122,7 +129,7 @@ function ListingRequestModal({ listing, open, onClose, onSent }) {
               disabled={
                 listing.modality === "Exchange" && availableBooks.length === 0
               }
-              className="h-11 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 text-sm font-extrabold text-white transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
+              className={buttonPrimary}
             >
               Send request
             </button>

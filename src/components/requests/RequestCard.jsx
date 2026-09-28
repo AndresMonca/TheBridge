@@ -1,8 +1,14 @@
-﻿import { listings } from "../../data/listings.js";
+import { listings } from "../../data/listings.js";
 import {
   getRequestStatusMessage,
   requestStatusMeta,
 } from "../../services/requestStatus.js";
+import {
+  badge,
+  buttonPrimarySm,
+  buttonSecondarySm,
+  card,
+} from "../../styles/ui.js";
 
 function RequestCard({ request, onStatusChange }) {
   const listing = listings.find((item) => item.id === request.listingId);
@@ -21,9 +27,9 @@ function RequestCard({ request, onStatusChange }) {
     request.direction === "received" && request.status === "Pending";
 
   return (
-    <article className="rounded-3xl border border-slate-200 bg-slate-50/60 p-4 dark:border-slate-800 dark:bg-slate-950/40">
+    <article className={`p-4 sm:p-5 ${card}`}>
       <div className="flex gap-4">
-        <div className="h-20 w-14 shrink-0 overflow-hidden rounded-lg bg-slate-200 dark:bg-slate-800">
+        <div className="h-20 w-14 shrink-0 overflow-hidden rounded-md bg-surface-muted">
           {cover && (
             <img
               src={cover}
@@ -37,36 +43,32 @@ function RequestCard({ request, onStatusChange }) {
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-start justify-between gap-2">
             <div className="min-w-0">
-              <p className="truncate text-sm font-black text-slate-950 dark:text-white">
+              <p className="truncate text-[15px] font-semibold text-ink">
                 {title}
               </p>
 
-              <p className="truncate text-xs font-semibold text-slate-500 dark:text-slate-400">
+              <p className="truncate text-sm text-ink-muted">
                 {author} · {modality}
               </p>
             </div>
 
-            <span
-              className={`inline-flex shrink-0 items-center rounded-full border px-2.5 py-1 text-xs font-extrabold ${meta.classes}`}
-            >
+            <span className={`shrink-0 ${badge} ${meta.classes}`}>
               {meta.label}
             </span>
           </div>
 
-          <p className="mt-2 text-xs font-extrabold text-indigo-600 dark:text-indigo-300">
+          <p className="mt-2 text-sm font-semibold text-wine-ink">
             {counterpartLabel}
           </p>
 
-          <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">
-            {request.note}
-          </p>
+          <p className="mt-1 text-sm leading-6 text-ink">{request.note}</p>
 
           {canRespond && (
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-wrap gap-2">
               <button
                 type="button"
                 onClick={() => onStatusChange(request.id, "Accepted")}
-                className="rounded-xl bg-slate-950 px-4 py-2 text-sm font-extrabold text-white transition hover:bg-emerald-600 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:bg-white dark:text-slate-950"
+                className={buttonPrimarySm}
               >
                 Accept
               </button>
@@ -74,14 +76,14 @@ function RequestCard({ request, onStatusChange }) {
               <button
                 type="button"
                 onClick={() => onStatusChange(request.id, "Rejected")}
-                className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-extrabold text-slate-700 transition hover:border-rose-300 hover:text-rose-600 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+                className={buttonSecondarySm}
               >
                 Reject
               </button>
             </div>
           )}
 
-          <p className="mt-3 text-xs font-semibold leading-5 text-slate-500 dark:text-slate-400">
+          <p className="mt-3 text-xs leading-5 text-ink-muted">
             {getRequestStatusMessage(request)}
           </p>
         </div>

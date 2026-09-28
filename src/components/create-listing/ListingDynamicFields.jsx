@@ -1,8 +1,5 @@
-﻿import {
-  DurationSelect,
-  inputClass,
-  PriceInput,
-} from "./ListingFieldControls.jsx";
+import { fieldLabel, inputField } from "../../styles/ui.js";
+import { DurationSelect, PriceInput } from "./ListingFieldControls.jsx";
 
 function ListingDynamicFields({ modality, values, errors, onChange }) {
   if (modality === "Exchange") {
@@ -10,7 +7,7 @@ function ListingDynamicFields({ modality, values, errors, onChange }) {
       <div>
         <label
           htmlFor="desiredBook"
-          className="mb-2 block text-sm font-extrabold text-slate-800 dark:text-slate-100"
+          className={fieldLabel}
         >
           Desired book
         </label>
@@ -20,7 +17,7 @@ function ListingDynamicFields({ modality, values, errors, onChange }) {
           value={values.desiredBook}
           onChange={(event) => onChange("desiredBook", event.target.value)}
           placeholder="Optional — leave blank if open to offers"
-          className={inputClass}
+          className={inputField}
         />
       </div>
     );

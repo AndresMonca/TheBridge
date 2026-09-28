@@ -1,17 +1,16 @@
-﻿import { bookConditions } from "../../data/addBookData.js";
+import { bookConditions } from "../../data/addBookData.js";
+import { fieldError } from "../../styles/ui.js";
 
 function BookConditionOptions({ value, onChange, hasError }) {
   return (
     <fieldset>
-      <legend className="text-sm font-extrabold text-slate-950 dark:text-white">
-        Condition
-      </legend>
+      <legend className="text-sm font-semibold text-ink">Condition</legend>
 
-      <div className="mt-3 grid gap-3 sm:grid-cols-3">
+      <div className="mt-3 grid gap-2 sm:grid-cols-3">
         {bookConditions.map((condition) => (
           <label
             key={condition}
-            className="flex cursor-pointer items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:border-indigo-300 has-[:checked]:border-indigo-400 has-[:checked]:bg-indigo-50 dark:border-slate-700 dark:bg-slate-950 dark:has-[:checked]:border-indigo-500 dark:has-[:checked]:bg-indigo-950/40"
+            className="flex cursor-pointer items-center gap-3 rounded-xl border border-line bg-surface px-4 py-3 transition-colors hover:border-line-strong has-[:checked]:border-wine has-[:checked]:bg-wine-soft has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-wine has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-canvas"
           >
             <input
               type="radio"
@@ -20,20 +19,16 @@ function BookConditionOptions({ value, onChange, hasError }) {
               checked={value === condition}
               onChange={(event) => onChange(event.target.value)}
               aria-invalid={hasError}
-              className="h-4 w-4 accent-indigo-600"
+              className="h-4 w-4 accent-wine"
             />
 
-            <span className="text-sm font-extrabold">
-              {condition}
-            </span>
+            <span className="text-sm font-medium text-ink">{condition}</span>
           </label>
         ))}
       </div>
 
       {hasError && (
-        <p className="mt-2 text-sm font-bold text-red-600 dark:text-red-400">
-          Select the condition of your copy.
-        </p>
+        <p className={fieldError}>Select the condition of your copy.</p>
       )}
     </fieldset>
   );

@@ -1,4 +1,6 @@
-﻿function RequestsTabs({ activeTab, counts, onChange }) {
+import { focusRing } from "../../styles/ui.js";
+
+function RequestsTabs({ activeTab, counts, onChange }) {
   const tabs = ["received", "sent"];
 
   const handleKeyDown = (event) => {
@@ -34,7 +36,7 @@
       role="tablist"
       aria-label="Request categories"
       onKeyDown={handleKeyDown}
-      className="flex flex-wrap gap-2"
+      className="inline-flex rounded-xl bg-surface-muted p-1"
     >
       {tabs.map((tab) => {
         const isActive = activeTab === tab;
@@ -48,13 +50,20 @@
             aria-selected={isActive}
             tabIndex={isActive ? 0 : -1}
             onClick={() => onChange(tab)}
-            className={`rounded-xl px-4 py-2 text-sm font-extrabold transition focus:outline-none focus:ring-4 focus:ring-blue-500/20 ${
+            className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm transition-colors ${focusRing} ${
               isActive
-                ? "bg-slate-950 text-white dark:bg-white dark:text-slate-950"
-                : "border border-slate-200 bg-white text-slate-700 hover:border-indigo-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+                ? "bg-surface font-semibold text-ink shadow-sm"
+                : "font-medium text-ink-muted hover:text-ink"
             }`}
           >
-            {label} {counts[tab]}
+            {label}{" "}
+            <span
+              className={`rounded-full px-2 py-0.5 text-xs ${
+                isActive ? "bg-wine-soft text-wine-ink" : "bg-surface text-ink-muted"
+              }`}
+            >
+              {counts[tab]}
+            </span>
           </button>
         );
       })}

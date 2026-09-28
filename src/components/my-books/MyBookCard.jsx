@@ -1,9 +1,16 @@
-﻿import MyBookStatusAction from "./MyBookStatusAction.jsx";
+import { badge, coverFrame, tone } from "../../styles/ui.js";
+import MyBookStatusAction from "./MyBookStatusAction.jsx";
+
+const STATUS_TONE = {
+  Available: tone.sage,
+  Published: tone.plum,
+  Loaned: tone.amber,
+};
 
 function MyBookCard({ book }) {
   return (
-    <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-soft dark:border-slate-800 dark:bg-slate-900">
-      <div className="relative aspect-[2/3] overflow-hidden bg-slate-100 dark:bg-slate-800">
+    <article className="flex flex-col">
+      <div className={`relative aspect-[2/3] shadow-card ${coverFrame}`}>
         {book.cover ? (
           <img
             src={book.cover}
@@ -12,36 +19,30 @@ function MyBookCard({ book }) {
             loading="lazy"
           />
         ) : (
-          <div className="flex h-full items-center justify-center p-6 text-center text-sm font-extrabold text-slate-400">
+          <div className="flex h-full items-center justify-center p-6 text-center text-sm font-medium text-ink-muted">
             Cover unavailable
           </div>
         )}
 
-        <span className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1.5 text-xs font-extrabold text-slate-700 shadow-sm backdrop-blur dark:bg-slate-950/90 dark:text-slate-200">
+        <span
+          className={`absolute left-3 top-3 shadow-sm ${badge} ${STATUS_TONE[book.status] ?? "bg-surface text-ink"}`}
+        >
           {book.status}
         </span>
       </div>
 
-      <div className="p-5">
-        <h2 className="truncate text-lg font-black text-slate-950 dark:text-white">
+      <div className="flex flex-1 flex-col pt-4">
+        <h2 className="truncate text-[15px] font-semibold text-ink">
           {book.title}
         </h2>
 
-        <p className="mt-1 truncate text-sm font-semibold text-slate-500 dark:text-slate-400">
-          {book.author}
+        <p className="mt-0.5 truncate text-sm text-ink-muted">{book.author}</p>
+
+        <p className="mt-2 truncate text-xs text-ink-muted">
+          {[book.genre, book.condition].filter(Boolean).join(" · ")}
         </p>
 
-        <div className="mt-4 flex flex-wrap gap-2">
-          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-            {book.genre}
-          </span>
-
-          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-            {book.condition}
-          </span>
-        </div>
-
-        <div className="mt-5">
+        <div className="mt-4">
           <MyBookStatusAction book={book} />
         </div>
       </div>

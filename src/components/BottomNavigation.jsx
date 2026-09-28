@@ -1,5 +1,6 @@
-﻿import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { navigationItems } from "../data/navigation.js";
+import { focusRing } from "../styles/ui.js";
 import NavIcon from "./navigation/NavIcon.jsx";
 
 const mobileIds = ["home", "marketplace", "my-books", "requests", "about"];
@@ -13,7 +14,7 @@ function BottomNavigation() {
 
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-2 py-2 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/95 lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-chrome/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl lg:hidden"
       aria-label="Mobile navigation"
     >
       <ul className="mx-auto grid max-w-xl grid-cols-5 gap-1">
@@ -28,10 +29,10 @@ function BottomNavigation() {
               <Link
                 to={item.path}
                 aria-current={isActive ? "page" : undefined}
-                className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-[11px] font-bold transition focus:outline-none focus:ring-4 focus:ring-blue-500/20 ${
+                className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 text-[11px] transition-colors ${focusRing} ${
                   isActive
-                    ? "bg-blue-50 text-blue-700 dark:bg-blue-500/10 dark:text-blue-300"
-                    : "text-slate-500 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-400 dark:hover:bg-slate-900 dark:hover:text-white"
+                    ? "bg-wine-soft font-semibold text-wine-ink dark:text-ink"
+                    : "font-medium text-ink-muted hover:bg-surface-muted hover:text-ink"
                 }`}
               >
                 <NavIcon name={item.icon} />

@@ -18,30 +18,28 @@ function MarketplacePage() {
       title="Marketplace"
       subtitle="Discover books from the university community"
     >
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
-        <section>
-          <ListingFilters
-            filters={listingFilters.filters}
-            resultCount={listingFilters.filteredListings.length}
-            hasActiveFilters={listingFilters.hasActiveFilters}
-            onChange={listingFilters.updateFilter}
+      <section>
+        <ListingFilters
+          filters={listingFilters.filters}
+          resultCount={listingFilters.filteredListings.length}
+          hasActiveFilters={listingFilters.hasActiveFilters}
+          onChange={listingFilters.updateFilter}
+          onReset={listingFilters.resetFilters}
+        />
+
+        <div className="mt-4">
+          <ListingGrid
+            listings={listingFilters.filteredListings}
             onReset={listingFilters.resetFilters}
           />
+        </div>
 
-          <div className="mt-6">
-            <ListingGrid
-              listings={listingFilters.filteredListings}
-              onReset={listingFilters.resetFilters}
-            />
-          </div>
-        </section>
-
-        <aside>
+        <div className="mt-10">
           <ListingStats stats={listingFilters.stats} />
-        </aside>
-      </div>
+        </div>
+      </section>
 
-      <div className="mt-10 grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="mt-20 grid gap-10 border-t border-line pt-14 xl:grid-cols-[minmax(0,1fr)_300px]">
         <section>
           <MarketplaceSearchPanel
             searchInput={marketplace.searchInput}
@@ -52,7 +50,7 @@ function MarketplacePage() {
             onSearch={marketplace.runSearch}
           />
 
-          <div className="mt-6">
+          <div className="mt-8">
             <OpenLibraryResults
               status={marketplace.status}
               error={marketplace.error}
@@ -65,7 +63,7 @@ function MarketplacePage() {
           </div>
         </section>
 
-        <aside>
+        <aside className="xl:sticky xl:top-24 xl:self-start">
           <FavoritesSection
             favorites={marketplace.favorites}
             onToggleFavorite={marketplace.toggleFavorite}

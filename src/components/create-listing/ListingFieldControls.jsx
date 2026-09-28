@@ -1,11 +1,15 @@
-﻿import { listingDurations } from "../../data/createListingData.js";
-
-const inputClass =
-  "h-12 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm font-semibold text-slate-950 outline-none transition focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-500/15 dark:border-slate-700 dark:bg-slate-950 dark:text-white";
+import { listingDurations } from "../../data/createListingData.js";
+import {
+  fieldError,
+  fieldLabel,
+  inputField,
+  selectFieldLg,
+} from "../../styles/ui.js";
+import SelectChevron from "../SelectChevron.jsx";
 
 export function FieldError({ message }) {
   return message ? (
-    <p className="mt-2 text-sm font-bold text-rose-600 dark:text-rose-400">
+    <p className={fieldError}>
       {message}
     </p>
   ) : null;
@@ -16,26 +20,29 @@ export function DurationSelect({ name, label, value, onChange, error }) {
     <div>
       <label
         htmlFor={name}
-        className="mb-2 block text-sm font-extrabold text-slate-800 dark:text-slate-100"
+        className={fieldLabel}
       >
         {label}
       </label>
 
-      <select
-        id={name}
-        value={value}
-        onChange={(event) => onChange(name, event.target.value)}
-        aria-invalid={Boolean(error)}
-        className={inputClass}
-      >
-        <option value="">Select a duration</option>
+      <div className="relative">
+        <select
+          id={name}
+          value={value}
+          onChange={(event) => onChange(name, event.target.value)}
+          aria-invalid={Boolean(error)}
+          className={selectFieldLg}
+        >
+          <option value="">Select a duration</option>
 
-        {listingDurations.map((duration) => (
-          <option key={duration} value={duration}>
-            {duration}
-          </option>
-        ))}
-      </select>
+          {listingDurations.map((duration) => (
+            <option key={duration} value={duration}>
+              {duration}
+            </option>
+          ))}
+        </select>
+        <SelectChevron />
+      </div>
 
       <FieldError message={error} />
     </div>
@@ -54,13 +61,13 @@ export function PriceInput({
     <div>
       <label
         htmlFor={name}
-        className="mb-2 block text-sm font-extrabold text-slate-800 dark:text-slate-100"
+        className={fieldLabel}
       >
         {label}
       </label>
 
       <div className="relative">
-        <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-xs font-extrabold text-slate-400">
+        <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-ink-muted">
           COP
         </span>
 
@@ -74,7 +81,7 @@ export function PriceInput({
           value={value}
           onChange={(event) => onChange(name, event.target.value)}
           aria-invalid={Boolean(error)}
-          className={`${inputClass} pl-14`}
+          className={`${inputField} pl-14`}
         />
       </div>
 
@@ -82,5 +89,3 @@ export function PriceInput({
     </div>
   );
 }
-
-export { inputClass };

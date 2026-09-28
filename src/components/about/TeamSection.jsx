@@ -1,27 +1,43 @@
-﻿function TeamSection({ members }) {
-  return (
-    <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8">
-      <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-400">
-        Team
-      </p>
+import { card, eyebrow } from "../../styles/ui.js";
 
-      <h2 className="mt-2 text-2xl font-black text-slate-950 dark:text-white">
+function initialsOf(name) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
+}
+
+function TeamSection({ members }) {
+  return (
+    <section className="pt-10">
+      <p className={eyebrow}>Team</p>
+
+      <h2 className="mt-3 text-2xl font-bold tracking-tight text-ink">
         TheBridge contributors
       </h2>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         {members.map((member) => (
-          <article
-            key={member.name}
-            className="rounded-2xl border border-slate-200 p-4 dark:border-slate-700"
-          >
-            <h3 className="text-sm font-extrabold text-slate-950 dark:text-white">
-              {member.name}
-            </h3>
+          <article key={member.name} className={`flex items-center gap-4 p-4 ${card}`}>
+            <span
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-wine-soft text-sm font-semibold text-wine-ink"
+              aria-hidden="true"
+            >
+              {initialsOf(member.name)}
+            </span>
 
-            <p className="mt-1 text-sm font-semibold leading-6 text-slate-500 dark:text-slate-400">
-              {member.role}
-            </p>
+            <div className="min-w-0">
+              <h3 className="text-[15px] font-semibold text-ink">
+                {member.name}
+              </h3>
+
+              <p className="mt-0.5 text-sm leading-6 text-ink-muted">
+                {member.role}
+              </p>
+            </div>
           </article>
         ))}
       </div>

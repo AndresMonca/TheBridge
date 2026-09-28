@@ -1,10 +1,10 @@
-﻿function NavIcon({ name }) {
+function NavIcon({ name }) {
   const commonProps = {
     className: "h-5 w-5 shrink-0",
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
-    strokeWidth: 1.8,
+    strokeWidth: 1.6,
     "aria-hidden": true,
   };
 

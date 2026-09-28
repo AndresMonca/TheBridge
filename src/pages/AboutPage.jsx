@@ -1,4 +1,4 @@
-﻿import AppShell from "../components/AppShell.jsx";
+import AppShell from "../components/AppShell.jsx";
 import AboutFlow from "../components/about/AboutFlow.jsx";
 import TeamSection from "../components/about/TeamSection.jsx";
 import UserStories from "../components/about/UserStories.jsx";
@@ -8,41 +8,35 @@ import {
   teamMembers,
   userStories,
 } from "../data/aboutContent.js";
+import { card, eyebrow, pageLead } from "../styles/ui.js";
 
 function AboutSection({ section }) {
   return (
-    <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8">
-      <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-400">
-        {section.eyebrow}
-      </p>
+    <article className={`p-6 sm:p-8 ${card}`}>
+      <p className={eyebrow}>{section.eyebrow}</p>
 
-      <h2 className="mt-2 text-2xl font-black text-slate-950 dark:text-white">
+      <h2 className="mt-3 text-xl font-bold tracking-tight text-ink">
         {section.title}
       </h2>
 
       {section.body && (
-        <p className="mt-4 text-sm font-medium leading-7 text-slate-600 dark:text-slate-300">
+        <p className="mt-4 text-[15px] leading-7 text-ink-muted">
           {section.body}
         </p>
       )}
 
       {section.items && (
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+        <dl className="mt-5 divide-y divide-line">
           {section.items.map((item) => (
-            <div
-              key={item.label}
-              className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-800/70"
-            >
-              <p className="text-sm font-extrabold text-slate-950 dark:text-white">
-                {item.label}
-              </p>
+            <div key={item.label} className="py-3 first:pt-0 last:pb-0">
+              <dt className="text-sm font-semibold text-ink">{item.label}</dt>
 
-              <p className="mt-1 text-sm font-medium leading-6 text-slate-500 dark:text-slate-400">
+              <dd className="mt-1 text-sm leading-6 text-ink-muted">
                 {item.text}
-              </p>
+              </dd>
             </div>
           ))}
-        </div>
+        </dl>
       )}
     </article>
   );
@@ -56,22 +50,20 @@ function AboutPage() {
       subtitle="Why this prototype exists and how students use it"
     >
       <div className="space-y-6">
-        <section className="rounded-3xl bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-600 p-7 text-white shadow-xl shadow-indigo-500/15 sm:p-10">
-          <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-blue-100">
-            TheBridge
-          </p>
+        <header className="max-w-3xl pb-6 pt-2 lg:pt-6">
+          <p className={eyebrow}>TheBridge</p>
 
-          <h1 className="mt-3 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl">
+          <h1 className="mt-4 text-4xl font-bold leading-[1.08] tracking-tight text-ink sm:text-5xl">
             A simpler way for students to share physical books.
           </h1>
 
-          <p className="mt-4 max-w-3xl text-sm font-semibold leading-7 text-indigo-100 sm:text-base">
+          <p className={`mt-5 max-w-2xl sm:text-lg sm:leading-8 ${pageLead}`}>
             TheBridge is a frontend prototype designed around discovering,
             sharing, and requesting books inside a university community.
           </p>
-        </section>
+        </header>
 
-        <div className="grid gap-6 xl:grid-cols-2">
+        <div className="grid gap-5 xl:grid-cols-2">
           {aboutSections.map((section) => (
             <AboutSection key={section.eyebrow} section={section} />
           ))}

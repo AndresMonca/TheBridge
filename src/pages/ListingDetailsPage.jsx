@@ -1,10 +1,19 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import AppShell from "../components/AppShell.jsx";
 import ListingCoverCard from "../components/listing/ListingCoverCard.jsx";
 import ListingMetaGrid from "../components/listing/ListingMetaGrid.jsx";
 import ListingRequestModal from "../components/listing/ListingRequestModal.jsx";
+import { getListingOfferLabel } from "../services/listingFilters.js";
 import { getRequestCtaLabel } from "../services/listingRequest.js";
+import {
+  badge,
+  buttonPrimary,
+  buttonSuccess,
+  eyebrow,
+  modalityTone,
+  pageLead,
+} from "../styles/ui.js";
 
 function formatPrice(price) {
   if (price === null || price === undefined) {
@@ -29,19 +38,14 @@ function ListingDetailsPage({ listing }) {
         title="Listing details"
         subtitle="This listing could not be found"
       >
-        <section className="mx-auto max-w-xl py-16 text-center">
-          <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-400">
-            Listing unavailable
-          </p>
+        <section className="mx-auto max-w-xl py-20 text-center">
+          <p className={eyebrow}>Listing unavailable</p>
 
-          <h1 className="mt-3 text-4xl font-black tracking-tight text-slate-950 dark:text-white">
+          <h1 className="mt-4 text-4xl font-bold tracking-tight text-ink">
             We could not find this book.
           </h1>
 
-          <Link
-            to="/marketplace"
-            className="mt-7 inline-flex rounded-2xl bg-slate-950 px-6 py-3 text-sm font-extrabold text-white transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:bg-white dark:text-slate-950"
-          >
+          <Link to="/marketplace" className={`mt-8 ${buttonPrimary}`}>
             Return to Marketplace
           </Link>
         </section>
@@ -55,25 +59,32 @@ function ListingDetailsPage({ listing }) {
       title="Listing details"
       subtitle={`${listing.title} by ${listing.author}`}
     >
-      <article className="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
+      <article className="grid gap-10 pt-2 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:gap-16 lg:pt-6">
         <ListingCoverCard listing={listing} />
 
-        <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8">
-          <p className="text-sm font-extrabold uppercase tracking-[0.16em] text-blue-600 dark:text-blue-400">
-            {listing.genre}
-          </p>
+        <section className="min-w-0">
+          <p className={eyebrow}>{listing.genre}</p>
 
-          <h1 className="mt-2 text-4xl font-black tracking-tight text-slate-950 dark:text-white">
+          <h1 className="mt-3 text-4xl font-bold tracking-tight text-ink sm:text-5xl sm:leading-[1.05]">
             {listing.title}
           </h1>
 
-          <p className="mt-2 text-lg font-semibold text-slate-500 dark:text-slate-400">
-            {listing.author}
+          <p className="mt-2 text-lg text-ink-muted">{listing.author}</p>
+
+          <div className="mt-6 flex flex-wrap items-center gap-2">
+            <span className={`${badge} ${modalityTone[listing.modality] ?? ""}`}>
+              {listing.modality}
+            </span>
+            <span className={`${badge} bg-surface-muted text-ink-muted`}>
+              {listing.condition}
+            </span>
+          </div>
+
+          <p className="mt-5 text-2xl font-semibold tracking-tight text-ink">
+            {getListingOfferLabel(listing)}
           </p>
 
-          <p className="mt-6 max-w-3xl text-sm font-medium leading-7 text-slate-600 dark:text-slate-300">
-            {listing.description}
-          </p>
+          <p className={`mt-6 max-w-2xl ${pageLead}`}>{listing.description}</p>
 
           <ListingMetaGrid
             listing={listing}
@@ -84,7 +95,9 @@ function ListingDetailsPage({ listing }) {
             type="button"
             onClick={() => setRequestOpen(true)}
             disabled={requestSent}
-            className="mt-8 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-indigo-500/15 transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-blue-500/20 disabled:cursor-default disabled:from-emerald-600 disabled:to-emerald-600 disabled:hover:translate-y-0"
+            className={`mt-8 w-full sm:w-auto sm:px-8 ${
+              requestSent ? buttonSuccess : buttonPrimary
+            }`}
           >
             {requestSent
               ? "✓ Request sent"

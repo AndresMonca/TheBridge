@@ -1,9 +1,10 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import {
   idleModalityMessage,
   modalityMessages,
 } from "../../data/createListingData.js";
 import { validateListing } from "../../services/listingValidation.js";
+import { buttonPrimaryLg } from "../../styles/ui.js";
 import ListingDynamicFields from "./ListingDynamicFields.jsx";
 import ListingModalityOptions from "./ListingModalityOptions.jsx";
 
@@ -56,7 +57,6 @@ function CreateListingForm({ onPublish }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
     >
       <ListingModalityOptions
         value={modality}
@@ -65,14 +65,14 @@ function CreateListingForm({ onPublish }) {
       />
 
       <p
-        className="mt-4 rounded-2xl bg-slate-50 px-4 py-3 text-sm font-semibold leading-6 text-slate-500 dark:bg-slate-950 dark:text-slate-400"
+        className="mt-4 text-sm leading-6 text-ink-muted"
         aria-live="polite"
       >
         {modalityMessages[modality] || idleModalityMessage}
       </p>
 
       {modality && (
-        <div className="mt-6">
+        <div className="mt-8">
           <ListingDynamicFields
             modality={modality}
             values={values}
@@ -82,10 +82,10 @@ function CreateListingForm({ onPublish }) {
         </div>
       )}
 
-      <div className="mt-6 flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 dark:border-slate-800 sm:flex-row sm:justify-end">
+      <div className="mt-10 flex flex-col-reverse gap-3 border-t border-line pt-6 sm:flex-row sm:justify-end">
         <button
           type="submit"
-          className="inline-flex h-12 items-center justify-center rounded-2xl bg-slate-950 px-6 text-sm font-black text-white transition hover:bg-indigo-600 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:bg-white dark:text-slate-950"
+          className={buttonPrimaryLg}
         >
           Publish Listing
         </button>

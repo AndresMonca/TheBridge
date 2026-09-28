@@ -1,10 +1,11 @@
-﻿import { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import AppShell from "../components/AppShell.jsx";
 import MyBookCard from "../components/my-books/MyBookCard.jsx";
 import MyBooksEmptyState from "../components/my-books/MyBooksEmptyState.jsx";
 import MyBooksFilters from "../components/my-books/MyBooksFilters.jsx";
 import { loadMyBooks } from "../services/myBooksStorage.js";
+import { buttonPrimary, eyebrow, pageLead, pageTitle } from "../styles/ui.js";
 
 function countBooks(books) {
   return books.reduce(
@@ -38,23 +39,17 @@ function MyBooksPage() {
       subtitle="Manage the books in your personal library"
     >
       <section>
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-blue-600 dark:text-blue-400">
-              Personal library
-            </p>
-            <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl">
-              My Books
-            </h1>
-            <p className="mt-2 max-w-xl text-sm font-medium leading-6 text-slate-500 dark:text-slate-400">
+            <p className={eyebrow}>Personal library</p>
+            <h1 className={`mt-3 ${pageTitle}`}>My Books</h1>
+            <p className={`mt-2 max-w-xl ${pageLead}`}>
               Track available, published, and loaned books from one place.
             </p>
           </div>
 
-          <Link
-            to="/add-book"
-            className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-indigo-500/15 transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-blue-500/20"
-          >
+          <Link to="/add-book" className={`w-full sm:w-auto ${buttonPrimary}`}>
+            <span aria-hidden="true" className="text-lg leading-none">+</span>
             Add book
           </Link>
         </div>
@@ -66,7 +61,7 @@ function MyBooksPage() {
         />
 
         {filteredBooks.length ? (
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-10 min-[480px]:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
             {filteredBooks.map((book) => (
               <MyBookCard key={book.id} book={book} />
             ))}

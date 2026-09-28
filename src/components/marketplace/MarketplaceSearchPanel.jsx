@@ -1,4 +1,13 @@
-﻿const QUICK_SEARCHES = ["Algorithms", "Calculus", "Physics", "Databases"];
+import {
+  buttonPrimaryLg,
+  chipSm,
+  eyebrow,
+  fieldError,
+  inputField,
+  pageLead,
+} from "../../styles/ui.js";
+
+const QUICK_SEARCHES = ["Algorithms", "Calculus", "Physics", "Databases"];
 
 function MarketplaceSearchPanel({
   searchInput,
@@ -9,16 +18,14 @@ function MarketplaceSearchPanel({
   onSearch,
 }) {
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6">
-      <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-blue-600 dark:text-blue-400">
-        Open Library search
-      </p>
+    <div>
+      <p className={eyebrow}>Open Library search</p>
 
-      <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950 dark:text-white sm:text-3xl">
+      <h2 className="mt-3 text-2xl font-bold tracking-tight text-ink sm:text-3xl">
         Explore the public catalog
       </h2>
 
-      <p className="mt-3 max-w-2xl text-sm font-medium leading-6 text-slate-500 dark:text-slate-400">
+      <p className={`mt-2 max-w-2xl ${pageLead}`}>
         Search public bibliographic data and save the books that interest you.
       </p>
 
@@ -36,11 +43,11 @@ function MarketplaceSearchPanel({
               onChange={onChange}
               placeholder="Search by title, author, or keyword"
               aria-invalid={Boolean(searchError)}
-              className="h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+              className={inputField}
             />
 
             {searchError && (
-              <p className="mt-2 text-xs font-bold text-rose-600" role="alert">
+              <p className={fieldError} role="alert">
                 {searchError}
               </p>
             )}
@@ -49,20 +56,21 @@ function MarketplaceSearchPanel({
           <button
             type="submit"
             disabled={status === "loading"}
-            className="h-12 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 text-sm font-extrabold text-white shadow-lg shadow-indigo-500/15 transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+            className={buttonPrimaryLg}
           >
             Search
           </button>
         </div>
       </form>
 
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        <span className="mr-1 text-xs text-ink-muted">Try:</span>
         {QUICK_SEARCHES.map((query) => (
           <button
             key={query}
             type="button"
             onClick={() => onSearch(query)}
-            className="rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-bold text-slate-600 transition hover:border-blue-300 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+            className={chipSm}
           >
             {query}
           </button>

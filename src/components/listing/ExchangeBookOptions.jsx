@@ -1,4 +1,6 @@
-﻿function ExchangeBookOptions({
+import { fieldError, notice } from "../../styles/ui.js";
+
+function ExchangeBookOptions({
   books,
   selectedBookId,
   error,
@@ -6,12 +8,12 @@
 }) {
   if (!books.length) {
     return (
-      <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/60 dark:bg-amber-950/30">
-        <p className="text-sm font-extrabold text-amber-900 dark:text-amber-200">
+      <div className={`mt-6 ${notice.warning}`}>
+        <p className="text-sm font-semibold">
           You have no available books to offer
         </p>
 
-        <p className="mt-1 text-sm leading-6 text-amber-800 dark:text-amber-300">
+        <p className="mt-1 text-sm leading-6 opacity-90">
           Add an available book to your library before requesting an exchange.
         </p>
       </div>
@@ -20,10 +22,10 @@
 
   return (
     <fieldset
-      className="mt-5"
+      className="mt-6"
       aria-describedby={error ? "exchange-offer-error" : undefined}
     >
-      <legend className="text-sm font-extrabold text-slate-800 dark:text-slate-100">
+      <legend className="text-sm font-semibold text-ink">
         Your available books
       </legend>
 
@@ -31,7 +33,7 @@
         {books.map((book) => (
           <label
             key={book.id}
-            className="flex cursor-pointer items-center gap-3 rounded-2xl border border-slate-200 p-3 transition hover:border-indigo-300 dark:border-slate-700"
+            className="flex cursor-pointer items-center gap-3 rounded-xl border border-line p-3 transition-colors hover:border-line-strong has-[:checked]:border-wine has-[:checked]:bg-wine-soft has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-wine has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-canvas"
           >
             <input
               type="radio"
@@ -39,10 +41,10 @@
               value={book.id}
               checked={selectedBookId === book.id}
               onChange={() => onChange(book.id)}
-              className="h-4 w-4 accent-indigo-600"
+              className="h-4 w-4 accent-wine"
             />
 
-            <div className="h-14 w-10 shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-800">
+            <div className="h-14 w-10 shrink-0 overflow-hidden rounded-md bg-surface-muted">
               {book.cover && (
                 <img
                   src={book.cover}
@@ -53,11 +55,11 @@
             </div>
 
             <div className="min-w-0">
-              <p className="truncate text-sm font-extrabold text-slate-950 dark:text-white">
+              <p className="truncate text-sm font-semibold text-ink">
                 {book.title}
               </p>
 
-              <p className="truncate text-xs font-semibold text-slate-500 dark:text-slate-400">
+              <p className="truncate text-xs text-ink-muted">
                 {book.author}
               </p>
             </div>
@@ -69,7 +71,7 @@
         <p
           id="exchange-offer-error"
           role="alert"
-          className="mt-3 text-sm font-bold text-rose-600 dark:text-rose-400"
+          className={fieldError}
         >
           {error}
         </p>

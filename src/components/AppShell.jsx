@@ -40,7 +40,7 @@ function AppShell({
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100">
+    <div className="min-h-screen bg-canvas text-ink">
       <Sidebar
         activePage={activePage}
         collapsed={sidebarCollapsed}
@@ -60,7 +60,7 @@ function AppShell({
           onToggleTheme={() => setIsDark((current) => !current)}
         />
 
-        <main className="mx-auto w-full max-w-[1600px] px-4 pb-24 pt-6 sm:px-6 lg:px-8 lg:pb-10">
+        <main className="mx-auto w-full max-w-[1180px] px-4 pb-28 pt-6 sm:px-6 sm:pt-8 lg:px-10 lg:pb-16">
           {children}
         </main>
       </div>

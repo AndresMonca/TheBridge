@@ -1,5 +1,6 @@
-﻿import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { navigationItems } from "../../data/navigation.js";
+import { focusRing } from "../../styles/ui.js";
 import NavIcon from "./NavIcon.jsx";
 
 function SidebarNavigation({ collapsed }) {
@@ -18,8 +19,8 @@ function SidebarNavigation({ collapsed }) {
   };
 
   return (
-    <nav className="mt-6 flex-1 overflow-y-auto" aria-label="TheBridge sections">
-      <ul className="space-y-1.5">
+    <nav className="mt-8 flex-1 overflow-y-auto" aria-label="TheBridge sections">
+      <ul className="space-y-1">
         {navigationItems.map((item) => {
           const isActive = isCurrentRoute(item);
 
@@ -29,12 +30,12 @@ function SidebarNavigation({ collapsed }) {
                 to={item.path}
                 aria-current={isActive ? "page" : undefined}
                 title={collapsed ? item.label : undefined}
-                className={`flex items-center rounded-2xl px-3 py-3 text-sm transition focus:outline-none focus:ring-4 focus:ring-blue-500/20 ${
+                className={`flex items-center rounded-xl px-3 py-2.5 text-[15px] transition-colors ${focusRing} ${
                   collapsed ? "justify-center" : "gap-3"
                 } ${
                   isActive
-                    ? "bg-gradient-to-r from-blue-600 to-indigo-600 font-extrabold text-white shadow-lg shadow-indigo-500/15"
-                    : "font-bold text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"
+                    ? "bg-wine-soft font-semibold text-wine-ink dark:text-ink"
+                    : "font-medium text-ink-muted hover:bg-surface-muted hover:text-ink"
                 }`}
               >
                 <NavIcon name={item.icon} />
