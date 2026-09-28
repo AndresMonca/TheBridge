@@ -20,7 +20,12 @@ function LoginPage() {
         <img
           src={`${import.meta.env.BASE_URL}assets/brand/thebridge-logo.svg`}
           alt=""
-          className="mx-auto h-12 w-14 object-contain"
+          className="mx-auto h-12 w-14 object-contain dark:hidden"
+        />
+        <img
+          src={`${import.meta.env.BASE_URL}assets/brand/thebridge-logo-dark.svg`}
+          alt=""
+          className="mx-auto hidden h-12 w-14 object-contain dark:block"
         />
 
         <p className={`mt-6 ${eyebrow}`}>Student access</p>

@@ -1,7 +1,7 @@
 import { buttonSecondary } from "../../styles/ui.js";
 import ListingCard from "./ListingCard.jsx";
 
-function ListingGrid({ listings, onReset }) {
+function ListingGrid({ listings, onReset, onSelect }) {
   if (listings.length === 0) {
     return (
       <div className="rounded-2xl bg-surface-muted px-6 py-16 text-center">
@@ -28,7 +28,7 @@ function ListingGrid({ listings, onReset }) {
 
       <div className="grid grid-cols-1 gap-5 min-[480px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {listings.map((listing) => (
-          <ListingCard key={listing.id} listing={listing} />
+          <ListingCard key={listing.id} listing={listing} onSelect={onSelect} />
         ))}
       </div>
     </section>

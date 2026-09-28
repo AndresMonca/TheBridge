@@ -36,7 +36,12 @@ function Sidebar({ collapsed = false, onToggle }) {
           <img
             src={`${import.meta.env.BASE_URL}assets/brand/thebridge-logo.svg`}
             alt="TheBridge logo: two people forming a bridge above an open book"
-            className="h-9 w-11 shrink-0 object-contain"
+            className="h-9 w-11 shrink-0 object-contain dark:hidden"
+          />
+          <img
+            src={`${import.meta.env.BASE_URL}assets/brand/thebridge-logo-dark.svg`}
+            alt="TheBridge logo: two people forming a bridge above an open book"
+            className="hidden h-9 w-11 shrink-0 object-contain dark:block"
           />
 
           {!collapsed && (

@@ -1,7 +1,9 @@
+import { useState } from "react";
 import AppShell from "../components/AppShell.jsx";
 import FavoritesSection from "../components/FavoritesSection.jsx";
 import ListingFilters from "../components/marketplace/ListingFilters.jsx";
 import ListingGrid from "../components/marketplace/ListingGrid.jsx";
+import ListingQuickView from "../components/marketplace/ListingQuickView.jsx";
 import ListingStats from "../components/marketplace/ListingStats.jsx";
 import MarketplaceSearchPanel from "../components/marketplace/MarketplaceSearchPanel.jsx";
 import OpenLibraryResults from "../components/marketplace/OpenLibraryResults.jsx";
@@ -11,6 +13,7 @@ import { useMarketplace } from "../hooks/useMarketplace.js";
 function MarketplacePage() {
   const listingFilters = useListingFilters();
   const marketplace = useMarketplace();
+  const [selectedListing, setSelectedListing] = useState(null);
 
   return (
     <AppShell
@@ -31,6 +34,7 @@ function MarketplacePage() {
           <ListingGrid
             listings={listingFilters.filteredListings}
             onReset={listingFilters.resetFilters}
+            onSelect={setSelectedListing}
           />
         </div>
 
@@ -70,6 +74,11 @@ function MarketplacePage() {
           />
         </aside>
       </div>
+
+      <ListingQuickView
+        listing={selectedListing}
+        onClose={() => setSelectedListing(null)}
+      />
     </AppShell>
   );
 }

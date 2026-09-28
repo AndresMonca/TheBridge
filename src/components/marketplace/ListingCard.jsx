@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { getListingOfferLabel } from "../../services/listingFilters.js";
 import { badge, cardInteractive, modalityTone } from "../../styles/ui.js";
 
-function ListingCard({ listing, headingLevel: Heading = "h3" }) {
+function ListingCard({ listing, headingLevel: Heading = "h3", onSelect }) {
   const [coverFailed, setCoverFailed] = useState(false);
 
   return (
@@ -34,12 +34,26 @@ function ListingCard({ listing, headingLevel: Heading = "h3" }) {
 
       <div className="p-4">
         <Heading className="line-clamp-2 text-[15px] font-semibold leading-snug text-ink">
-          <Link
-            to={`/listing/${listing.id}`}
-            className="after:absolute after:inset-0 focus:outline-none"
-          >
-            {listing.title}
-          </Link>
+          {onSelect ? (
+            <button
+              type="button"
+              aria-haspopup="dialog"
+              onClick={(event) => {
+                event.currentTarget.focus();
+                onSelect(listing);
+              }}
+              className="text-left after:absolute after:inset-0 focus:outline-none"
+            >
+              {listing.title}
+            </button>
+          ) : (
+            <Link
+              to={`/listing/${listing.id}`}
+              className="after:absolute after:inset-0 focus:outline-none"
+            >
+              {listing.title}
+            </Link>
+          )}
         </Heading>
 
         <p className="mt-0.5 truncate text-sm text-ink-muted">
