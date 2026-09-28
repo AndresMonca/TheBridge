@@ -11,7 +11,43 @@
   }));
 }
 
-export async function searchOpenLibrary(query, signal) {
+const CACHE_KEY = "thebridge:openlibrary-cache";
+const MAX_CACHED_QUERIES = 10;
+
+function getCacheKey(query) {
+  return query.trim().toLowerCase();
+}
+
+function readCache() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(CACHE_KEY) || "{}");
+    const entries = Object.entries(stored ?? {}).filter(
+      ([, entry]) =>
+        Array.isArray(entry?.books) && typeof entry?.savedAt === "string",
+    );
+    return Object.fromEntries(entries);
+  } catch {
+    return {};
+  }
+}
+
+function writeCache(query, books) {
+  const entries = Object.entries({
+    ...readCache(),
+    [getCacheKey(query)]: { books, savedAt: new Date().toISOString() },
+  })
+    .sort(([, a], [, b]) => b.savedAt.localeCompare(a.savedAt))
+    .slice(0, MAX_CACHED_QUERIES);
+
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify(Object.fromEntries(entries)));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function searchOpenLibrary(query, signal) {
   const url = new URL("https://openlibrary.org/search.json");
   url.searchParams.set("q", query);
   url.searchParams.set("limit", "20");
@@ -24,4 +60,29 @@ export async function searchOpenLibrary(query, signal) {
 
   const data = await response.json();
   return normalizeOpenLibraryBooks(data.docs);
+}
+
+export async function searchOpenLibraryWithCache(query, signal) {
+  try {
+    const books = await searchOpenLibrary(query, signal);
+    writeCache(query, books);
+    return { books, savedAt: null };
+  } catch (requestError) {
+    if (requestError.name === "AbortError") {
+      throw requestError;
+    }
+
+    const cached = readCache()[getCacheKey(query)];
+
+    if (cached) {
+      return { books: cached.books, savedAt: cached.savedAt };
+    }
+
+    throw new Error(
+      navigator.onLine
+        ? "Open Library could not be reached and there is no saved data for this search yet."
+        : "You are offline and there is no saved data for this search yet.",
+      { cause: requestError },
+    );
+  }
 }

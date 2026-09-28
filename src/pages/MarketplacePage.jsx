@@ -1,37 +1,15 @@
-﻿import AppShell from "../components/AppShell.jsx";
-import BookList from "../components/BookList.jsx";
-import ErrorState from "../components/ErrorState.jsx";
+import AppShell from "../components/AppShell.jsx";
 import FavoritesSection from "../components/FavoritesSection.jsx";
-import LoadingState from "../components/LoadingState.jsx";
+import ListingFilters from "../components/marketplace/ListingFilters.jsx";
+import ListingGrid from "../components/marketplace/ListingGrid.jsx";
+import ListingStats from "../components/marketplace/ListingStats.jsx";
 import MarketplaceSearchPanel from "../components/marketplace/MarketplaceSearchPanel.jsx";
+import OpenLibraryResults from "../components/marketplace/OpenLibraryResults.jsx";
+import { useListingFilters } from "../hooks/useListingFilters.js";
 import { useMarketplace } from "../hooks/useMarketplace.js";
 
-function MarketplaceResults({
-  status,
-  error,
-  books,
-  favorites,
-  onRetry,
-  onToggle,
-}) {
-  if (status === "loading") {
-    return <LoadingState />;
-  }
-
-  if (status === "error") {
-    return <ErrorState message={error} onRetry={onRetry} />;
-  }
-
-  return (
-    <BookList
-      books={books}
-      favorites={favorites}
-      onToggleFavorite={onToggle}
-    />
-  );
-}
-
 function MarketplacePage() {
+  const listingFilters = useListingFilters();
   const marketplace = useMarketplace();
 
   return (
@@ -41,6 +19,29 @@ function MarketplacePage() {
       subtitle="Discover books from the university community"
     >
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
+        <section>
+          <ListingFilters
+            filters={listingFilters.filters}
+            resultCount={listingFilters.filteredListings.length}
+            hasActiveFilters={listingFilters.hasActiveFilters}
+            onChange={listingFilters.updateFilter}
+            onReset={listingFilters.resetFilters}
+          />
+
+          <div className="mt-6">
+            <ListingGrid
+              listings={listingFilters.filteredListings}
+              onReset={listingFilters.resetFilters}
+            />
+          </div>
+        </section>
+
+        <aside>
+          <ListingStats stats={listingFilters.stats} />
+        </aside>
+      </div>
+
+      <div className="mt-10 grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
         <section>
           <MarketplaceSearchPanel
             searchInput={marketplace.searchInput}
@@ -52,14 +53,13 @@ function MarketplacePage() {
           />
 
           <div className="mt-6">
-            <MarketplaceResults
+            <OpenLibraryResults
               status={marketplace.status}
               error={marketplace.error}
               books={marketplace.books}
               favorites={marketplace.favorites}
-              onRetry={() =>
-                marketplace.runSearch(marketplace.activeQuery)
-              }
+              savedAt={marketplace.savedAt}
+              onRetry={() => marketplace.runSearch(marketplace.activeQuery)}
               onToggle={marketplace.toggleFavorite}
             />
           </div>

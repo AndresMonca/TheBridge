@@ -1,4 +1,5 @@
 ﻿import { useState } from "react";
+import { useDialogFocus } from "../../hooks/useDialogFocus.js";
 import ExchangeBookOptions from "./ExchangeBookOptions.jsx";
 import {
   getListingOfferRows,
@@ -8,6 +9,7 @@ import {
 function ListingRequestModal({ listing, open, onClose, onSent }) {
   const [selectedBookId, setSelectedBookId] = useState("");
   const [error, setError] = useState("");
+  const { dialogRef, handleKeyDown } = useDialogFocus(open, onClose);
 
   if (!open) {
     return null;
@@ -39,10 +41,13 @@ function ListingRequestModal({ listing, open, onClose, onSent }) {
       role="presentation"
     >
       <section
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="request-dialog-title"
-        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-700 dark:bg-slate-900"
+        tabIndex={-1}
+        onKeyDown={handleKeyDown}
+        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl focus:outline-none dark:border-slate-700 dark:bg-slate-900"
       >
         <div className="flex items-start justify-between gap-4">
           <div>

@@ -1,5 +1,7 @@
 ﻿import { Link } from "react-router-dom";
 import AppShell from "../components/AppShell.jsx";
+import CommunitySummary from "../components/home/CommunitySummary.jsx";
+import FeaturedListings from "../components/home/FeaturedListings.jsx";
 
 function HomePage() {
   return (
@@ -55,6 +57,9 @@ function HomePage() {
           </div>
         </div>
       </section>
+
+      <CommunitySummary />
+      <FeaturedListings />
     </AppShell>
   );
 }

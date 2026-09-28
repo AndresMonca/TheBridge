@@ -270,7 +270,8 @@
       const existing = JSON.parse(localStorage.getItem("thebridge:my-books") || "[]");
       existing.push(newBook);
       localStorage.setItem("thebridge:my-books", JSON.stringify(existing));
-    } catch {
+    } catch (storageError) {
+      console.warn("The book could not be saved to localStorage.", storageError);
     }
 
     elements.successLiveRegion.textContent = `"${newBook.title}" has been added to your library successfully.`;

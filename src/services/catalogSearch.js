@@ -1,6 +1,6 @@
 ﻿import { addBookCatalog } from "../data/addBookData.js";
 
-function normalizeCatalogValue(value) {
+export function normalizeCatalogValue(value) {
   return String(value || "")
     .toLowerCase()
     .normalize("NFD")

@@ -4,7 +4,7 @@ function MyBooksFilters({ activeFilter, counts, onChange }) {
   return (
     <div
       className="mt-7 flex flex-wrap gap-2"
-      role="tablist"
+      role="group"
       aria-label="Filter personal books"
     >
       {FILTERS.map((filter) => {
@@ -14,8 +14,7 @@ function MyBooksFilters({ activeFilter, counts, onChange }) {
           <button
             key={filter}
             type="button"
-            role="tab"
-            aria-selected={isActive}
+            aria-pressed={isActive}
             onClick={() => onChange(filter)}
             className={`rounded-xl px-4 py-2 text-sm font-extrabold transition focus:outline-none focus:ring-4 focus:ring-blue-500/20 ${
               isActive

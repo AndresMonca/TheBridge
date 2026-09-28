@@ -14,9 +14,9 @@ function MarketplaceSearchPanel({
         Open Library search
       </p>
 
-      <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl">
-        Find your next book
-      </h1>
+      <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950 dark:text-white sm:text-3xl">
+        Explore the public catalog
+      </h2>
 
       <p className="mt-3 max-w-2xl text-sm font-medium leading-6 text-slate-500 dark:text-slate-400">
         Search public bibliographic data and save the books that interest you.

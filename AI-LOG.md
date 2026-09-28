@@ -69,6 +69,90 @@ The project owner confirmed the real names of all four team members and asked th
 
 Confirming the real state of `main` before branching (rather than assuming Milestone 1 was already merged) avoided building the Requests and About screens on top of a placeholder that would have needed to be redone. Keeping user-facing copy directly derived from the README also reduced the risk of the two documents drifting apart.
 
+## HW06 - JavaScript Intermediate
+
+### Prompt or task
+
+Bring the HW06 requirements into the React Marketplace: real-time search over the 24 mock listings, filters by at least three properties, `.map()`, `.filter()`, and `.reduce()` in real operations, and a statistics panel calculated with `reduce`. The original implementation lived in the vanilla `js/marketplace.js` and was lost when the Marketplace was migrated to React.
+
+### AI suggestions
+
+- Port only the pure logic of the vanilla Marketplace (`getFilteredListings` and `computeStats`), not its `innerHTML` rendering.
+- Put the logic in `src/services/listingFilters.js` so pages and components do not contain data rules.
+- Filter by modality, genre, and condition, and search by title, author, genre, and ISBN while the user types.
+- Keep Sale and Rental averages separate because a rental price is charged per period and a sale price is a total.
+- Reuse the same `computeListingStats` function for the Home summary instead of writing a second calculation.
+
+### Use of AI for `reduce`
+
+Yes, AI (Claude) was used to write `computeListingStats`. The function starts from `{ total: 0, byModality: {} }` and, for each listing, returns a new accumulator where the total grows by one and that listing's modality entry is replaced with an updated count, price total, and number of priced listings. Averages are calculated afterwards with `getAveragePrice`. `REFLECTION.md` compares this version with an equivalent `forEach` version; both were verified to return the same object for the full dataset.
+
+### Hardest array method
+
+`reduce` was the hardest method, because the accumulator can be any shape and the callback must always return it. Forgetting the return statement or the initial value produces errors that are not obvious at first. `map` and `filter` are easier because each one returns an array with a clear, predictable relationship to the original.
+
+### Changes adopted
+
+- Added `src/services/listingFilters.js` with `filterListings`, `computeListingStats`, `getUniqueValues`, `getNewestListings`, `getAveragePrice`, and `getListingOfferLabel`.
+- Added `useListingFilters` to hold the filter state and memoize the filtered listings and statistics.
+- Added `ListingFilters`, `FilterSelect`, `ListingGrid`, `ListingCard`, and `ListingStats` components.
+- Every listing card links to its dynamic `/listing/:id` route.
+- Added `REFLECTION.md`.
+
+### Human changes and review
+
+Pending team review of the reflection wording and of the hardest-method answer, which must reflect the team's own experience.
+
+### Tests and verification
+
+- Verified that typing "andy" shows Project Hail Mary and The Martian without reloading the page.
+- Verified combined filters (search + Rental, Fantasy + Like new) and the empty state with Clear filters.
+- Verified the stats panel: 24 listings, 7 Exchange, 5 Loan, 6 Rental, 6 Sale, average sale price COP 36,833, and average rental price COP 8,500.
+- Verified with a Node assertion script that the `reduce` and `forEach` versions return identical results.
+
+### Learning
+
+The vanilla implementation already had correct logic; the regression happened because logic and DOM rendering were mixed in one file. Separating pure functions from components made the logic reusable in two pages.
+
+## HW07 - Async JavaScript
+
+### Prompt or task
+
+Restore the HW07 offline behavior in React: cache every successful Open Library response in `localStorage`, show saved data with a visible notice when the request fails, and show the error state only when no saved data exists. The mount-time request also had to use `async/await` instead of a `.then()` chain.
+
+### AI suggestions
+
+- Keep the cache inside `src/services/openLibrary.js` so the hook only receives `{ books, savedAt }`.
+- Store up to ten queries, keyed by the normalized query, with the ISO date when they were saved.
+- Ignore `AbortError` so a cancelled request never falls back to the cache or shows an error.
+- Abort the previous request when a new search starts, so a slow old response cannot overwrite a newer one.
+- Show a distinct "Showing saved data" notice with the save date and a retry button.
+
+### Async states and AI intervention
+
+Yes, AI (Claude) implemented the cache and rewrote the mount-time effect with `async/await` and `try/catch`. The Marketplace now has four visible outcomes: Loading (spinner), Success (results), Success from saved data (amber "Showing saved data" notice), and Error (red error card with retry). The existing `navigator.onLine` indicator and `online`/`offline` listeners in `AppShell` continue to show the connection status in the header.
+
+### Changes adopted
+
+- Added `searchOpenLibraryWithCache` and a bounded `thebridge:openlibrary-cache` entry in `localStorage`.
+- Added the `savedAt` state to `useMarketplace` and the saved-data notice in `OpenLibraryResults`.
+- Replaced the `.then()` chain in the mount effect with an `async` function, keeping `AbortController` cleanup.
+- Added clearer error messages for offline and unreachable cases.
+
+### Human changes and review
+
+Pending team review.
+
+### Tests and verification
+
+- Verified that a successful search stores the query in `thebridge:openlibrary-cache`.
+- Verified offline mode: the header shows Offline, a cached query shows "Showing saved data", and an uncached query shows the error state with "You are offline and there is no saved data for this search yet."
+- Verified the header returns to Online when the connection is restored.
+
+### Learning
+
+A cache fallback must distinguish a cancelled request from a failed one; otherwise leaving the page would briefly show stale data or an error that the user never caused.
+
 ## HW08 - React Introduction
 
 ### Prompt or task
@@ -266,3 +350,39 @@ The solution was to archive the legacy HTML screens, move internal navigation to
 Routing changes affect more than URLs. Migrating a static multi-page frontend to React required coordinating route ownership, shared navigation, data placement, authentication simulation, browser history, and deployment behavior.
 
 The most useful component refactors were the ones based on responsibility. Moving API behavior into services and hooks and moving repeated interface sections into reusable components made the routed pages easier to understand without fragmenting the project unnecessarily.
+
+## Milestone 2 - Audit and Completion
+
+### Prompt or task
+
+Audit the repository against the cumulative HW06-HW10 requirements and fix every gap that prevented Milestone 2 from being complete.
+
+### AI suggestions
+
+- The audit found that the React Marketplace no longer showed the community listings, the Open Library cache was missing, `REFLECTION.md` did not exist, and `npm run lint` reported one error.
+- Restore the Home "community at a glance" summary and the recently shared listings from Milestone 1 using the same services as the Marketplace.
+- Make the request dialog fully keyboard accessible: move focus into it, keep Tab inside it, close it with Escape, and return focus to the button that opened it.
+- Replace the tab roles in the My Books filters with toggle buttons (`aria-pressed`), because the buttons filter a list instead of switching tab panels.
+
+### Changes adopted
+
+- Fixed the lint error in the archived `js/add-book.js` (empty `catch` block left after removing comments).
+- Added `useDialogFocus` and connected it to `ListingRequestModal`.
+- Updated `MyBooksFilters` to use `aria-pressed`.
+- Added `CommunitySummary` and `FeaturedListings` to the Home page.
+- Changed the Open Library panel heading to `h2` so the Marketplace has a single `h1`.
+- Updated the README deployment URL and deployment instructions.
+
+### Human changes and review
+
+Pending team review before submission.
+
+### Tests and verification
+
+- `npm run lint`: 0 errors and 0 warnings.
+- `npm run build`: successful.
+- Verified in the browser: listing search and filters, stats, listing card navigation to `/listing/:id`, saved-data and offline states, the request dialog keyboard behavior, the protected route redirect, and no horizontal overflow at 375px.
+
+### Learning
+
+Migrating screens one by one can silently drop behavior that belonged to an older homework. Auditing against the cumulative requirements, not only the latest assignment, exposed the regressions.

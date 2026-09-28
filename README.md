@@ -50,7 +50,9 @@ TheBridge is now implemented as a React application using Vite and React Router 
 
 Implemented screens and flows:
 
-- Home and Marketplace
+- Home with a community summary and recently shared listings
+- Marketplace with real-time listing search, modality, genre, and condition filters, and a live statistics panel
+- Open Library search with loading, success, saved-data, and error states, offline cache, and persistent favorites
 - My Books
 - Add Book
 - Create Listing
@@ -63,7 +65,11 @@ Implemented screens and flows:
 
 The application is deployed with GitHub Pages at:
 
-https://andresmonca.github.io/TheBridge/
+https://ninjasilver3692077.github.io/TheBridge/
+
+## Deployment
+
+GitHub Pages serves the `gh-pages` branch. Run `npm run deploy` from an up-to-date `main` to build the app and publish the `dist/` folder. The build also creates `dist/404.html`, so direct visits and reloads on routes such as `/listing/book-03` still load the React application.
 
 ## Figma Wireframes
 
@@ -90,11 +96,11 @@ The team must produce real functional contributions from multiple GitHub account
 
 ## AI Use
 
-AI may help structure requirements, propose implementation details, and review frontend changes. The team remains responsible for narrowing the scope, validating the result, and recording adopted and manually changed suggestions. The detailed record is in [AI-LOG.md](AI-LOG.md).
+AI may help structure requirements, propose implementation details, and review frontend changes. The team remains responsible for narrowing the scope, validating the result, and recording adopted and manually changed suggestions. The detailed record is in [AI-LOG.md](AI-LOG.md). The array-method reflection is in [REFLECTION.md](REFLECTION.md).
 
 ## Local Preview
 
-Install dependencies with `npm install`, then start the Vite development server with `npm run dev`.
+Install dependencies with `npm install`, then start the Vite development server with `npm run dev`. Run `npm run lint` and `npm run build` before opening a pull request.
 
 ## Milestone 2 Scope
 

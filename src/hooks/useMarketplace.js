@@ -1,6 +1,6 @@
-﻿import { useEffect, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import { readStoredFavorites } from "../services/favorites.js";
-import { searchOpenLibrary } from "../services/openLibrary.js";
+import { searchOpenLibraryWithCache } from "../services/openLibrary.js";
 
 const FAVORITES_KEY = "thebridge:favorites";
 export const DEFAULT_MARKETPLACE_QUERY = "computer science";
@@ -25,21 +25,31 @@ export function useMarketplace() {
   );
   const [status, setStatus] = useState("loading");
   const [error, setError] = useState("");
+  const [savedAt, setSavedAt] = useState(null);
+  const requestControllerRef = useRef(null);
 
   useEffect(() => {
     const controller = new AbortController();
+    requestControllerRef.current = controller;
 
-    searchOpenLibrary(DEFAULT_MARKETPLACE_QUERY, controller.signal)
-      .then((results) => {
-        setBooks(results);
+    const loadInitialBooks = async () => {
+      try {
+        const result = await searchOpenLibraryWithCache(
+          DEFAULT_MARKETPLACE_QUERY,
+          controller.signal,
+        );
+        setBooks(result.books);
+        setSavedAt(result.savedAt);
         setStatus("success");
-      })
-      .catch((requestError) => {
+      } catch (requestError) {
         if (requestError.name !== "AbortError") {
           setError(requestError.message || "Open Library is unavailable.");
           setStatus("error");
         }
-      });
+      }
+    };
+
+    loadInitialBooks();
 
     return () => controller.abort();
   }, []);
@@ -49,15 +59,25 @@ export function useMarketplace() {
   }, [favorites]);
 
   const runSearch = async (query) => {
+    requestControllerRef.current?.abort();
+    const controller = new AbortController();
+    requestControllerRef.current = controller;
+
     setActiveQuery(query);
     setStatus("loading");
     setError("");
 
     try {
-      setBooks(await searchOpenLibrary(query));
+      const result = await searchOpenLibraryWithCache(query, controller.signal);
+      setBooks(result.books);
+      setSavedAt(result.savedAt);
       setStatus("success");
       return true;
     } catch (requestError) {
+      if (requestError.name === "AbortError") {
+        return false;
+      }
+
       setError(requestError.message || "Open Library is unavailable.");
       setStatus("error");
       return false;
@@ -102,6 +122,7 @@ export function useMarketplace() {
     handleSearchChange,
     handleSearchSubmit,
     runSearch,
+    savedAt,
     searchError,
     searchInput,
     status,
