@@ -1,10 +1,21 @@
-﻿# TheBridge - Milestone 2
+﻿# Pages - Link
+
+https://ninjasilver3692077.github.io/TheBridge/
+
+# Integrants
+
+Edwin Andres Montano Castaneda
+Juan Esteban Gonzalez Villarreal
+Daniel Orozco
+Jorge Fontalvo
+
+# TheBridge - Milestone 2
 
 **DSAW · Universidad de La Sabana**
 
 ## Project Name
 
-TheBridge is a frontend prototype that connects students who own physical books with students who want to access them.
+TheBridge is a frontend prototype that connects students who own physical books with students and people who want to access them.
 
 ## Problem Statement
 
