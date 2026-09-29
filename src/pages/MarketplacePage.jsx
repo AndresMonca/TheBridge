@@ -1,12 +1,10 @@
 import { useState } from "react";
 import AppShell from "../components/AppShell.jsx";
-import FavoritesSection from "../components/FavoritesSection.jsx";
+import CatalogSection from "../components/marketplace/CatalogSection.jsx";
 import ListingFilters from "../components/marketplace/ListingFilters.jsx";
 import ListingGrid from "../components/marketplace/ListingGrid.jsx";
 import ListingQuickView from "../components/marketplace/ListingQuickView.jsx";
 import ListingStats from "../components/marketplace/ListingStats.jsx";
-import MarketplaceSearchPanel from "../components/marketplace/MarketplaceSearchPanel.jsx";
-import OpenLibraryResults from "../components/marketplace/OpenLibraryResults.jsx";
 import { useListingFilters } from "../hooks/useListingFilters.js";
 import { useMarketplace } from "../hooks/useMarketplace.js";
 
@@ -44,46 +42,7 @@ function MarketplacePage() {
         </div>
       </section>
 
-      <div className="mt-20 grid grid-cols-1 gap-10 border-t border-line pt-14 xl:grid-cols-[minmax(0,1fr)_300px]">
-        <section>
-          <MarketplaceSearchPanel
-            searchInput={marketplace.searchInput}
-            searchError={marketplace.searchError}
-            status={marketplace.status}
-            onChange={marketplace.handleSearchChange}
-            onSubmit={marketplace.handleSearchSubmit}
-            onSearch={marketplace.runSearch}
-          />
-
-          <div className="mt-8">
-            {marketplace.status === "success" && (
-              <p className="mb-4 text-sm text-ink-muted">
-                Showing catalog results for{" "}
-                <span className="font-semibold text-ink">
-                  “{marketplace.activeQuery}”
-                </span>
-              </p>
-            )}
-
-            <OpenLibraryResults
-              status={marketplace.status}
-              error={marketplace.error}
-              books={marketplace.books}
-              favorites={marketplace.favorites}
-              savedAt={marketplace.savedAt}
-              onRetry={() => marketplace.runSearch(marketplace.activeQuery)}
-              onToggle={marketplace.toggleFavorite}
-            />
-          </div>
-        </section>
-
-        <aside className="xl:sticky xl:top-24 xl:self-start">
-          <FavoritesSection
-            favorites={marketplace.favorites}
-            onToggleFavorite={marketplace.toggleFavorite}
-          />
-        </aside>
-      </div>
+      <CatalogSection marketplace={marketplace} />
 
       <ListingQuickView
         listing={selectedListing}

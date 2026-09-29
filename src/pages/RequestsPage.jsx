@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import AppShell from "../components/AppShell.jsx";
-import RequestCard from "../components/requests/RequestCard.jsx";
+import RequestList from "../components/requests/RequestList.jsx";
+import RequestsHeader from "../components/requests/RequestsHeader.jsx";
 import RequestsTabs from "../components/requests/RequestsTabs.jsx";
 import { loadMyBooks } from "../services/myBooksStorage.js";
 import { getRequestStatusMessage } from "../services/requestStatus.js";
@@ -9,7 +10,6 @@ import {
   REQUESTS_EVENT,
   updateRequestStatus,
 } from "../services/requestsStorage.js";
-import { eyebrow, pageLead, pageTitle } from "../styles/ui.js";
 
 function RequestsPage() {
   const [activeTab, setActiveTab] = useState("received");
@@ -63,17 +63,7 @@ function RequestsPage() {
       subtitle="Manage book requests between members"
     >
       <section>
-        <p className={eyebrow}>
-          Request center
-        </p>
-
-        <h1 className={`mt-3 ${pageTitle}`}>
-          Requests
-        </h1>
-
-        <p className={`mt-2 max-w-xl ${pageLead}`}>
-          Review requests you received and track the ones you sent.
-        </p>
+        <RequestsHeader />
 
         <div className="mt-8">
           <RequestsTabs
@@ -83,17 +73,11 @@ function RequestsPage() {
           />
         </div>
 
-        <div className="mt-6 space-y-3">
-          {visibleRequests.map((request) => (
-            <RequestCard
-              key={request.id}
-              request={request}
-              myBook={myBooksById.get(request.myBookId)}
-              offeredBook={myBooksById.get(request.offeredBookId)}
-              onStatusChange={handleStatusChange}
-            />
-          ))}
-        </div>
+        <RequestList
+          requests={visibleRequests}
+          myBooksById={myBooksById}
+          onStatusChange={handleStatusChange}
+        />
 
         <p className="sr-only" aria-live="polite">
           {announcement}

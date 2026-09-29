@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { listings } from "../../data/listings.js";
+import CoverWall from "./CoverWall.jsx";
 
 const HERO_IMAGES = ["library-01.webp", "library-02.webp", "library-03.webp"].map(
   (file) => `${import.meta.env.BASE_URL}assets/hero/${file}`,
@@ -9,22 +9,6 @@ const ROTATION_MS = 7000;
 
 const imageTreatment =
   "absolute inset-0 h-full w-full scale-105 object-cover blur-[2px] saturate-[.85]";
-
-function CoverWall() {
-  return (
-    <div className="grid h-full scale-105 grid-cols-4 content-start gap-2 p-2 blur-[2px] saturate-[.85] sm:grid-cols-6 lg:grid-cols-8">
-      {listings.map((listing) => (
-        <img
-          key={listing.id}
-          src={listing.cover}
-          alt=""
-          loading="lazy"
-          className="aspect-[2/3] w-full rounded-md bg-surface-muted object-cover"
-        />
-      ))}
-    </div>
-  );
-}
 
 function HeroCarousel() {
   const [failed, setFailed] = useState(() => new Set());

@@ -1,14 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import AppShell from "../components/AppShell.jsx";
-import MyBookCard from "../components/my-books/MyBookCard.jsx";
-import MyBooksEmptyState from "../components/my-books/MyBooksEmptyState.jsx";
 import MyBooksFilters from "../components/my-books/MyBooksFilters.jsx";
+import MyBooksGrid from "../components/my-books/MyBooksGrid.jsx";
+import MyBooksHeader from "../components/my-books/MyBooksHeader.jsx";
 import { shuffleArray } from "../services/discovery.js";
 import { MY_BOOKS_EVENT } from "../services/librarySeed.js";
 import { loadMyBooksWithActivity } from "../services/myBooksStorage.js";
 import { REQUESTS_EVENT } from "../services/requestsStorage.js";
-import { buttonPrimary, eyebrow, pageLead, pageTitle } from "../styles/ui.js";
 
 function countBooks(books) {
   return books.reduce(
@@ -62,20 +60,7 @@ function MyBooksPage() {
       subtitle="Manage the books in your personal library"
     >
       <section>
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className={eyebrow}>Personal library</p>
-            <h1 className={`mt-3 ${pageTitle}`}>My Books</h1>
-            <p className={`mt-2 max-w-xl ${pageLead}`}>
-              Track available, published, and loaned books from one place.
-            </p>
-          </div>
-
-          <Link to="/add-book" className={`w-full sm:w-auto ${buttonPrimary}`}>
-            <span aria-hidden="true" className="text-lg leading-none">+</span>
-            Add book
-          </Link>
-        </div>
+        <MyBooksHeader />
 
         <MyBooksFilters
           activeFilter={activeFilter}
@@ -83,15 +68,7 @@ function MyBooksPage() {
           onChange={setActiveFilter}
         />
 
-        {filteredBooks.length ? (
-          <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-10 min-[480px]:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-            {filteredBooks.map((book) => (
-              <MyBookCard key={book.id} book={book} />
-            ))}
-          </div>
-        ) : (
-          <MyBooksEmptyState activeFilter={activeFilter} />
-        )}
+        <MyBooksGrid books={filteredBooks} activeFilter={activeFilter} />
       </section>
     </AppShell>
   );

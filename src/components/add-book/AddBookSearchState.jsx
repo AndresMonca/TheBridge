@@ -1,5 +1,5 @@
-import { buttonGhost, notice, textLink } from "../../styles/ui.js";
-import AddBookResultCard from "./AddBookResultCard.jsx";
+import { notice, textLink } from "../../styles/ui.js";
+import AddBookResults from "./AddBookResults.jsx";
 
 function AddBookSearchState({ search, onSelect }) {
   if (search.status === "idle") {
@@ -60,29 +60,12 @@ function AddBookSearchState({ search, onSelect }) {
   }
 
   return (
-    <div className="mt-10">
-      <div className="flex items-center justify-between gap-4">
-        <p className="text-sm text-ink-muted">
-          <span className="font-semibold text-ink">{search.results.length}</span>{" "}
-          {search.results.length === 1 ? "book" : "books"} found for "
-          {search.submittedQuery}"
-        </p>
-
-        <button type="button" onClick={search.resetSearch} className={`-mr-3 ${buttonGhost}`}>
-          Clear
-        </button>
-      </div>
-
-      <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
-        {search.results.map((book) => (
-          <AddBookResultCard
-            key={book.id}
-            book={book}
-            onSelect={onSelect}
-          />
-        ))}
-      </div>
-    </div>
+    <AddBookResults
+      results={search.results}
+      submittedQuery={search.submittedQuery}
+      onClear={search.resetSearch}
+      onSelect={onSelect}
+    />
   );
 }
 

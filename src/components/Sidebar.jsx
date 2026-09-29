@@ -1,23 +1,9 @@
 import { Link } from "react-router-dom";
 import { focusRing } from "../styles/ui.js";
 import SidebarNavigation from "./navigation/SidebarNavigation.jsx";
+import SidebarToggleIcon from "./navigation/SidebarToggleIcon.jsx";
 
 const toggleClass = `grid h-9 w-9 shrink-0 place-items-center rounded-lg text-ink-subtle transition-colors hover:bg-surface-muted hover:text-ink ${focusRing}`;
-
-function ToggleIcon({ expanded }) {
-  return (
-    <svg
-      className={`h-5 w-5 ${expanded ? "" : "rotate-180"}`}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.6"
-      aria-hidden="true"
-    >
-      <path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3M14 8l-4 4 4 4" />
-    </svg>
-  );
-}
 
 function Sidebar({ collapsed = false, onToggle }) {
   return (
@@ -59,7 +45,7 @@ function Sidebar({ collapsed = false, onToggle }) {
             aria-label="Collapse sidebar"
             aria-expanded="true"
           >
-            <ToggleIcon expanded />
+            <SidebarToggleIcon expanded />
           </button>
         )}
       </div>
@@ -72,7 +58,7 @@ function Sidebar({ collapsed = false, onToggle }) {
           aria-label="Expand sidebar"
           aria-expanded="false"
         >
-          <ToggleIcon expanded={false} />
+          <SidebarToggleIcon expanded={false} />
         </button>
       )}
 

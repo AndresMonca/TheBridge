@@ -22,8 +22,7 @@ function validateSearch(value) {
 export function useMarketplace() {
   const [searchInput, setSearchInput] = useState("");
   const [searchError, setSearchError] = useState("");
-  const [discoveryQuery] = useState(() => pickRandom(DISCOVERY_QUERIES));
-  const [activeQuery, setActiveQuery] = useState(discoveryQuery);
+  const [activeQuery, setActiveQuery] = useState("");
   const [books, setBooks] = useState([]);
   const [favorites, setFavorites] = useState(() =>
     readStoredFavorites(FAVORITES_KEY),
@@ -34,6 +33,7 @@ export function useMarketplace() {
   const requestControllerRef = useRef(null);
 
   useEffect(() => {
+    const discoveryQuery = pickRandom(DISCOVERY_QUERIES);
     const controller = new AbortController();
     requestControllerRef.current = controller;
 
@@ -43,11 +43,13 @@ export function useMarketplace() {
           discoveryQuery,
           controller.signal,
         );
+        setActiveQuery(discoveryQuery);
         setBooks(shuffleArray(result.books));
         setSavedAt(result.savedAt);
         setStatus("success");
       } catch (requestError) {
         if (requestError.name !== "AbortError") {
+          setActiveQuery(discoveryQuery);
           setError(requestError.message || "Open Library is unavailable.");
           setStatus("error");
         }
@@ -57,7 +59,7 @@ export function useMarketplace() {
     loadInitialBooks();
 
     return () => controller.abort();
-  }, [discoveryQuery]);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
