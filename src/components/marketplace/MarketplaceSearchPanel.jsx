@@ -1,14 +1,12 @@
 import {
   buttonPrimaryLg,
-  chipSm,
   eyebrow,
   fieldError,
   inputField,
   pageLead,
-  textLink,
 } from "../../styles/ui.js";
-
-const QUICK_SEARCHES = ["Algorithms", "Calculus", "Physics", "Databases"];
+import OpenLibraryCredit from "./OpenLibraryCredit.jsx";
+import QuickSearches from "./QuickSearches.jsx";
 
 function MarketplaceSearchPanel({
   searchInput,
@@ -65,31 +63,9 @@ function MarketplaceSearchPanel({
         </div>
       </form>
 
-      <div className="mt-4 flex flex-wrap items-center gap-2">
-        <span className="mr-1 text-xs text-ink-muted">Try:</span>
-        {QUICK_SEARCHES.map((query) => (
-          <button
-            key={query}
-            type="button"
-            onClick={() => onSearch(query)}
-            className={chipSm}
-          >
-            {query}
-          </button>
-        ))}
-      </div>
+      <QuickSearches onSearch={onSearch} />
 
-      <p className="mt-3 text-xs text-ink-muted">
-        Book data powered by{" "}
-        <a
-          href="https://openlibrary.org"
-          target="_blank"
-          rel="noreferrer"
-          className={textLink}
-        >
-          Open Library
-        </a>
-      </p>
+      <OpenLibraryCredit />
     </div>
   );
 }

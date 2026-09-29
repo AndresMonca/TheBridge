@@ -386,3 +386,44 @@ Pending team review before submission.
 ### Learning
 
 Migrating screens one by one can silently drop behavior that belonged to an older homework. Auditing against the cumulative requirements, not only the latest assignment, exposed the regressions.
+
+## Milestone 2 - Final Rubric Compliance
+
+### Prompt or task
+
+Audit the final Milestone 2 code against the literal HW06-HW10 requirements and close the remaining gaps with the smallest safe changes, without visual or behavioral changes.
+
+### AI suggestions
+
+- HW09 asks for a data fetch on mount with `[]` as the dependency array. After the random catalog discovery was added, the Marketplace mount effect depended on `[discoveryQuery]`.
+- HW10 asks that no component exceed about 80 lines. Twenty-one `.jsx` files were above 80 lines, and the largest had 259 and 240 lines.
+- Extract components by responsibility and copy the existing JSX and class names exactly, so the rendered HTML does not change.
+
+### Changes adopted
+
+- `useMarketplace` now picks the random discovery query inside the mount effect. The effect uses `useEffect(..., [])`, keeps the `AbortController` cleanup (`return () => controller.abort();`), and sets the active query after the request succeeds or fails. No lint rule was disabled.
+- Split the largest components by responsibility:
+  - `DesiredBookPicker` into `DesiredBookSearch`, `DesiredBookResults`, `DesiredBookResultList`, and `SelectedDesiredBook`.
+  - `ListingQuickView` into `QuickViewHeader`, `QuickViewSummary`, `QuickViewDetails`, `QuickViewActions`, `QuickViewBackdrop`, and the `useBodyScrollLock` hook.
+  - `ListingRequestModal` into `RequestDialogHeader`, `RequestOfferRows`, and `RequestDialogActions`.
+  - `ListingDetailsPage` into `ListingOverview`, `ListingRequestCta`, and `ListingUnavailable`.
+  - `TopHeader` into `MobileBrand`, `NetworkStatus`, and `ThemeToggle`.
+  - Smaller extractions in Requests, My Books, Marketplace, Create Listing, Add Book, the catalog book card, the hero carousel, and the sidebar.
+- Moved the Create Listing form state and validation calls into the `useListingForm` hook.
+- Routes, data shapes, localStorage keys, services, the Open Library behavior, and styles were not changed.
+
+### Human changes and review
+
+Pending team review before submission.
+
+### Tests and verification
+
+- `npm run lint`: 0 errors and 0 warnings.
+- `npm run build`: successful. `dist/index.html` and `dist/404.html` were generated.
+- Captured the rendered HTML of 29 application states before and after the refactor, with deterministic randomness and a fixed localStorage state. All 29 states were identical.
+- Verified in the browser: random discovery on mount, manual search, loading, success, error, saved data, favorites persistence, listing search and filters, stats, quick view focus trap and Escape, the request modal, all four Create Listing modalities, created listing persistence, dynamic listing details, request persistence, My Books status updates, protected routes, login, 404, dark mode, and no horizontal overflow at 320px, 375px, 768px, 1280px, and 1440px.
+- Files still above 80 lines: `ListingFieldControls.jsx` (91 lines, three small components), `RequestsPage.jsx` (90), `App.jsx` (86, the route table), `ListingRequestModal.jsx` (83), and `ExchangeBookOptions.jsx` (83).
+
+### Learning
+
+Refactors for a line limit are safest when each extraction matches an existing responsibility and the rendered output is compared before and after. Comparing the rendered HTML found no differences, which made it possible to split large components without changing the interface.
